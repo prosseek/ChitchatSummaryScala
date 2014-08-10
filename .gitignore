@@ -1,6 +1,3 @@
-*.class
-*.log
-
 # sbt specific
 .cache/
 .history/
@@ -15,3 +12,19 @@ project/plugins/project/
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
+
+lib/scalautils.jar
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
+*.class
+*.log
+*.cache
+
+# sbt specific
+dist/
+target/
+project/
+
+# Intellij
+.idea/
