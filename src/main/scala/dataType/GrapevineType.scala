@@ -1,7 +1,7 @@
 package dataType
 
 /**
- * Created by smcho on 8/10/14.
+ * Some of the types are identified from key and some are from value
  */
 object GrapevineType extends Enumeration {
   type GrapevineType = Value
@@ -18,6 +18,12 @@ object GrapevineType extends Enumeration {
       Age
   = Value
 
+  /**
+   * Grapevine type can be retrieved from the key string
+   *
+   * @param key
+   * @return
+   */
   def getTypeFromKey(key:String) : Option[GrapevineType] = {
     val lowerKey = key.toLowerCase()
     if (lowerKey.startsWith("age")) {
@@ -34,7 +40,12 @@ object GrapevineType extends Enumeration {
     }
   }
 
-  def getTypeFromValue(v:Object) : Option[GrapevineType] = {
+  /**
+   * Get the Grapevine type from value
+   * @param v
+   * @return
+   */
+  def getTypeFromValue(v:AnyVal) : Option[GrapevineType] = {
     //println(v.getClass.toString())
     v.getClass.toString() match {
       case "int" | "class java.lang.Integer"  => Some(GrapevineType.Integer)

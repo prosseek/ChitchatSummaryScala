@@ -19,7 +19,7 @@ abstract class ContextSummary {
    * @param key
    * @return
    */
-  def get(key:String) : Option[Object] ;
+  def get(key:String) : Option[AnyVal] ;
 
   /**
    * create a context summary from dictionary.
@@ -30,6 +30,6 @@ abstract class ContextSummary {
    * @param dict
    * @param wholeDict = the additional information for summary creation
    */
-  def create(dict:Map[String, Object], wholeDict:Set[String]);
-  def create(dict:Map[String, Object]);
+  def create(dict:Map[String, AnyVal], wholeDict:Set[String]);
+  def create(dict:Map[String, AnyVal]);
 }
