@@ -19,6 +19,7 @@ abstract class GrapevineSummary extends ContextSummary {
         if (r.isEmpty) {
         } else {
           r.get
+          
         }
     }
   }
