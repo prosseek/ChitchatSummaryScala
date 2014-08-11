@@ -10,12 +10,12 @@ object GrapevineType extends Enumeration {
       Integer,
       Count,
       FloatingPoint,
+      String,
 //      FixedPoint,
-//      Latitude,
-//      Longitude,
-//      Altitude,
-//      Date,
-//      Time,
+      Latitude,
+      Longitude,
+      Date,
+      Time,
       Speed,
       Age
   = Value
@@ -28,18 +28,20 @@ object GrapevineType extends Enumeration {
    */
   def getTypeFromKey(key:String) : Option[GrapevineType] = {
     val lowerKey = key.toLowerCase()
-    if (lowerKey.startsWith("age")) {
-      Some(GrapevineType.Age)
+    val keyType = Map[String, GrapevineType](
+        "age" -> GrapevineType.Age,
+        "speed" -> GrapevineType.Speed,
+        "number" -> GrapevineType.Count,
+        "latitude" -> GrapevineType.Latitude,
+        "longitude" -> GrapevineType.Longitude,
+        "date" -> GrapevineType.Date,
+        "time" -> GrapevineType.Time
+    )
+
+    keyType.foreach { case(key, grapevineType) =>
+      if (lowerKey.startsWith(key)) return Some(grapevineType)
     }
-    else if (lowerKey.startsWith("speed")) {
-      Some(GrapevineType.Speed)
-    }
-    else if (lowerKey.startsWith("number")) {
-      Some(GrapevineType.Count)
-    }
-    else {
-      None
-    }
+    None
   }
 
   /**
@@ -56,6 +58,7 @@ object GrapevineType extends Enumeration {
       v.getClass.toString() match {
         case "int" | "class java.lang.Integer" => Some(GrapevineType.Integer)
         case "double" | "class java.lang.Double" => Some(GrapevineType.FloatingPoint)
+        case "class java.lang.String" => Some(GrapevineType.String)
         case _ => None
       }
     }

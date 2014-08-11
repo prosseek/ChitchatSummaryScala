@@ -1,8 +1,7 @@
 package dataType
 
-import GrapevineType._
+import dataType.GrapevineType._
 import org.scalatest._
-import scala.collection.mutable.ArrayBuffer
 
 /**
  * Created by smcho on 8/10/14.
@@ -16,8 +15,10 @@ class TestGrapevineType extends FunSuite {
   }
 
   test ("getTypeFromKey test") {
-    val keys = Array("age of john", "speed of a car")
-    val values = Array(Some(Age), Some(Speed))
+    val keys = Array("age of john", "speed of a car", "number of friends",
+      "latitude", "longitude","date","time")
+    val values = Array(Some(Age), Some(Speed), Some(Count),
+      Some(Latitude), Some(Longitude), Some(Date), Some(Time))
     keys.zipWithIndex.foreach { case(key, index) =>
         val v = values(index)
         assert(getTypeFromKey(key) == v)
@@ -25,14 +26,12 @@ class TestGrapevineType extends FunSuite {
   }
 
   test ("getTypeFromValue test") {
-    val vs = new ArrayBuffer[Object]()
-    vs += 1.asInstanceOf[Object]
-    vs += (1.2).asInstanceOf[Object]
-    val values = Array(Some(Integer), Some(FloatingPoint))
+    val values = Array(1, 1.2, null)
+    val types = Array(Some(Integer), Some(FloatingPoint), Some(Null))
 
-    vs.zipWithIndex.foreach { case(v, index) =>
-      val va = values(index)
-      assert(getTypeFromValue(v.asInstanceOf[Object]) == va)
+    values.zipWithIndex.foreach { case(value, index) =>
+      val t = types(index)
+      assert(getTypeFromValue(value) == t)
     }
   }
 
