@@ -1,6 +1,6 @@
 package util
 
-import dataType.GrapevineType._
+import grapevineType.GrapevineType._
 /**
  * Created by smcho on 8/10/14.
  */

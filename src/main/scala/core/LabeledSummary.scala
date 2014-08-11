@@ -20,7 +20,7 @@ class LabeledSummary extends GrapevineSummary {
     val r = getTypeValue(key)
     if (r.nonEmpty)
     //MMap[String, Tuple2[GrapevineType, Object]]()
-      Some(r.get._2)
+      Some(r.get)
     else
       None
   }

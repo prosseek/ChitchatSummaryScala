@@ -1,6 +1,6 @@
 package core
 
-import dataType.GrapevineType.GrapevineType
+import grapevineType.GrapevineType.GrapevineType
 import scala.collection.mutable.{Map => MMap}
 /**
  * Created by smcho on 8/10/14.
