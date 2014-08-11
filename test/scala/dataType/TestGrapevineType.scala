@@ -1,4 +1,4 @@
-package dataType
+package grapevineType
 
 import GrapevineType._
 import org.scalatest._

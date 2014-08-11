@@ -1,4 +1,4 @@
-package dataType
+package grapevineType
 
 /**
  * Created by smcho on 8/10/14.
