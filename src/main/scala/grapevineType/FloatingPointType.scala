@@ -8,4 +8,7 @@ class FloatingPointType extends GrapevineType {
   override def set(value: Any): Unit = {
     this.value = value.asInstanceOf[Double]
   }
+  override def get(): Double = {
+    value
+  }
 }

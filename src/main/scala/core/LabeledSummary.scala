@@ -17,7 +17,7 @@ class LabeledSummary extends GrapevineSummary {
   //}
   override def getSize(): Int = 10
   override def get(key: String): Option[Any] = {
-    val r = getTypeValue(key)
+    val r = getValue(key)
     if (r.nonEmpty)
     //MMap[String, Tuple2[GrapevineType, Object]]()
       Some(r.get)

@@ -5,4 +5,7 @@ package grapevineType
  */
 abstract class GrapevineType {
   def set(value:Any)
+  def get() : Any = {
+    throw new RuntimeException("ERROR: You should implement the get() method")
+  }
 }

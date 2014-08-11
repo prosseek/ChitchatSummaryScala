@@ -15,8 +15,8 @@ abstract class GrapevineSummary extends ContextSummary {
     dataStructure(key) = gv
   }
 
-  def getTypeValue(key:String) : Option[GrapevineType] = {
-    if (dataStructure.contains(key)) Some(dataStructure(key))
+  def getValue(key:String) : Option[Any] = {
+    if (dataStructure.contains(key)) Some(dataStructure(key).get)
     else None
   }
 

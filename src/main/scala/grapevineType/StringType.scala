@@ -8,4 +8,7 @@ class StringType extends GrapevineType {
   override def set(value: Any): Unit = {
     this.value = value.asInstanceOf[String]
   }
+  override def get(): String = {
+    value
+  }
 }
