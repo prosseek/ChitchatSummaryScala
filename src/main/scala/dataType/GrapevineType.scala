@@ -5,7 +5,9 @@ package dataType
  */
 object GrapevineType extends Enumeration {
   type GrapevineType = Value
-  val Integer,
+  val
+      Null,
+      Integer,
       Count,
       FloatingPoint,
 //      FixedPoint,
@@ -45,12 +47,17 @@ object GrapevineType extends Enumeration {
    * @param v
    * @return
    */
-  def getTypeFromValue(v:AnyVal) : Option[GrapevineType] = {
-    //println(v.getClass.toString())
-    v.getClass.toString() match {
-      case "int" | "class java.lang.Integer"  => Some(GrapevineType.Integer)
-      case "double" | "class java.lang.Double" => Some(GrapevineType.FloatingPoint)
-      case _ => None
+  def getTypeFromValue(v:Any) : Option[GrapevineType] = {
+    // when the value is null, it is Grapevine Null type data
+    if (v == null) {
+      Some(GrapevineType.Null)
+    } else {
+      //println(v.getClass.toString())
+      v.getClass.toString() match {
+        case "int" | "class java.lang.Integer" => Some(GrapevineType.Integer)
+        case "double" | "class java.lang.Double" => Some(GrapevineType.FloatingPoint)
+        case _ => None
+      }
     }
   }
 }

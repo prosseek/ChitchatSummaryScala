@@ -16,11 +16,12 @@ class LabeledSummary extends GrapevineSummary {
   //  override def getSize(): Int = 100
   //}
   override def getSize(): Int = 10
-  override def get(key: String): Option[Object] = {
+  override def get(key: String): Option[Any] = {
+    val r = getTypeValue(key)
+    if (r.nonEmpty)
     //MMap[String, Tuple2[GrapevineType, Object]]()
-    Some(dataStructure(key)._2)
-  }
-  override def create(dict: Map[String, Object], wholeDict: Set[String]): Unit = {
-
+      Some(r.get._2)
+    else
+      None
   }
 }
