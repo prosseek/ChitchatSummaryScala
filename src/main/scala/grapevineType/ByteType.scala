@@ -5,23 +5,37 @@ import util.conversion.ByteArrayTool
 /**
  * Created by smcho on 8/13/14.
  */
-abstract class ByteType extends GrapevineType with RangeChecker {
+class ByteType extends GrapevineType with RangeChecker {
   var value: Byte = -1
+  val minValue = 0
+  val maxValue = (-1 & 0xFF)
   override def set(value: Any): Unit = {
-    this.value = value.asInstanceOf[Int].toByte
+    set(value.asInstanceOf[Int], minValue, maxValue)
+  }
+  def set(value:Int, mini:Int, maxi:Int) : Unit = {
+    if (check(value, mini, maxi)) {
+      this.value = value.toByte
+    }
+    else {
+      throw new RuntimeException(s"ERROR: value ${value} is out of range (${mini}/${maxi})")
+    }
   }
   override def get(): Byte = {
     value
   }
-  def check(value:Int): Boolean = {
-    val maxi = (-1 & 0xFF).toInt
-    val mini = 0
+  def check(value:Int, mini:Int = minValue, maxi:Int = maxValue): Boolean = {
     check[Int](value, mini, maxi)
   }
   override def toByteArray(goalSize:Int = 4): Array[Byte] = {
     ByteArrayTool.byteToByteArray(value, goalSize)
   }
-  override def fromByteArray(b: Array[Byte]): Unit = {
-    value = ByteArrayTool.byteArrayToByte(b)
+  override def fromByteArray(b: Array[Byte]): Boolean = {
+    val (head, tail) = b.splitAt(b.size - 1)
+    if (head.forall(_ == 0)) {
+      this.value = ByteArrayTool.byteArrayToByte(tail)
+      true
+    } else {
+      false
+    }
   }
 }

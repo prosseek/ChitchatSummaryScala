@@ -6,9 +6,14 @@ import util.conversion.ByteArrayTool
 /**
  * Created by smcho on 8/13/14.
  */
-class TestAgeType extends FunSuite {
+class TestAgeType extends FunSuite with BeforeAndAfter {
+  var t: AgeType = _
+
+  before {
+    t = new AgeType
+  }
+
   test("Simple test") {
-    val t = new AgeType
     t.set(10); assert(t.get == 10)
 
     // check exception
@@ -18,13 +23,29 @@ class TestAgeType extends FunSuite {
   }
 
   test("to/from bytearray") {
-    val t = new AgeType
-    val b = ByteArrayTool.byteToByteArray(55, 1)
+    // 55 in 1 byte array
+    val b = ByteArrayTool.byteToByteArray(55, size=1)
     t.fromByteArray(b)
     assert(t.get == 55)
 
     val c = t.toByteArray(1)
     assert(b.deep == c.deep)
+  }
+
+  test("Bottom_c test") {
+    var b = Array[Byte](10)
+    t.fromByteArray(b)
+    assert(t.get == 10)
+
+    // upper bits contain 1
+    b = Array[Byte](1, 1)
+    assert(t.fromByteArray(b) == false)
+  }
+
+  test("Bottom_s test") {
+    // It's 1 byte data, but the range is over for this data type
+    var b = Array[Byte](127)
+    assert(t.fromByteArray(b) == false)
   }
 
 }

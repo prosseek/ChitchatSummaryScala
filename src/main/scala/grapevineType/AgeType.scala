@@ -7,16 +7,19 @@ class AgeType extends ByteType {
   var maxi:Byte = 120
   var mini:Byte = 0
 
-  override def check(value:Int) : Boolean = {
+  def check(value:Int) : Boolean = {
     check(value, mini.toInt, maxi.toInt)
   }
 
   override def set(value:Any) = {
-    if (check(value.asInstanceOf[Int].toByte)) {
-      super.set(value)
-    }
-    else {
-      throw new RuntimeException(s"For age type, the range should be between ${mini} - ${maxi}")
-    }
+    super.set(value.asInstanceOf[Int].toByte, mini, maxi)
+  }
+
+  override def fromByteArray(b: Array[Byte]): Boolean = {
+    if (super.fromByteArray(b)) {
+      if (check(value)) true
+      else false // if not in range false is returned
+    } // Bottom_c
+    else false
   }
 }

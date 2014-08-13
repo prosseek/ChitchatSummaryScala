@@ -15,6 +15,7 @@ class FloatingPointType extends GrapevineType {
   override def toByteArray(goalSize: Int): Array[Byte] = {
     null
   }
-  override def fromByteArray(b: Array[Byte]): Unit = {
+  override def fromByteArray(b: Array[Byte]): Boolean = {
+    true
   }
 }
