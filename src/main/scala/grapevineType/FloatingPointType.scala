@@ -11,4 +11,10 @@ class FloatingPointType extends GrapevineType {
   override def get(): Double = {
     value
   }
+
+  override def toByteArray(goalSize: Int): Array[Byte] = {
+    null
+  }
+  override def fromByteArray(b: Array[Byte]): Unit = {
+  }
 }

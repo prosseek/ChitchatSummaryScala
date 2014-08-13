@@ -11,4 +11,9 @@ class StringType extends GrapevineType {
   override def get(): String = {
     value
   }
+  override def toByteArray(goalSize: Int): Array[Byte] = {
+    null
+  }
+  override def fromByteArray(b: Array[Byte]): Unit = {
+  }
 }

@@ -3,5 +3,5 @@ package grapevineType
 /**
  * Created by smcho on 8/11/14.
  */
-class CountType extends IntegerType {
+class CountType extends ByteType {
 }
