@@ -1,5 +1,7 @@
 package grapevineType
 
+import BottomType._
+
 /**
  * Created by smcho on 6/2/14.
  */
@@ -44,8 +46,8 @@ class LocationType extends GrapevineType {
   override def toByteArray(goalSize: Int): Array[Byte] = {
     null
   }
-  def fromByteArray(b: Array[Byte]): Boolean = {
-    true
+  def fromByteArray(b: Array[Byte]): BottomType = {
+    NoError
   }
 
   /*

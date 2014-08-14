@@ -9,7 +9,7 @@ class TestGrapevineType extends FunSuite {
   test ("getTypeFromKey test") {
     val keys = Array("age of john", "speed of a car", "number of friends",
       "latitude", "longitude","date","time")
-    val values = Array(Some(classOf[AgeType]), Some(classOf[SpeedType]), Some(classOf[CountType]),
+    val values = Array(Some(classOf[AgeType]), Some(classOf[SpeedType]), Some(classOf[ByteType]),
       Some(classOf[LatitudeType]), Some(classOf[LongitudeType]), Some(classOf[DateType]), Some(classOf[TimeType]))
     keys.zipWithIndex.foreach { case(key, index) =>
       val v = values(index)

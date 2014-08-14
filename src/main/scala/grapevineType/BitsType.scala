@@ -2,6 +2,8 @@ package grapevineType
 
 import util.conversion.ByteArrayTool._
 import util.conversion.BitSetTool
+import BottomType._
+
 /**
  * The input parameter should be three tuples of data
  * (bits, min, max)
@@ -9,8 +11,8 @@ import util.conversion.BitSetTool
 class BitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) extends GrapevineType with RangeChecker {
   //var value = (0, 0, 0)
   var aBits = a._1
-  var bBits = b._2
-  var cBits = c._3
+  var bBits = b._1
+  var cBits = c._1
 
   override def set(value: Any) : Unit = {
     val (a, b, c) = value.asInstanceOf[(Int, Int, Int)]
@@ -29,30 +31,38 @@ class BitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) extends 
   }
 
   override def toByteArray(goalSize: Int): Array[Byte] = {
-    val a = value.asInstanceOf[(Int,Int,Int)]_1
-    val b = value.asInstanceOf[(Int,Int,Int)]_2
-    val c = value.asInstanceOf[(Int,Int,Int)]_3
+    val v = value.asInstanceOf[(Int,Int,Int)]
+    val a = v._1
+    val b = v._2
+    val c = v._3
 
     // second argument is shift bits
     val res = BitSetTool.intToBitSet(a, bBits + cBits) ++
       BitSetTool.intToBitSet(b, cBits) ++
       BitSetTool.intToBitSet(c)
 
-    bitSetToByteArray(res)
+    bitSetToByteArray(res, goalSize = goalSize)
   }
-  def fromByteArray(b: Array[Byte]): Boolean = {
-    val bs = byteArrayToBitSet(b)
-    val day = bs.filter(_ < cBits)
-    val month = bs.filter(v => v < cBits + bBits && v >= cBits).map(_ - cBits)
-    val year = bs.filter(_ >= cBits + bBits).map(_ - (cBits + bBits))
-    try {
-      set(BitSetTool.bitSetToInt(year),
-        BitSetTool.bitSetToInt(month),
-        BitSetTool.bitSetToInt(day))
-      true
-    }
-    catch {
-      case e: RuntimeException => false
+
+  def fromByteArray(ba: Array[Byte]): BottomType = {
+    val totalBytes = (aBits + bBits + cBits)/8 + 1 // get the total bytes for the encoded data
+    if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
+      val bs = byteArrayToBitSet(ba)
+      val c = bs.filter(_ < cBits)
+      val b = bs.filter(v => v < cBits + bBits && v >= cBits).map(_ - cBits)
+      val a = bs.filter(_ >= cBits + bBits).map(_ - (cBits + bBits))
+      try {
+        set(BitSetTool.bitSetToInt(a),
+          BitSetTool.bitSetToInt(b),
+          BitSetTool.bitSetToInt(c))
+        NoError
+      }
+      catch {
+        // RuntimeException is raised from set when the values decoded are out of range
+        case e: RuntimeException => Computational
+      }
+    } else {
+      Computational
     }
   }
 

@@ -1,5 +1,6 @@
 package grapevineType
 
+import BottomType._
 import util.conversion.BitSetTool
 import util.conversion.ByteArrayTool._
 /**
@@ -89,7 +90,7 @@ class TimeType extends GrapevineType with RangeChecker {
 
     bitSetToByteArray(res)
   }
-  def fromByteArray(b: Array[Byte]): Boolean = {
-    true
+  def fromByteArray(b: Array[Byte]): BottomType = {
+    NoError
   }
 }

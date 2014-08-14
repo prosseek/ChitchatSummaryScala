@@ -13,16 +13,18 @@ abstract class GrapevineType {
   }
 
   def toByteArray(goalSize:Int = 4) : Array[Byte]
-  def fromByteArray(b: Array[Byte], byteSize:Int, f:Array[Byte] => Any): BottomType = {
+  def fromByteArray(b: Array[Byte], byteSize:Int, f:Array[Byte] => Any = null): BottomType = {
     val result = getValueByteArray(b, byteSize)
     if (result.isEmpty) {
       Computational
     } else {
       //this.value = ByteArrayTool.byteArrayToByte(result.get)
-      this.value = f(result.get)
+      if (f != null)
+          this.value = f(result.get)
       NoError
     }
   }
+  def fromByteArray(b: Array[Byte]): BottomType
 
   /**
    * This just checks if the additional bytes are all zero
@@ -55,7 +57,7 @@ object GrapevineType {
     val keyType = Map[String, Class[_]](
       "age" -> classOf[AgeType],
       "speed" -> classOf[SpeedType],
-      "number" -> classOf[CountType],
+      "number" -> classOf[ByteType],
       "latitude" -> classOf[LatitudeType],
       "longitude" -> classOf[LongitudeType],
       "date" -> classOf[DateType],

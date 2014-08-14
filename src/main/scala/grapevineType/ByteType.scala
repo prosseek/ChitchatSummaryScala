@@ -30,7 +30,7 @@ class ByteType extends GrapevineType with RangeChecker {
   override def toByteArray(goalSize:Int = 4): Array[Byte] = {
     ByteArrayTool.byteToByteArray(value.asInstanceOf[Byte], goalSize)
   }
-  def fromByteArray(b: Array[Byte]): BottomType = {
+  override def fromByteArray(b: Array[Byte]): BottomType = {
     super.fromByteArray(b, byteSize = 1, f = ByteArrayTool.byteArrayToByte)
   }
 }
