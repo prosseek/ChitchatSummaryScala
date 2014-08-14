@@ -20,7 +20,7 @@ class TestUtil extends FunSuite {
 
   test ("getTypeFromValue test") {
     val values = Array(1, 1.2, null)
-    val types = Array(Some(classOf[IntegerType]), Some(classOf[FloatingPointType]), None)
+    val types = Array(Some(classOf[IntegerType]), Some(classOf[FloatType]), None)
 
     values.zipWithIndex.foreach { case(value, index) =>
       val t = types(index)

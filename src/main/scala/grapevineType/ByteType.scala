@@ -29,6 +29,15 @@ class ByteType extends GrapevineType with RangeChecker {
   override def toByteArray(goalSize:Int = 4): Array[Byte] = {
     ByteArrayTool.byteToByteArray(value, goalSize)
   }
+
+  /**
+   * This just checks if the additional bytes are all zero
+   * [1][2][3][4]
+   * 0  0  0  V  <-- For byte data, all the rest bits should be zero if correctly encoded
+   *
+   * @param b
+   * @return
+   */
   override def fromByteArray(b: Array[Byte]): Boolean = {
     val (head, tail) = b.splitAt(b.size - 1)
     if (head.forall(_ == 0)) {
