@@ -1,5 +1,6 @@
 package grapevineType
 
+import grapevineType.BottomType._
 import util.conversion.ByteArrayTool
 
 /**
@@ -9,6 +10,12 @@ class ByteType extends GrapevineType with RangeChecker {
   var value: Byte = -1
   val minValue = 0
   val maxValue = (-1 & 0xFF)
+
+  var bottomType: BottomType = _
+
+  def getBottomType() = bottomType
+  def setBottomType(t:BottomType) = this.bottomType = t
+
   override def set(value: Any): Unit = {
     set(value.asInstanceOf[Int], minValue, maxValue)
   }
@@ -42,8 +49,10 @@ class ByteType extends GrapevineType with RangeChecker {
     val (head, tail) = b.splitAt(b.size - 1)
     if (head.forall(_ == 0)) {
       this.value = ByteArrayTool.byteArrayToByte(tail)
+      setBottomType(NoError)
       true
     } else {
+      setBottomType(Computational)
       false
     }
   }

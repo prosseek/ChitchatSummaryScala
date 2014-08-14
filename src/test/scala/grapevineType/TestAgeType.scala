@@ -2,6 +2,7 @@ package grapevineType
 
 import org.scalatest._
 import util.conversion.ByteArrayTool
+import BottomType._
 
 /**
  * Created by smcho on 8/13/14.
@@ -40,12 +41,14 @@ class TestAgeType extends FunSuite with BeforeAndAfter {
     // upper bits contain 1
     b = Array[Byte](1, 1)
     assert(t.fromByteArray(b) == false)
+    assert(t.getBottomType() == Computational)
   }
 
-  test("Bottom_s test") {
+  test("Bottom_c test from check()") {
     // It's 1 byte data, but the range is over for this data type
     var b = Array[Byte](127)
     assert(t.fromByteArray(b) == false)
+    assert(t.getBottomType() == Computational)
   }
 
 }
