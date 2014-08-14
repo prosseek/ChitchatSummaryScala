@@ -28,16 +28,4 @@ class TestBitSetTool extends FunSuite {
     assert(BitSetTool.shortToBitSet(0) == BitSet())
     assert(BitSetTool.shortToBitSet(1) == BitSet(0))
   }
-
-  test("bitSet to bytearray test") {
-    var x = BitSet(0,1,2,3,8,10,104)
-    var y = BitSetTool.bitSetToByteArray(x)
-    assert(y.mkString(":") == "15:5:0:0:0:0:0:0:0:0:0:0:0:1")
-    assert(BitSetTool.byteArrayToBitSet(y) == x)
-
-    x = BitSet(0,1,2,3,4,5,6,7,8)
-    y = BitSetTool.bitSetToByteArray(x)
-    assert(y.mkString(":") == "-1:1")
-    assert(BitSetTool.byteArrayToBitSet(y) == x)
-  }
 }

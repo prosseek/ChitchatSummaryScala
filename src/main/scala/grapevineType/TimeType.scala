@@ -1,7 +1,7 @@
 package grapevineType
 
 import util.conversion.BitSetTool
-
+import util.conversion.ByteArrayTool._
 /**
  * This is 3 bytes (17 bits/full) implementation of time data
  * For 2 bytes (16 bits) implementation
@@ -16,7 +16,6 @@ class TimeType extends GrapevineType with RangeChecker {
   // minute: 0 - 59 (6 bits)
   // second: 0 - 59 (6 bits)
   // total: 5 + 6 + 6 = 17 bits (3 bytes)
-  var value: (Int, Int, Int) = (0, 0, 0)
 
   // 5 + 6 + 6 = 17 bits (3 bytes)
   val hourBits3 = 5 // 1 - 23
@@ -46,7 +45,7 @@ class TimeType extends GrapevineType with RangeChecker {
     }
   }
   override def get() : (Int, Int, Int) = {
-    this.value
+    this.value.asInstanceOf[(Int, Int, Int)]
   }
 
   def getBits(goalSize: Int) = {
@@ -76,10 +75,11 @@ class TimeType extends GrapevineType with RangeChecker {
    * @param goalSize
    * @return
    */
-  override def toByteArray(goalSize: Int): Array[Byte] = {
-    val hour = value._1
-    val minute = value._2
-    val second = value._3
+  def toByteArray(goalSize: Int): Array[Byte] = {
+    val v = value.asInstanceOf[(Int, Int, Int)]
+    val hour = v._1
+    val minute = v._2
+    val second = v._3
 
     val (hourBits, minuteBits, secondBits) = getBits(goalSize)
 
@@ -87,9 +87,9 @@ class TimeType extends GrapevineType with RangeChecker {
       BitSetTool.intToBitSet(minute, secondBits) ++
       BitSetTool.intToBitSet(second)
 
-    BitSetTool.bitSetToByteArray(res)
+    bitSetToByteArray(res)
   }
-  override def fromByteArray(b: Array[Byte]): Boolean = {
+  def fromByteArray(b: Array[Byte]): Boolean = {
     true
   }
 }

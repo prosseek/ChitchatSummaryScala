@@ -1,19 +1,19 @@
 package grapevineType
 
+import BottomType._
 import util.conversion.ByteArrayTool
 
 /**
  * Created by smcho on 8/13/14.
  */
 class FloatType extends GrapevineType {
-  var value:Float = 0.0F
   val floatShift = 20.0F
 
   override def set(value: Any): Unit = {
     this.value = value.asInstanceOf[Double].toFloat
   }
 
-  override def get() : Float = value
+  override def get() : Float = value.asInstanceOf[Float]
 
   /**
    * Returns if the input value is **not** in (0 - floatShift) or (-floatShift - 0)
@@ -29,19 +29,20 @@ class FloatType extends GrapevineType {
     }
   }
 
-  override def fromByteArray(b: Array[Byte]): Boolean = {
+  def fromByteArray(b: Array[Byte]): BottomType = {
+    super.fromByteArray(b, byteSize = 4, f = ByteArrayTool.byteArrayToFloat)
     try {
       val result = ByteArrayTool.byteArrayToFloat(b)
       if (encodingCheck(result)) {
         this.value = if (result >= 0) result - floatShift else -(-result - floatShift)
-        true
+        NoError
       } else {
-        false
+        Computational
       }
     }
     // whenever we have an error, we return false
     catch {
-      case e: Exception => false
+      case e: Exception => Computational
     }
   }
 
@@ -52,7 +53,8 @@ class FloatType extends GrapevineType {
    * @return
    */
   override def toByteArray(goalSize: Int): Array[Byte] = {
-    ByteArrayTool.floatToByteArray(if (value >= 0.0F) value + floatShift else -(-value + floatShift),
+    val v = value.asInstanceOf[Float]
+    ByteArrayTool.floatToByteArray(if (v >= 0.0F) v + floatShift else -(-v + floatShift),
                                    size = goalSize)
   }
 }

@@ -2,6 +2,9 @@ package util.conversion
 
 import java.nio.ByteBuffer
 
+import scala.collection.BitSet
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{Map => MMap}
 /**
  * Created by smcho on 5/31/14.
  *
@@ -26,7 +29,8 @@ object ByteArrayTool {
       if (value(0) < 0) v = -1.toByte
     }
     val head = Array.fill[Byte](goalSize - originalSize)(v)
-    head ++ value
+    // value is low bytes where head is high bytes
+    value ++ head
   }
 
   /*
@@ -92,19 +96,45 @@ object ByteArrayTool {
     ByteBuffer.allocate(n).put((x + " "*diff).getBytes()).array()
   }
 
-  /*
-    ByteArray to Data : T
-   */
-
-  /**
-   * given a byte array to split it into n bytes
-   * @param n
-   * @param x
-   */
-  def checkedByteArray(x: Array[Byte], n:Int, f: Array[Byte] => AnyVal) = {
-    val (header, value) = x.splitAt(x.size - n)
-    if (header.forall(_ == 0)) Some(f(value)) else None
+  // byte array
+  def byteArrayToBitSet(x:Array[Byte]) = {
+    var res = ArrayBuffer[Int]()
+    for ((v,i) <- x.zipWithIndex if v != 0) {
+      res.appendAll(BitSetTool.byteToBitSet(v).toArray.map(_ + 8*i))
+    }
+    scala.collection.immutable.BitSet(res: _*)
   }
+
+  def bitSetToByteArray(x:BitSet, goalSize:Int = -1) = {
+    val bits = MMap[Int, Byte]().withDefaultValue(0)
+    for (i <- x) {
+      val bitLocation = i % 8
+      val group = i / 8
+      bits(group) = (bits(group) + (1 << bitLocation)).toByte
+    }
+    val byteArray = Array.fill[Byte](bits.keys.max + 1)(0)
+
+    for ((k,v) <- bits) {
+      byteArray(k) = v
+    }
+
+    // default goalSize set and adjust
+    if (goalSize == -1) {
+      byteArray
+    } else {
+      adjust(byteArray, originalSize = byteArray.size, goalSize = goalSize)
+    }
+  }
+//
+//  /**
+//   * given a byte array to split it into n bytes
+//   * @param n
+//   * @param x
+//   */
+//  def checkedByteArray(x: Array[Byte], n:Int, f: Array[Byte] => AnyVal) = {
+//    val (header, value) = x.splitAt(x.size - n)
+//    if (header.forall(_ == 0)) Some(f(value)) else None
+//  }
 
   /**
    * detect the location of 0
@@ -125,54 +155,54 @@ object ByteArrayTool {
     ByteBuffer.wrap(x).get()
   }
 
-  def checkedByteArrayToByte(x: Array[Byte]) = {
-    checkedByteArray(x, 1, byteArrayToByte)
-  }
+//  def checkedByteArrayToByte(x: Array[Byte]) = {
+//    checkedByteArray(x, 1, byteArrayToByte)
+//  }
 
   // int
   def byteArrayToInt(x: Array[Byte]) = {
     ByteBuffer.wrap(x).getInt
   }
-  def checkedByteArrayToInt(x: Array[Byte]) = {
-    checkedByteArray(x, 4, byteArrayToInt)
-  }
+//  def checkedByteArrayToInt(x: Array[Byte]) = {
+//    checkedByteArray(x, 4, byteArrayToInt)
+//  }
 
   // long
   def byteArrayToLong(x: Array[Byte]) = {
     ByteBuffer.wrap(x).getLong
   }
-  def checkedByteArrayToLong(x: Array[Byte]) = {
-    checkedByteArray(x, 8, byteArrayToLong)
-  }
+//  def checkedByteArrayToLong(x: Array[Byte]) = {
+//    checkedByteArray(x, 8, byteArrayToLong)
+//  }
 
-  // double
-  def checkedByteArrayF(x: Array[Byte], n:Int, fn: Array[Byte] => AnyVal) = {
-    val (header, value) = x.splitAt(x.size - n)
-    try {
-      if (!header.forall(_ == 0)) None
-      else {
-        val f = fn(value)
-        if (if (n == 4) f.asInstanceOf[Float].isNaN else f.asInstanceOf[Double].isNaN) None else Some(f)
-      }
-    }
-    catch {
-      case _:java.nio.BufferUnderflowException => None
-    }
-  }
+//  // double
+//  def checkedByteArrayF(x: Array[Byte], n:Int, fn: Array[Byte] => AnyVal) = {
+//    val (header, value) = x.splitAt(x.size - n)
+//    try {
+//      if (!header.forall(_ == 0)) None
+//      else {
+//        val f = fn(value)
+//        if (if (n == 4) f.asInstanceOf[Float].isNaN else f.asInstanceOf[Double].isNaN) None else Some(f)
+//      }
+//    }
+//    catch {
+//      case _:java.nio.BufferUnderflowException => None
+//    }
+//  }
 
   def byteArrayToDouble(x: Array[Byte]) = {
     ByteBuffer.wrap(x).getDouble
   }
-  def checkedByteArrayToDouble(x: Array[Byte]) = {
-    checkedByteArrayF(x, 8, byteArrayToDouble)
-  }
+//  def checkedByteArrayToDouble(x: Array[Byte]) = {
+//    checkedByteArrayF(x, 8, byteArrayToDouble)
+//  }
 
   // float
   def byteArrayToFloat(x: Array[Byte]) = {
     ByteBuffer.wrap(x).getFloat
   }
-  def checkedByteArrayToFloat(x: Array[Byte]) = {
-    checkedByteArrayF(x, 4, byteArrayToFloat)
-  }
+//  def checkedByteArrayToFloat(x: Array[Byte]) = {
+//    checkedByteArrayF(x, 4, byteArrayToFloat)
+//  }
 }
 

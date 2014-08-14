@@ -1,7 +1,7 @@
 package grapevineType
 
 import org.scalatest._
-import util.conversion.BitSetTool
+import util.conversion.ByteArrayTool._
 
 import scala.collection.BitSet
 
@@ -43,9 +43,9 @@ class TestDateType extends FunSuite with BeforeAndAfter {
   test("Bottom_c check") {
     //t.set(2000,12,31) -> BitSet(0, 1, 2, 3, 4, 7, 8)
     //println(BitSetTool.byteArrayToBitSet(t.toByteArray(4)))
-    var ba = BitSetTool.bitSetToByteArray(BitSet(7,8)) //  [0-4]->0:0, [5-8]->2,3 (2^2 + 2^3 = 12), 2000/12/0
+    var ba = bitSetToByteArray(BitSet(7,8)) //  [0-4]->0:0, [5-8]->2,3 (2^2 + 2^3 = 12), 2000/12/0
     assert(t.fromByteArray(ba) == false)
-    ba = BitSetTool.bitSetToByteArray(BitSet(0,5,7,8)) //  2000/13/1
+    ba = bitSetToByteArray(BitSet(0,5,7,8)) //  2000/13/1
     assert(t.fromByteArray(ba) == false)
   }
 

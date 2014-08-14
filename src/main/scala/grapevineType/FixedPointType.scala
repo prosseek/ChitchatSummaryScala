@@ -6,7 +6,7 @@ package grapevineType
 class FixedPointType extends GrapevineType {
   override def set(value: Any): Unit = {}
 
-  override def fromByteArray(b: Array[Byte]): Boolean = {true}
+  def fromByteArray(b: Array[Byte]): Boolean = {true}
 
   override def toByteArray(goalSize: Int): Array[Byte] = {null}
 }

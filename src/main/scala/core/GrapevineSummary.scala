@@ -28,11 +28,11 @@ abstract class GrapevineSummary extends ContextSummary {
    */
   override def create(dict: Map[String, Any]): Unit = {
     dict.foreach { case (key, v) =>
-        val t = Util.getTypeFromKey(key)
+        val t = GrapevineType.getTypeFromKey(key)
         if (t.nonEmpty) {
           set(key, t.get, v)
         } else { // t is empty which means the type info is not in the key
-          val t = Util.getTypeFromValue(v)
+          val t = GrapevineType.getTypeFromValue(v)
           if (t.nonEmpty) set(key, t.get, v)
           else {
             throw new RuntimeException(s"No GrapevineType retrieved from key:${key} - value:${v.getClass.toString}")

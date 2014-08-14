@@ -1,21 +1,22 @@
 package grapevineType
 
-import org.scalatest._
+import org.scalatest.{BeforeAndAfter, FunSuite}
 import util.conversion.ByteArrayTool
 import BottomType._
 
 /**
  * Created by smcho on 8/13/14.
  */
-class TestAgeType extends FunSuite with BeforeAndAfter {
-  var t: AgeType = _
+class TestSpeedType extends FunSuite with BeforeAndAfter {
+  var t: SpeedType = _
 
   before {
-    t = new AgeType
+    t = new SpeedType
   }
 
   test("Simple test") {
-    t.set(10); assert(t.get == 10)
+    t.set(10);
+    assert(t.get == 10)
 
     // check exception
     intercept[RuntimeException] {
@@ -25,7 +26,7 @@ class TestAgeType extends FunSuite with BeforeAndAfter {
 
   test("to/from bytearray") {
     // 55 in 1 byte array
-    val b = ByteArrayTool.byteToByteArray(55, size=1)
+    val b = ByteArrayTool.byteToByteArray(55, size = 1)
     t.fromByteArray(b)
     assert(t.get == 55)
 
@@ -45,8 +46,10 @@ class TestAgeType extends FunSuite with BeforeAndAfter {
 
   test("Bottom_c test from check()") {
     // It's 1 byte data, but the range is over for this data type
-    var b = Array[Byte](127)
+    var b = Array[Byte](-85) // 85 + 170 = 255, so -85 is 170
     assert(t.fromByteArray(b) == Computational)
-  }
 
+    b = Array[Byte](-106) // -105 -> 150
+    assert(t.fromByteArray(b) == NoError)
+  }
 }

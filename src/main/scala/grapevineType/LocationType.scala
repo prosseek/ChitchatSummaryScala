@@ -38,14 +38,13 @@ object LocationType {
  * Created by smcho on 8/11/14.
  */
 class LocationType extends GrapevineType {
-  var value = (0, 0, 0)
   override def set(value: Any): Unit = {
     this.value = asInstanceOf[(Int, Int, Int)]
   }
   override def toByteArray(goalSize: Int): Array[Byte] = {
     null
   }
-  override def fromByteArray(b: Array[Byte]): Boolean = {
+  def fromByteArray(b: Array[Byte]): Boolean = {
     true
   }
 
