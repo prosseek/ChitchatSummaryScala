@@ -93,7 +93,8 @@ object ByteArrayTool {
     //val size = x.size // if (n <= 0) x.size else n
     //ByteBuffer.allocate(n).put(x.slice(0, size).getBytes()).array()
     val diff = n - x.size
-    ByteBuffer.allocate(n).put((x + " "*diff).getBytes()).array()
+//    ByteBuffer.allocate(n).put((x + " "*diff).getBytes()).array()
+    ByteBuffer.allocate(x.size).put((x).getBytes()).array() ++ new Array[Byte](diff)
   }
 
   // byte array

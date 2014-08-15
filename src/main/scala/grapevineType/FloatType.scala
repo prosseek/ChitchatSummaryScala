@@ -32,7 +32,7 @@ class FloatType extends GrapevineType {
   def fromByteArray(b: Array[Byte]): BottomType = {
     if (super.fromByteArray(b, byteSize = 4, f = ByteArrayTool.byteArrayToFloat) == NoError) {
       try {
-        val result = ByteArrayTool.byteArrayToFloat(b)
+        val result = this.value.asInstanceOf[Float]
         if (encodingCheck(result)) {
           this.value = if (result >= 0) result - floatShift else -(-result - floatShift)
           NoError

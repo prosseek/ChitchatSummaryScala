@@ -8,7 +8,7 @@ import BottomType._
  * The input parameter should be three tuples of data
  * (bits, min, max)
  */
-class TupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int)) extends BitsType {
+class DoubleBitsType(a:(Int, Int, Int), b:(Int, Int, Int)) extends BitsType {
   val bits = List(a._1, b._1)
   val ranges = List((a._2, a._3), (b._2, b._3))
 

@@ -86,7 +86,7 @@ object GrapevineType {
     } else {
       //println(v.getClass.toString())
       v.getClass.toString() match {
-        case "int" | "class java.lang.Integer" => Some(classOf[IntegerType])
+        case "int" | "class java.lang.Integer" => Some(classOf[ByteType])
         case "float" | "class java.lang.Float" | "double" | "class java.lang.Double" => Some(classOf[FloatType])
         case "class java.lang.String" => Some(classOf[StringType])
         case _ => throw new RuntimeException(s"ERROR: Cannot extract type info from value ${v.getClass}")
