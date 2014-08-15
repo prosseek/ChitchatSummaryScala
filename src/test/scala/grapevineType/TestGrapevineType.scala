@@ -6,6 +6,26 @@ import org.scalatest._
  * Created by smcho on 8/14/14.
  */
 class TestGrapevineType extends FunSuite {
+  test("ID test") {
+    val keys = Array(
+      classOf[ByteType], classOf[FixedPointType], classOf[FloatType], classOf[StringType], // 0 - 3
+      classOf[DateType], classOf[TimeType], // 4 - 5
+      classOf[LatitudeType], classOf[LongitudeType], //6 - 7
+      classOf[AgeType], classOf[SpeedType] // 8 - 9
+      )
+
+    Range(0, keys.size).foreach {i =>
+      keys(i).newInstance.asInstanceOf[GrapevineType].getId == i
+    }
+//    keys.foreach { t =>
+//      t.getInstance
+//    }
+//    keys.zipWithIndex { case(t, i) =>
+//      t.getInstance
+//    }
+
+  }
+
   test ("getTypeFromKey test") {
     val keys = Array("age of john", "speed of a car", "number of friends",
       "latitude", "longitude","date","time")

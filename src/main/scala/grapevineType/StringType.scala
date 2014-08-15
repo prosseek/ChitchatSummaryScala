@@ -33,8 +33,9 @@ class StringType extends GrapevineType {
   }
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
-    val npList = ba.zipWithIndex.filter { v => !isPrintable(v._1.toChar) } map {v => v._2}
-    val strlen = if (npList.size == 0) ba.size else npList(0)
+    // http://stackoverflow.com/questions/25328027/detecting-the-index-in-a-string-that-is-not-printable-character-with-scala
+    val npList = ba.indexWhere(v => !isPrintable(v.toChar))
+    val strlen = if (npList == -1) ba.size else npList
 
     if (super.fromByteArray(ba, byteSize = strlen, f = ByteArrayTool.byteArrayToString) == NoError) {
       try {
@@ -54,4 +55,6 @@ class StringType extends GrapevineType {
       Computational
     }
   }
+  override def getId = 3
+  override def getSize = this.value.asInstanceOf[String].size
 }

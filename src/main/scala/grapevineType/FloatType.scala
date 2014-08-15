@@ -61,4 +61,7 @@ class FloatType extends GrapevineType {
     ByteArrayTool.floatToByteArray(if (v >= 0.0F) v + floatShift else -(-v + floatShift),
                                    size = goalSize)
   }
+
+  override def getId = 2
+  override def getSize = 4
 }

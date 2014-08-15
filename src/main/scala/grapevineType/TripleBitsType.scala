@@ -8,9 +8,9 @@ import BottomType._
  * The input parameter should be three tuples of data
  * (bits, min, max)
  */
-class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) extends BitsType {
-  val bits = List(a._1, b._1, c._1)
-  val ranges = List((a._2, a._3), (b._2, b._3), (c._2, c._3))
+abstract class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) extends BitsType {
+  bits = List(a._1, b._1, c._1)
+  ranges = List((a._2, a._3), (b._2, b._3), (c._2, c._3))
 
   override def set(value: Any) : Unit = {
     val (a, b, c) = value.asInstanceOf[(Int, Int, Int)]
@@ -37,7 +37,7 @@ class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) ex
   }
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
-    val totalBytes = getTotalBytes(bits) // get the total bytes for the encoded data
+    val totalBytes = getBytes(bits) // get the total bytes for the encoded data
     if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)

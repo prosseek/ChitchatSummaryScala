@@ -1,5 +1,7 @@
 package core
 
+import grapevineType.BottomType.BottomType
+
 /**
  * The summary contains a key -> value set.
  * The key is a string, and value is gv type
@@ -19,7 +21,8 @@ abstract class ContextSummary {
    * @param key
    * @return
    */
-  def get(key:String) : Option[Any] ;
+  def get(key:String): Any
+  def check(key:String): BottomType
 
   /**
    * create a context summary from dictionary.

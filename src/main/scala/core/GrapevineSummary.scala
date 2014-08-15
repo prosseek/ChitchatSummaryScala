@@ -9,7 +9,7 @@ import scala.collection.mutable.{Map => MMap}
 abstract class GrapevineSummary extends ContextSummary {
   protected val dataStructure = MMap[String, GrapevineType]()
 
-  protected def set(key:String, t:Class[_], v:Any) : Unit = {
+  protected def set(key:String, t:Class[_], v:Any):Unit = {
     val gv = t.newInstance.asInstanceOf[GrapevineType]
     gv.set(v)
     dataStructure(key) = gv
@@ -35,7 +35,7 @@ abstract class GrapevineSummary extends ContextSummary {
           val t = GrapevineType.getTypeFromValue(v)
           if (t.nonEmpty) set(key, t.get, v)
           else {
-            throw new RuntimeException(s"No GrapevineType retrieved from key:${key} - value:${v.getClass.toString}")
+            throw new RuntimeException(s"No GrapevineType retrieved from key nor value:${key} - value:${v.getClass.toString}")
           }
         }
     }

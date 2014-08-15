@@ -5,5 +5,5 @@ package grapevineType
  */
 object BottomType extends Enumeration {
   type BottomType = Value
-  val NoError, Computational, Relational = Value
+  val NoError, Computational, Relational, Buttom = Value
 }

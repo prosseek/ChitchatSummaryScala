@@ -7,4 +7,6 @@ package grapevineType
  *     hour + half/minute (5 + 3 = 8 bits) are used
  * Created by smcho on 8/11/14.
  */
-class TimeType extends DoubleBitsType((5, 0, 23), (6, 0, 59))
+class TimeType extends DoubleBitsType((5, 0, 23), (6, 0, 59)) {
+  override def getId = 5
+}

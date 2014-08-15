@@ -38,7 +38,7 @@ class TestTimeType extends FunSuite with BeforeAndAfter {
   }
 
   test("Bottom_c check") {
-    var ba = bitSetToByteArray(BitSet(7,8,9))
+    var ba = bitSetToByteArray(BitSet(7,8,9,33))
     assert(t.fromByteArray(ba) == Computational)
   }
 }

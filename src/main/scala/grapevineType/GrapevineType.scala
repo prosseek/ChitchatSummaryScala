@@ -7,6 +7,16 @@ import grapevineType.BottomType._
  */
 abstract class GrapevineType {
   var value: Any = _
+
+  def getBytes(bits:List[Int]) :Int = {
+    val size = bits.sum
+    getBytes(size)
+  }
+  def getBytes(size:Int) = {
+    if (size % 8 == 0) size/8
+    else size/8 + 1
+  }
+
   def set(value:Any) : Unit
   def get() : Any = {
     throw new RuntimeException("ERROR: You should implement the get() method")
@@ -40,6 +50,9 @@ abstract class GrapevineType {
       None
     }
   }
+
+  def getId() : Int
+  def getSize() : Int
 }
 
 /**
@@ -64,7 +77,7 @@ object GrapevineType {
       "time" -> classOf[TimeType]
     )
 
-    keyType.foreach { case(key, grapevineType) =>
+    keyType.foreach { case(key, grapevineType)  =>
       if (lowerKey.startsWith(key)) return Some(grapevineType)
     }
     None

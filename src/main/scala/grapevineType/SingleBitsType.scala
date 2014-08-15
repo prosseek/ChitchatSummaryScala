@@ -8,13 +8,13 @@ import BottomType._
  * The input parameter should be three tuples of data
  * (bits, min, max)
  */
-class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
-  val bits = List(a._1)
-  val ranges = List((a._2, a._3))
+abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
+  bits = List(a._1)
+  ranges = List((a._2, a._3))
 
   override def set(value: Any) : Unit = {
-    val (a, b) = value.asInstanceOf[(Int, Int)]
-    set(a, b)
+    val a = value.asInstanceOf[Int]
+    set(a)
   }
   def set(aValue:Int) = {
     if (check(List(aValue), ranges)) {
@@ -37,7 +37,7 @@ class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
   }
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
-    val totalBytes = getTotalBytes(bits) // bits.sum/8 + 1 // get the total bytes for the encoded data
+    val totalBytes = getBytes(bits) // bits.sum/8 + 1 // get the total bytes for the encoded data
     if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)

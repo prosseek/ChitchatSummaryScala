@@ -14,4 +14,6 @@ class DateType extends TripleBitsType((7, 0, 127), (4, 1, 12), (5, 1, 31)) {
       val v = value.asInstanceOf[(Int, Int, Int)]
       (v._1 + yearBase, v._2, v._3)
     }
+
+    override def getId = 4
 }
