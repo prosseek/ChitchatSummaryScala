@@ -18,8 +18,9 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
   }
 
   def set(aValue:Int, bValue:Int, cValue:Int, dValue:Int) = {
-    if (check(List(aValue, bValue, cValue, dValue), ranges)) {
-      this.value = (aValue, bValue, cValue, dValue)
+    val values = List(aValue, bValue, cValue, dValue)
+    if (check(values, ranges)) {
+      this.value = getValues(values, bits, this.signed) match {case List(a,b,c,d) => (a,b,c,d)}
     }
     else {
       throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})] b [${bValue}(${b._2}-${b._3})] c [${cValue}(${c._2}-${c._3})] d [${dValue}(${d._2}-${d._3})]")

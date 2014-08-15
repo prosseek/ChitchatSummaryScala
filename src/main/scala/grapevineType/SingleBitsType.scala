@@ -18,7 +18,7 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
   }
   def set(aValue:Int) = {
     if (check(List(aValue), ranges)) {
-      this.value = (aValue)
+      this.value = getValue(aValue, bits(0), this.signed)
     }
     else {
       throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})]")

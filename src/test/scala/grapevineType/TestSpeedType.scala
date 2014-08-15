@@ -18,6 +18,9 @@ class TestSpeedType extends FunSuite with BeforeAndAfter {
     t.set(10);
     assert(t.get == 10)
 
+    t.set(130);
+    assert(t.get == 130)
+
     // check exception
     intercept[RuntimeException] {
       t.set(200)
@@ -46,10 +49,10 @@ class TestSpeedType extends FunSuite with BeforeAndAfter {
 
   test("Bottom_c test from check()") {
     // It's 1 byte data, but the range is over for this data type
-    var b = Array[Byte](-85) // 85 + 170 = 255, so -85 is 170
+    var b = Array[Byte](-85) // 85 + 171 = 256, so -85 is 171
     assert(t.fromByteArray(b) == Computational)
 
-    b = Array[Byte](-106) // -105 -> 150
+    b = Array[Byte](-106) // -105 -> 151
     assert(t.fromByteArray(b) == NoError)
   }
 }

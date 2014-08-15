@@ -11,6 +11,19 @@ import scala.collection.BitSet
 abstract class BitsType extends GrapevineType with RangeChecker {
   var bits:List[Int] = _
   var ranges:List[(Int,Int)] = _
+  var signed = true
+
+  def getValue(value:Int, bits:Int, signed:Boolean) = {
+    val mask = math.pow(2,bits).toInt - 1
+    if (signed)
+      value
+    else { // unsigned
+      value & mask
+    }
+  }
+  def getValues(values:List[Int], bits:List[Int], signed:Boolean) = {
+    values.zip(bits) map {case (v, b) => getValue(v, b, signed)}
+  }
 
   // http://stackoverflow.com/questions/25319546/adding-a-list-from-different-starting-point-in-scala
   def psum (index:Int, bits:List[Int]) = bits.drop(index).sum

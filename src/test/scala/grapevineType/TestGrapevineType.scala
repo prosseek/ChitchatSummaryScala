@@ -11,7 +11,7 @@ class TestGrapevineType extends FunSuite {
       classOf[ByteType], classOf[FixedPointType], classOf[FloatType], classOf[StringType], // 0 - 3
       classOf[DateType], classOf[TimeType], // 4 - 5
       classOf[LatitudeType], classOf[LongitudeType], //6 - 7
-      classOf[AgeType], classOf[SpeedType] // 8 - 9
+      classOf[AgeType], classOf[SpeedType], classOf[TemperatureType] // 8 - 10
       )
 
     Range(0, keys.size).foreach {i =>

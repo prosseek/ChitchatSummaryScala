@@ -17,8 +17,9 @@ abstract class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int,
     set(a, b, c)
   }
   def set(aValue:Int, bValue:Int, cValue:Int) = {
-    if (check(List(aValue, bValue, cValue), ranges)) {
-      this.value = (aValue, bValue, cValue)
+    val values = List(aValue, bValue, cValue)
+    if (check(values, ranges)) {
+      this.value = getValues(values, bits, this.signed) match {case List(a,b,c) => (a,b,c)}
     }
     else {
       throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})] b [${bValue}(${b._2}-${b._3})] c [${cValue}(${c._2}-${c._3})]")

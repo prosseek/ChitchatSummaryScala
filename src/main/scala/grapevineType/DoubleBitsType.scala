@@ -17,8 +17,9 @@ abstract class DoubleBitsType(a:(Int, Int, Int), b:(Int, Int, Int)) extends Bits
     set(a, b)
   }
   def set(aValue:Int, bValue:Int) = {
-    if (check(List(aValue, bValue), ranges)) {
-      this.value = (aValue, bValue)
+    val values = List(aValue, bValue)
+    if (check(values, ranges)) {
+      this.value = getValues(values, bits, this.signed) match {case List(a,b) => (a,b)}
     }
     else {
       throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})] b [${bValue}(${b._2}-${b._3})]")
