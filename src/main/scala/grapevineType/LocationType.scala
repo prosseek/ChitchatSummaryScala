@@ -3,40 +3,6 @@ package grapevineType
 import BottomType._
 
 /**
- * Created by smcho on 6/2/14.
- */
-object LocationType {
-  // 9 + 8 + 6*4 = 51 bits
-  //val LONGITUDE = 9 // +- 180 (360), so 8 bits are needed 2^9 = 512
-  //val LATITUDE = 8 // +- 90 (180), so 7 bits are needed 2^8 = 256
-
-  /*
-  def dms2dd(d:Int, m:Int, s:Double) = {
-    if (d > 0)
-      d.toDouble + m.toDouble/60.0 + s/3600.0
-    else
-      -(-d.toDouble + m.toDouble/60.0 + s/3600.0)
-  }
-  def dms2dd(d:Int, m:Int, s:String) : Double = {
-    dms2dd(d,m,s.toDouble)
-  }
-  def dms2dd(d:Int, m:Int, s1:Int, s2:Int) : Double = {
-    val s = s"${s1}.${s2}"
-    dms2dd(d,m,s.toDouble)
-  }
-  def dd2dms(data:Double) = {
-    // http://en.wikipedia.org/wiki/Decimal_degrees
-    val d = data.toInt
-    val m = (math.abs(data)*60.0).toInt % 60
-    val value = math.abs(data)*3600.0
-    val s1 = value.toInt % 60 // 0.5 is added to get round value
-    val s2 = ((value - value.toInt)*100 + 0.5).toInt
-    (d, m, s1, s2)
-  }
-  */
-}
-
-/**
  * Created by smcho on 8/11/14.
  */
 class LocationType extends GrapevineType {

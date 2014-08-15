@@ -30,19 +30,23 @@ class FloatType extends GrapevineType {
   }
 
   def fromByteArray(b: Array[Byte]): BottomType = {
-    super.fromByteArray(b, byteSize = 4, f = ByteArrayTool.byteArrayToFloat)
-    try {
-      val result = ByteArrayTool.byteArrayToFloat(b)
-      if (encodingCheck(result)) {
-        this.value = if (result >= 0) result - floatShift else -(-result - floatShift)
-        NoError
-      } else {
-        Computational
+    if (super.fromByteArray(b, byteSize = 4, f = ByteArrayTool.byteArrayToFloat) == NoError) {
+      try {
+        val result = ByteArrayTool.byteArrayToFloat(b)
+        if (encodingCheck(result)) {
+          this.value = if (result >= 0) result - floatShift else -(-result - floatShift)
+          NoError
+        } else {
+          Computational
+        }
+      }
+      // whenever we have an error, we return false
+      catch {
+        case e: Exception => Computational
       }
     }
-    // whenever we have an error, we return false
-    catch {
-      case e: Exception => Computational
+    else {
+      Computational
     }
   }
 

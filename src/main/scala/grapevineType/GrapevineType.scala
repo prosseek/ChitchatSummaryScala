@@ -7,7 +7,7 @@ import grapevineType.BottomType._
  */
 abstract class GrapevineType {
   var value: Any = _
-  def set(value:Any)
+  def set(value:Any) : Unit
   def get() : Any = {
     throw new RuntimeException("ERROR: You should implement the get() method")
   }
@@ -60,7 +60,7 @@ object GrapevineType {
       "number" -> classOf[ByteType],
       "latitude" -> classOf[LatitudeType],
       "longitude" -> classOf[LongitudeType],
-      "date" -> classOf[DateType],
+      "date" -> classOf[DateTypeTriple],
       "time" -> classOf[TimeType]
     )
 
