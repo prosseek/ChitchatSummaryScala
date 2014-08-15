@@ -60,7 +60,7 @@ object GrapevineType {
       "number" -> classOf[ByteType],
       "latitude" -> classOf[LatitudeType],
       "longitude" -> classOf[LongitudeType],
-      "date" -> classOf[DateTypeTriple],
+      "date" -> classOf[DateType],
       "time" -> classOf[TimeType]
     )
 

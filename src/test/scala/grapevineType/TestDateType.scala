@@ -9,9 +9,9 @@ import scala.collection.BitSet
  * Created by smcho on 8/13/14.
  */
 class TestDateType extends FunSuite with BeforeAndAfter {
-  var t: DateTypeTriple = _
+  var t: DateType = _
   before {
-    t = new DateTypeTriple
+    t = new DateType
   }
 
   test ("simple test") {

@@ -16,9 +16,9 @@ class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int),
     val (a, b, c, d) = value.asInstanceOf[(Int, Int, Int, Int)]
     set(a, b, c, d)
   }
-  //def fset(aValue:Int, bValue:Int, cValue:Int, dValue:Int) = set(aValue, bValue, cValue, dValue)
+
   def set(aValue:Int, bValue:Int, cValue:Int, dValue:Int) = {
-    if (check(List(aValue, bValue, cValue, dValue), ranges)) { // check(aValue, a._2, a._3) && check (bValue, b._2, b._3) && check(cValue, c._2, c._3) && check(dValue, d._2, d._3)) {
+    if (check(List(aValue, bValue, cValue, dValue), ranges)) {
       this.value = (aValue, bValue, cValue, dValue)
     }
     else {
@@ -37,7 +37,7 @@ class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int),
   }
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
-    val totalBytes = bits.sum / 8 + 1 // get the total bytes for the encoded data
+    val totalBytes = getTotalBytes(bits) // get the total bytes for the encoded data
     if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)

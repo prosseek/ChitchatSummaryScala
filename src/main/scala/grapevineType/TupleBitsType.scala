@@ -8,29 +8,29 @@ import BottomType._
  * The input parameter should be three tuples of data
  * (bits, min, max)
  */
-class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) extends BitsType {
-  val bits = List(a._1, b._1, c._1)
-  val ranges = List((a._2, a._3), (b._2, b._3), (c._2, c._3))
+class TupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int)) extends BitsType {
+  val bits = List(a._1, b._1)
+  val ranges = List((a._2, a._3), (b._2, b._3))
 
   override def set(value: Any) : Unit = {
-    val (a, b, c) = value.asInstanceOf[(Int, Int, Int)]
-    set(a, b, c)
+    val (a, b) = value.asInstanceOf[(Int, Int)]
+    set(a, b)
   }
-  def set(aValue:Int, bValue:Int, cValue:Int) = {
-    if (check(List(aValue, bValue, cValue), ranges)) {
-      this.value = (aValue, bValue, cValue)
+  def set(aValue:Int, bValue:Int) = {
+    if (check(List(aValue, bValue), ranges)) {
+      this.value = (aValue, bValue)
     }
     else {
-      throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})] b [${bValue}(${b._2}-${b._3})] c [${cValue}(${c._2}-${c._3})]")
+      throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})] b [${bValue}(${b._2}-${b._3})]")
     }
   }
-  override def get() : (Int, Int, Int) = {
-    this.value.asInstanceOf[(Int,Int,Int)]
+  override def get() : (Int, Int) = {
+    this.value.asInstanceOf[(Int,Int)]
   }
 
   override def toByteArray(goalSize: Int): Array[Byte] = {
-    val v = value.asInstanceOf[(Int,Int,Int)]
-    val values = List(v._1, v._2, v._3)
+    val v = value.asInstanceOf[(Int,Int)]
+    val values = List(v._1, v._2)
 
     val res = shiftAndJoin(values, bits)
     bitSetToByteArray(res, goalSize = goalSize)
@@ -44,8 +44,7 @@ class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int)) ex
 
       try {
         set(BitSetTool.bitSetToInt(bitSets(0)),
-          BitSetTool.bitSetToInt(bitSets(1)),
-          BitSetTool.bitSetToInt(bitSets(2)))
+          BitSetTool.bitSetToInt(bitSets(1)))
         NoError
       }
       catch {

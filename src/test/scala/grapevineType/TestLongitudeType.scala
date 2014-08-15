@@ -5,17 +5,17 @@ import BottomType._
 /**
  * Created by smcho on 8/14/14.
  */
-class TestLatitudeType extends FunSuite with BeforeAndAfter {
-  var t: LatitudeType = _
+class TestLongitudeType extends FunSuite with BeforeAndAfter {
+  var t: LongitudeType = _
   before {
-    t = new LatitudeType
+    t = new LongitudeType
   }
   test ("simple") {
-    t.set(100, 10, 20, 40)
-    assert(t.get == (100, 10, 20, 40))
+    t.set(32, 10, 20, 40)
+    assert(t.get == (32, 10, 20, 40))
 
     intercept[RuntimeException] {
-      t.set(-181, 10, 20, 40)
+      t.set(-91, 10, 20, 40)
     }
   }
 
