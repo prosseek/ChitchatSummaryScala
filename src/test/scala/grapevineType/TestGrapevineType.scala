@@ -13,16 +13,16 @@ class TestGrapevineType extends FunSuite {
       classOf[LatitudeType], classOf[LongitudeType], //6 - 7
       classOf[AgeType], classOf[SpeedType], classOf[TemperatureType] // 8 - 10
       )
-
-    Range(0, keys.size).foreach {i =>
-      keys(i).newInstance.asInstanceOf[GrapevineType].getId == i
-    }
+//
+//    Range(0, keys.size).foreach {i =>
+//      keys(i).newInstance.asInstanceOf[GrapevineType].getId == i
+//    }
 //    keys.foreach { t =>
 //      t.getInstance
 //    }
-//    keys.zipWithIndex { case(t, i) =>
-//      t.getInstance
-//    }
+    keys.zipWithIndex.map { case(t, i) =>
+      keys(i).newInstance.asInstanceOf[GrapevineType].getId == i
+    }
 
   }
 
