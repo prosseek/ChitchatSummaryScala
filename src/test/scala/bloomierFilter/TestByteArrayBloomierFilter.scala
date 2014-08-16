@@ -36,7 +36,7 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     val r = t.find()
     println(s"Found solution? ${r.isDefined}")
     println(s"Depth = ${t.getDepth()}")
-    println(s"M = ${t.m}")
+    println(s"M = ${t.getM()}")
   }
 
   test ("map2 find test - allow order = true/false") {
@@ -47,7 +47,7 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     var r = t.find()
     println(s"Found solution? ${r.isDefined}")
     println(s"Depth = ${t.getDepth()}")
-    println(s"M = ${t.m}")
+    println(s"M = ${t.getM()}")
 
     //    Found solution? true
     //    Depth = 1
@@ -56,7 +56,7 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     r = t.find()
     println(s"Found solution? ${r.isDefined}")
     println(s"Depth = ${t.getDepth()}")
-    println(s"M = ${t.m}")
+    println(s"M = ${t.getM()}")
   }
 
   test ("map1/2 get table") {

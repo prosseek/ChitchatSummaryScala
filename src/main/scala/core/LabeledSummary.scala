@@ -23,7 +23,7 @@ class LabeledSummary extends GrapevineSummary {
   }
 
   override def check(key: String): BottomType = {
-    if (getValue(key).isEmpty) Buttom // this is structural check to return Buttom
+    if (getValue(key).isEmpty) Bottom // this is structural check to return Buttom
     else NoError
   }
 }

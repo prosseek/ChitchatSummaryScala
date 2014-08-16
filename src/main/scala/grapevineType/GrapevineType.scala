@@ -74,12 +74,16 @@ object GrapevineType {
       "latitude" -> classOf[LatitudeType],
       "longitude" -> classOf[LongitudeType],
       "date" -> classOf[DateType],
-      "time" -> classOf[TimeType]
+      "time" -> classOf[TimeType],
+      "message" -> classOf[StringType]
     )
 
     keyType.foreach { case(key, grapevineType)  =>
       if (lowerKey.startsWith(key)) return Some(grapevineType)
     }
+
+    if (key.endsWith("_f")) return Some(classOf[FloatType])
+
     None
   }
 

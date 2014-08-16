@@ -20,6 +20,10 @@ abstract class GrapevineSummary extends ContextSummary {
     else None
   }
 
+  def getMap() = {
+    dataStructure.toMap
+  }
+
   /**
    * 1. check if key has Grapevine type info
    * 2. check if value is integer/floating point number

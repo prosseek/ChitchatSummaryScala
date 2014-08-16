@@ -14,7 +14,7 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
   var table : Array[Array[Byte]] = _ // Array.ofDim[Byte](m, byteSize)
   //var seed : Int = -1  //orderAndMatch.hashSeed
   var orderAndMatch: OrderAndMatch = _
-  var m : Int = -1
+  private var m : Int = -1
   private var depth : Int = -1
 
   // generate the table and set table/seed/m
@@ -120,6 +120,16 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
   }
 
   def get(keyInput: String) : Option[Array[Byte]] = {
+    def checkAllZeroElementsInTable(neighbors: Seq[Int], table: Array[Array[Byte]]) : Boolean = {
+      def checkZeroElement(element: Seq[Byte]) : Boolean = {
+        element.forall(_ == 0)
+      }
+      for (n <- neighbors) {
+        if (!checkZeroElement(table(n))) return false
+      }
+      true
+    }
+
     val key = keyInput
     val neighbors = hasher.getNeighborhood(key)
     val mask = hasher.getM(key).toArray.map(_.toByte)
@@ -128,7 +138,7 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     // If all of the row data in the table is zero, it means it's garbage data
     // Let's not be so smart for a while.
     // This is the routine to get the BOTTOM
-    if (BloomierFilter.checkAllZeroElementsInTable(neighbors, table)) {
+    if (checkAllZeroElementsInTable(neighbors, table)) {
       //if (false) {
       //None // Bottom calculation
       None
@@ -140,28 +150,30 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     }
   }
 
-
-
   /**
    * Get the size of r (m that is not zero)
    * @return
    */
-  def getSize() = {
+  def getNumberOfElements() = {
     initialM - this.table.count(p => p.forall(_ == 0))
   }
 
-  def size() = {
-    getSize() * byteSize
+  def getSize() = {
+    getNumberOfElements() * byteSize + m
   }
 
-  def printContents() : Unit = printContents(map.keys)
-
-  def printContents(keys: Iterable[String]) : Unit = {
-    println("BL---------------------------------------------")
-    println(s"Size in bytes : ${size()}")
-    for (key <- keys) {
-      println(s"KEY($key) => ${get(key).getOrElse(null)}")
-    }
-    println("---------------------------------------------BL")
+  def getM() = {
+    m
   }
+//
+//  def printContents() : Unit = printContents(map.keys)
+//
+//  def printContents(keys: Iterable[String]) : Unit = {
+//    println("BL---------------------------------------------")
+//    println(s"Size in bytes : ${size()}")
+//    for (key <- keys) {
+//      println(s"KEY($key) => ${get(key).getOrElse(null)}")
+//    }
+//    println("---------------------------------------------BL")
+//  }
 }
