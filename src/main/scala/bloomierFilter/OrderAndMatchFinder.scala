@@ -68,7 +68,7 @@ class OrderAndMatchFinder(val map:Map[String, Any],
     tauList ++= tauTemp
     piTemp.foreach {k => kMap(k) = hasher.getNeighborhood(k)}
 
-    return true;
+    return true
   }
 
   // API

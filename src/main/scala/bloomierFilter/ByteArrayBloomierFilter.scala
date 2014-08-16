@@ -12,19 +12,37 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
    // new OrderAndMatchFinder(map = map, m = m, k = k, q = q, initialHashSeed = seed, maxTry = maxTry)
   //var orderAndMatch : OrderAndMatch = _ // oamf.find()
   var table : Array[Array[Byte]] = _ // Array.ofDim[Byte](m, byteSize)
-  var seed : Int = -1  //orderAndMatch.hashSeed
+  //var seed : Int = -1  //orderAndMatch.hashSeed
+  var orderAndMatch: OrderAndMatch = _
   var m : Int = -1
   private var depth : Int = -1
 
   // generate the table and set table/seed/m
-  createTable(map)
+  create(map)
 
+  /**
+   * Gvien two byteArrays return the xor one by one
+   * @param a
+   * @param b
+   */
+  def byteArrayXor(a:Array[Byte], b:Array[Byte]) = {
+    if (a.size != b.size) {
+      throw new Exception(s"Array size is not the same: ${a.size} != ${b.size}")
+    }
+    val newArray = new Array[Byte](a.size)
+    var i = 0
+    for (ba <- a) {
+      newArray(i) = (ba ^ b(i)).toByte
+      i += 1
+    }
+    newArray
+  }
   def find() : Option[OrderAndMatch] = {
     var m = initialM
     var oamf : OrderAndMatchFinder = null
 
     (0 until maxTry).foreach {i =>
-      // try with initial m
+      // try with initial mx
       //hasher = BloomierHasher(m = initialM, k = k, q = q, hashSeed = initialSeed)
       oamf = new OrderAndMatchFinder(map = map, m = m, k = k, q = q, initialHashSeed = (1 + initialSeed)*i, maxTry = maxTry)
       var orderAndMatch = oamf.find()
@@ -48,29 +66,32 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     None
   }
 
-  def createTable(map:Map[String, Array[Byte]]) : Int = {
-    val
+  def create(map:Map[String, Array[Byte]]) = {
+    val oamf = find()
+    if (oamf.isEmpty) {
+      throw new RuntimeException(s"Cannot create a table with m(${m})/k(${k})/allowOrder(${allowOrder})/maxTry(${maxTry})")
+    }
+
+    orderAndMatch = oamf.get
     // find the solution, so create the table and set the hash
-    table = Array.ofDim[Byte](initialM, byteSize)
-//    seed = orderAndMatch.hashSeed
-    initialM
-  }
+    table = Array.ofDim[Byte](m, byteSize)
+    hasher = BloomierHasher(m = m, k = k, q = q, hashSeed = orderAndMatch.hashSeed)
 
-  def _create(map:Map[String, Array[Byte]], orderAndMatch:OrderAndMatch) = {
-
-    for ((key, i) <- orderAndMatch.piList.zipWithIndex) {
+    orderAndMatch.piList.zipWithIndex map { case (key, i) =>
+      //for ((key, i) <- orderAndMatch.piList.zipWithIndex) {
       //val value : Int = keysDict(key).asInstanceOf[Int]
-      val neighbors = hasher.getNeighborhood(key, seed)
+      val neighbors = hasher.getNeighborhood(key)
       val mask = hasher.getM(key).toArray.map(_.toByte)
       val l = orderAndMatch.tauList(i)
       val L = neighbors(l) // L is the index in the table to store the value
 
       // only check when the encoded value is null
-      if (map(key) != null) {
-        val encodedValue = map(key)
-        var valueToStore = byteArrayXor(mask, encodedValue)
+      val value = map(key)
+      if (value != null && value.size > 0) { // when there is no value,
+        var valueToStore = byteArrayXor(mask, value)
 
-        for ((n, j) <- neighbors.zipWithIndex) {
+        neighbors.zipWithIndex map { case (n, j) =>
+        //for ((n, j) <- neighbors.zipWithIndex) {
           if (j != l) {
             valueToStore = byteArrayXor(valueToStore, table(n))
           }
@@ -80,31 +101,14 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     }
   }
 
-
-  /**
-   * Gvien two byteArrays return the xor one by one
-   * @param a
-   * @param b
-   */
-  def byteArrayXor(a:Array[Byte], b:Array[Byte]) = {
-    if (a.size != b.size) {
-      throw new Exception(s"Array size is not the same: ${a.size} != ${b.size}")
-    }
-    val newArray = new Array[Byte](a.size)
-    var i = 0
-    for (ba <- a) {
-      newArray(i) = (ba ^ b(i)).toByte
-      i += 1
-    }
-    newArray
-  }
-
   def getDepth() = this.depth
+  def getTable() = this.table
+
   def analyze(keysDict:Map[String, Any]) = {
     //println(oamf.getOrderHistory())
     for ((key, value) <- keysDict) {
       print(key);print(">> ")
-      val neighbors = hasher.getNeighborhood(key, seed)
+      val neighbors = hasher.getNeighborhood(key)
       for (n <- neighbors) {
         print(n)
         print(":")
@@ -115,25 +119,24 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     //print(orderAndMatch.toString())
   }
 
-  def get(keyInput: String) : Option[Any] = {
+  def get(keyInput: String) : Option[Array[Byte]] = {
     val key = keyInput
-    val neighbors = hasher.getNeighborhood(key, seed)
+    val neighbors = hasher.getNeighborhood(key)
     val mask = hasher.getM(key).toArray.map(_.toByte)
     var valueToRestore = mask
 
     // If all of the row data in the table is zero, it means it's garbage data
     // Let's not be so smart for a while.
     // This is the routine to get the BOTTOM
-    if (BloomierFilter.useBottomFilter && BloomierFilter.checkAllZeroElementsInTable(neighbors, table)) {
+    if (BloomierFilter.checkAllZeroElementsInTable(neighbors, table)) {
       //if (false) {
       //None // Bottom calculation
-      Some("Bottom")
+      None
     } else {
       for (n <- neighbors) {
         valueToRestore = byteArrayXor(valueToRestore, table(n))
       }
-      //decoder.decode(key, valueToRestore, byteSize)
-      null
+      Some(valueToRestore)
     }
   }
 
