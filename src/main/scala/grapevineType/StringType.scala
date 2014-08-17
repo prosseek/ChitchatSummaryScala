@@ -6,12 +6,17 @@ import util.conversion.ByteArrayTool
 /**
  * Created by smcho on 8/11/14.
  */
-class StringType extends GrapevineType {
+
+object StringType {
   def isPrintable(v:Char) = {
     v >= 0x20 && v <= 0x7E
   }
+}
+
+class StringType extends GrapevineType {
+
   def check(value:String) = {
-    value.forall {isPrintable}
+    value.forall {StringType.isPrintable}
   }
   def set(value: Any) : Unit = {
     if (check(value.asInstanceOf[String])) {
@@ -34,7 +39,7 @@ class StringType extends GrapevineType {
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
     // http://stackoverflow.com/questions/25328027/detecting-the-index-in-a-string-that-is-not-printable-character-with-scala
-    val npList = ba.indexWhere(v => !isPrintable(v.toChar))
+    val npList = ba.indexWhere(v => !StringType.isPrintable(v.toChar))
     val strlen = if (npList == -1) ba.size else npList
 
     if (super.fromByteArray(ba, byteSize = strlen, f = ByteArrayTool.byteArrayToString) == NoError) {

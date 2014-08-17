@@ -5,7 +5,7 @@ import util.conversion.Util._
 /**
  * Created by smcho on 8/16/14.
  */
-class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int, q:Int, initialSeed:Int, maxTry:Int, allowOrder:Boolean = true) {
+class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int, q:Int, initialSeed:Int = 0, maxTry:Int = 5, allowOrder:Boolean = true) {
   val byteSize = getByteSize(q)
 
   var hasher : BloomierHasher = _ // BloomierHasher(m = m, k = k, q = q, hashSeed = seed)

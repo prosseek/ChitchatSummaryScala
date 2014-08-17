@@ -20,10 +20,10 @@ class TestStringType extends FunSuite with BeforeAndAfter {
   }
 
   test("Printable") {
-    assert(t.isPrintable('a'))
+    assert(StringType.isPrintable('a'))
     assert(t.check("Hello, world"))
 
-    assert(t.isPrintable(0x00) == false)
+    assert(StringType.isPrintable(0x00) == false)
   }
 
   test("to/from bytearray") {

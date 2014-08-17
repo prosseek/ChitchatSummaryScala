@@ -1,9 +1,12 @@
 package util.conversion
 
+import util.print.Util._
+
 /**
  * Created by smcho on 8/17/14.
  */
 
+import grapevineType._
 import org.scalatest._
 
 class TestSplitter extends FunSuite with BeforeAndAfter {
@@ -36,5 +39,17 @@ class TestSplitter extends FunSuite with BeforeAndAfter {
     assert(s("key0").mkString(":") == "100:101:102")
     assert(s("key1").mkString(":") == "103:104:0")
     assert(s.contains("key2") == false)
+  }
+  test("Split with string") {
+    var input = new StringType
+    input.set("Hello, world?")
+    var s = t.split("key", input, 2)
+    println(getString(s, true))
+  }
+  test("Split with lattitude") {
+    var input = new LatitudeType
+    input.set(20,10,10,0)
+    var s = t.split("latitude", input, 2)
+    println(getString(s))
   }
 }
