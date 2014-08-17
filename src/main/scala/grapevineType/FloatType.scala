@@ -57,9 +57,10 @@ class FloatType extends GrapevineType {
    * @return
    */
   override def toByteArray(goalSize: Int): Array[Byte] = {
+    val size = if (goalSize == -1) 4 else goalSize
     val v = value.asInstanceOf[Float]
     ByteArrayTool.floatToByteArray(if (v >= 0.0F) v + floatShift else -(-v + floatShift),
-                                   size = goalSize)
+                                   size = size)
   }
 
   override def getId = 2

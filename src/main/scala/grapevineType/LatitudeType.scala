@@ -10,4 +10,8 @@ package grapevineType
  */
 class LatitudeType extends QuadrupleBitsType((9, -180, 180), (6, 0, 59), (6, 0, 59), (7, 0, 99)) {
   override def getId = 6
+  override def toByteArray(goalSize:Int) = {
+    val size = if (goalSize == -1) 4 else goalSize
+    super.toByteArray(size)
+  }
 }

@@ -26,7 +26,7 @@ class StringType extends GrapevineType {
     this.value.asInstanceOf[String]
   }
 
-  override def toByteArray(goalSize: Int = -1): Array[Byte] = {
+  override def toByteArray(goalSize: Int): Array[Byte] = {
     val v = this.value.asInstanceOf[String]
     val size = if (goalSize == -1) v.size else goalSize
     ByteArrayTool.stringToByteArray(v, size)

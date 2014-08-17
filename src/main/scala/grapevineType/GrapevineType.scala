@@ -22,7 +22,7 @@ abstract class GrapevineType {
     throw new RuntimeException("ERROR: You should implement the get() method")
   }
 
-  def toByteArray(goalSize:Int = 4) : Array[Byte]
+  def toByteArray(goalSize:Int = -1) : Array[Byte]
   def fromByteArray(b: Array[Byte], byteSize:Int, f:Array[Byte] => Any = null): BottomType = {
     val result = getValueByteArray(b, byteSize)
     if (result.isEmpty) {

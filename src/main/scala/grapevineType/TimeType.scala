@@ -9,4 +9,8 @@ package grapevineType
  */
 class TimeType extends DoubleBitsType((5, 0, 23), (6, 0, 59)) {
   override def getId = 5
+  override def toByteArray(goalSize:Int) = {
+    val size = if (goalSize == -1) 2 else goalSize
+    super.toByteArray(size)
+  }
 }

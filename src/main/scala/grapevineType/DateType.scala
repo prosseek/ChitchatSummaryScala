@@ -16,4 +16,8 @@ class DateType extends TripleBitsType((7, 0, 127), (4, 1, 12), (5, 1, 31)) {
     }
 
     override def getId = 4
+  override def toByteArray(goalSize:Int) = {
+    val size = if (goalSize == -1) 2 else goalSize
+    super.toByteArray(size)
+  }
 }
