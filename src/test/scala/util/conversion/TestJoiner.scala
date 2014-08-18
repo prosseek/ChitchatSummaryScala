@@ -5,12 +5,16 @@ package util.conversion
  */
 
 import bloomierFilter.ByteArrayBloomierFilter
-import grapevineType.StringType
+import grapevineType._
 import org.scalatest._
+import BottomType._
 
 class TestJoiner extends FunSuite with BeforeAndAfter {
   var t: Joiner = _
+  var s: Splitter = _
+
   before {
+    s = new Splitter
     t = new Joiner
   }
 
@@ -29,8 +33,6 @@ class TestJoiner extends FunSuite with BeforeAndAfter {
   }
 
   test ("joinString") {
-    val s = new Splitter
-
     val sampleString = "Hello, world"
     val map = s.split("message", StringType(sampleString), 2)
     val bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = 2*8)
@@ -38,5 +40,23 @@ class TestJoiner extends FunSuite with BeforeAndAfter {
     val resultString = t.joinString(bfs, "message").get
     assert(ByteArrayTool.byteArrayToString(resultString) == sampleString)
     assert(t.joinString(bfs, "hello").isEmpty)
+  }
+
+  test ("joinFromBloomierFilter latitude") {
+    def test(width: Int, input: (Int, Int, Int, Int)) = {
+      // table width 1
+      var map = s.split("latitude", LatitudeType(input), width)
+      var bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = width * 8)
+      var res = t.joinFromBloomierFilter(bfs, "latitude", LatitudeType.getSize).get
+      var lat = new LatitudeType
+      assert(lat.fromByteArray(res) == NoError)
+      assert(lat.value == input)
+    }
+    val input = (10, 10, 10, 10)
+    test(1, input)
+    test(2, input)
+    test(3, input)
+    test(4, input)
+    test(5, input)
   }
 }

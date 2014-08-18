@@ -52,10 +52,26 @@ class Joiner {
   }
 
   def joinFromBloomierFilter(bbf:ByteArrayBloomierFilter, key:String, dataWidth:Int) : Option[Array[Byte]] = {
+    def getIterationNumber(dataWidth:Int, tableWidth:Int) = {
+      val q1 = dataWidth / tableWidth
+      val q2 = dataWidth % tableWidth
+      if (q2 == 0) q1
+      else q1 + 1
+    }
+
     val tableWidth = bbf.getWidth()
     if (tableWidth >= dataWidth) bbf.get(key)
     else {
-      None
+      val range = Range(0, getIterationNumber(dataWidth, tableWidth))
+      val res = (Array[Byte]() /: range) { (acc, i) =>
+        val newKey = s"${key}${i}"
+        val value = bbf.get(newKey)
+        if (value.isEmpty) return None
+        else {
+          acc ++ value.get
+        }
+      }
+      Some(res)
     }
   }
 
