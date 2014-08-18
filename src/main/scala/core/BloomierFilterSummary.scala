@@ -1,13 +1,13 @@
 package core
 
-import util.conversion.Util
 
-import scala.collection.mutable.{Map => MMap}
 
 import bloomierFilter.ByteArrayBloomierFilter
-
 import grapevineType.BottomType._
-import grapevineType.{ByteType, GrapevineType}
+import grapevineType._
+import util.conversion.{Joiner, Splitter, Util}
+
+import scala.collection.mutable.{Map => MMap}
 
 /**
  * Created by smcho on 8/16/14.
@@ -16,12 +16,12 @@ class BloomierFilterSummary extends GrapevineSummary {
   var instance: GrapevineType = _
   var byteArrayBloomierFilter: ByteArrayBloomierFilter = _
 
-  def grapevineToByteArrayMap(map:Map[String, GrapevineType], goalByteSize:Int)  = {
-    val res = MMap[String, Array[Byte]]()
-    map.foreach { case (key, value) =>
-        res(key) = value.toByteArray(goalSize = goalByteSize)
-    }
-    res.toMap
+  def grapevineToByteArrayMap(inputMap:Map[String, GrapevineType], goalByteSize:Int)  = {
+    val splitter = new Splitter
+
+    inputMap.map { case (key, value) =>
+        splitter.split(key, value.toByteArray(), goalByteSize)
+    }.reduce { _ ++ _}
   }
 
   def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 5, complete:Boolean = false): Unit = {
@@ -64,7 +64,9 @@ class BloomierFilterSummary extends GrapevineSummary {
   }
 
   override def check(key: String): BottomType = {
-    val value = byteArrayBloomierFilter.get(key)
+    val j = new Joiner
+    val value = j.join(byteArrayBloomierFilter, key) // Option[Array[Byte]]
+
     if (value.isEmpty) Bottom
     else {
       val t = GrapevineType.getTypeFromKey(key)

@@ -78,9 +78,20 @@ class Joiner {
   def join(bbf:ByteArrayBloomierFilter, key:String) : Option[Array[Byte]] = {
      GrapevineType.getTypeFromKey(key) match {
        case Some(c) if c == classOf[StringType] => joinString(bbf, key)
+       case Some(c) if c == classOf[ByteType] => joinFromBloomierFilter(bbf, key, ByteType.getSize)
+       case Some(c) if c == classOf[UnsignedByteType] => joinFromBloomierFilter(bbf, key, UnsignedByteType.getSize)
+       case Some(c) if c == classOf[FixedPointType] => joinFromBloomierFilter(bbf, key, FixedPointType.getSize)
+       case Some(c) if c == classOf[FloatType] => joinFromBloomierFilter(bbf, key, FloatType.getSize)
+       case Some(c) if c == classOf[DateType] => joinFromBloomierFilter(bbf, key, DateType.getSize)
+       case Some(c) if c == classOf[TimeType] => joinFromBloomierFilter(bbf, key, TimeType.getSize)
        case Some(c) if c == classOf[LatitudeType] => joinFromBloomierFilter(bbf, key, LatitudeType.getSize)
-       //case Some(c : Class[ByteType]) => None
-       case None => null
+       case Some(c) if c == classOf[LongitudeType] => joinFromBloomierFilter(bbf, key, LongitudeType.getSize)
+       case Some(c) if c == classOf[AgeType] => joinFromBloomierFilter(bbf, key, AgeType.getSize)
+       case Some(c) if c == classOf[SpeedType] => joinFromBloomierFilter(bbf, key, SpeedType.getSize)
+       case Some(c) if c == classOf[TemperatureType] => joinFromBloomierFilter(bbf, key, TemperatureType.getSize)
+       case Some(c) if c == classOf[LevelType] => joinFromBloomierFilter(bbf, key, LevelType.getSize)
+       case None => None // Bottom
+       case _ => throw new RuntimeException(s"${key} not implemented")
      }
   }
 }
