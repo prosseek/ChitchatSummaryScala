@@ -103,6 +103,7 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
 
   def getDepth() = this.depth
   def getTable() = this.table
+  def getWidth() = getByteSize(this.q)
 
   def analyze(keysDict:Map[String, Any]) = {
     //println(oamf.getOrderHistory())

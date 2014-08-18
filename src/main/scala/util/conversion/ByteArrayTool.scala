@@ -87,12 +87,13 @@ object ByteArrayTool {
   }
 
   // string
-  def stringToByteArray(x: String, n:Int) = {
-    assert (n >= x.size)
+  def stringToByteArray(x: String, n:Int = -1) = {
+    val size = if (n == -1) x.size else n
+    assert (size >= x.size)
     // When n is given a value more than 0, it makes room for storing all of the n bytes
     //val size = x.size // if (n <= 0) x.size else n
     //ByteBuffer.allocate(n).put(x.slice(0, size).getBytes()).array()
-    val diff = n - x.size
+    val diff = size - x.size
 //    ByteBuffer.allocate(n).put((x + " "*diff).getBytes()).array()
     ByteBuffer.allocate(x.size).put((x).getBytes()).array() ++ new Array[Byte](diff)
   }

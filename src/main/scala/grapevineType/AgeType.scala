@@ -1,13 +1,17 @@
 package grapevineType
 
+object AgeType {
+  def getId = 9
+  def getSize = (new AgeType).getSize
+  val defaultValue = 0
+}
 /**
  * Age uses 1 byte (8 bits: 0 - 255)
  */
-class AgeType extends SingleBitsType(8, 0, 120) {
+case class AgeType(input:Int) extends SingleBitsSingleByteType(8, 0, 120) {
   this.signed = false
-  override def getId(): Int = 8
-  override def toByteArray(goalSize:Int) = {
-    val size = if (goalSize == -1) 1 else goalSize
-    super.toByteArray(size)
-  }
+  set(input)
+  def this() = this(AgeType.defaultValue)
+
+  override def getId(): Int = AgeType.getId
 }

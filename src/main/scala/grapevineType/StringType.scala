@@ -11,25 +11,20 @@ object StringType {
   def isPrintable(v:Char) = {
     v >= 0x20 && v <= 0x7E
   }
+  def getId = 4
 }
 
-class StringType extends GrapevineType {
+case class StringType(input:String) extends GrapevineType {
+  if (input != null) set(input)
+  def this() = this(null)
 
-  def check(value:String) = {
-    value.forall {StringType.isPrintable}
-  }
+  def check(value:String) = value.forall {StringType.isPrintable}
   def set(value: Any) : Unit = {
-    if (check(value.asInstanceOf[String])) {
-      this.value = value
-    }
-    else {
-      throw new RuntimeException(s"ERROR: [${value}]")
-    }
+    if (check(value.asInstanceOf[String])) this.value = value
+    else throw new RuntimeException(s"ERROR: [${value}]")
   }
 
-  override def get() : String = {
-    this.value.asInstanceOf[String]
-  }
+  override def get() : String = this.value.asInstanceOf[String]
 
   override def toByteArray(goalSize: Int): Array[Byte] = {
     val v = this.value.asInstanceOf[String]
@@ -60,6 +55,6 @@ class StringType extends GrapevineType {
       Computational
     }
   }
-  override def getId = 3
+  override def getId = StringType.getId
   override def getSize = this.value.asInstanceOf[String].size
 }

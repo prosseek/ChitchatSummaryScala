@@ -75,7 +75,10 @@ object GrapevineType {
       "longitude" -> classOf[LongitudeType],
       "date" -> classOf[DateType],
       "time" -> classOf[TimeType],
-      "message" -> classOf[StringType]
+      "message" -> classOf[StringType],
+      "temperature" -> classOf[TemperatureType],
+      "level" -> classOf[LevelType],
+      "athelete" -> classOf[UnsignedByteType]
     )
 
     keyType.foreach { case(key, grapevineType)  =>
