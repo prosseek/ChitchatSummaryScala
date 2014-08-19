@@ -15,4 +15,5 @@ case class TemperatureType(input:Int) extends SingleBitsSingleByteType(8, -50, 6
   this.signed = false
 
   override def getId(): Int = TemperatureType.getId
+  override def getTypeName() = "TemperatureType"
 }

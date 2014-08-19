@@ -13,5 +13,6 @@ case class ByteType(input:Int) extends SingleBitsSingleByteType(8, -128, 127){
   def this() = this(ByteType.defaultValue)
 
   override def getId = ByteType.getId
+  override def getTypeName() = "ByteType"
 }
 

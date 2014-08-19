@@ -24,4 +24,5 @@ case class LongitudeType(input:(Int, Int, Int, Int)) extends QuadrupleBitsType((
     val size = if (goalSize == -1) 4 else goalSize
     super.toByteArray(size)
   }
+  override def getTypeName() = "LongitudeType"
 }

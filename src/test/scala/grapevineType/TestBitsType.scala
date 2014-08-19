@@ -8,6 +8,7 @@ class TestClass extends BitsType {
   override def getId(): Int = 0
   override def fromByteArray(b: Array[Byte]): BottomType = null
   override def toByteArray(goalSize: Int): Array[Byte] = null
+  override def getTypeName(): String = "???"
 }
 
 /**

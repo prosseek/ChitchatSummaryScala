@@ -15,4 +15,5 @@ case class UnsignedByteType(input:Int) extends SingleBitsSingleByteType(8, 0, 25
 
   this.signed = false
   override def getId(): Int = UnsignedByteType.getId
+  override def getTypeName() = "UnsignedByteType"
 }

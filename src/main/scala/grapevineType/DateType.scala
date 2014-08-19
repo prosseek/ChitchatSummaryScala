@@ -30,4 +30,5 @@ case class DateType(input:(Int, Int, Int)) extends TripleBitsType((7, 0, 127), (
     val size = if (goalSize == -1) 2 else goalSize
     super.toByteArray(size)
   }
+  override def getTypeName() = "DateType"
 }

@@ -24,4 +24,5 @@ case class TimeType(input:(Int, Int)) extends DoubleBitsType((5, 0, 23), (6, 0, 
     val size = if (goalSize == -1) 2 else goalSize
     super.toByteArray(size)
   }
+  override def getTypeName() = "TimeType"
 }

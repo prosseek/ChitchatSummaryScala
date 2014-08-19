@@ -14,4 +14,5 @@ case class SpeedType(input:Int) extends SingleBitsSingleByteType(8, 0, 150) {
 
   this.signed = false
   override def getId = SpeedType.getId
+  override def getTypeName() = "SpeedType"
 }

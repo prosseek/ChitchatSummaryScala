@@ -57,4 +57,5 @@ case class StringType(input:String) extends GrapevineType {
   }
   override def getId = StringType.getId
   override def getSize = this.value.asInstanceOf[String].size
+  override def getTypeName() = "StringType"
 }

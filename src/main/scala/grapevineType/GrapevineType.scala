@@ -53,6 +53,7 @@ abstract class GrapevineType {
 
   def getId() : Int
   def getSize() : Int
+  def getTypeName() : String
 }
 
 /**

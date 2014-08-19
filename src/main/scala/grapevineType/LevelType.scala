@@ -15,4 +15,5 @@ case class LevelType(input:Int) extends SingleBitsSingleByteType(8, 0, 10) {
 
   this.signed = false
   override def getId(): Int = LevelType.getId
+  override def getTypeName() = "LevelType"
 }

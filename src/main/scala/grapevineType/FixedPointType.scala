@@ -17,4 +17,5 @@ case class FixedPointType(input:(Int, Int)) extends DoubleBitsType((12, 0, 4095)
     val size = if (goalSize == -1) 2 else goalSize
     super.toByteArray(size)
   }
+  override def getTypeName() = "FixedPointType"
 }

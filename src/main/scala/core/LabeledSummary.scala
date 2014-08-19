@@ -9,8 +9,8 @@ import grapevineType.GrapevineType
 class LabeledSummary extends GrapevineSummary {
   override def getSize(): Int = {
     (0 /: dataStructure) { (acc, value) => acc + value._2.getSize } + // sum value size
-    (0 /: dataStructure.keys) {(acc, value) => acc + value.size} +    // sum of keys
-    dataStructure.size     // 1 byte is used for identifying the type
+    (0 /: dataStructure.keys) {(acc, value) => acc + value.size}     // sum of keys
+    // dataStructure.size     // 1 byte is used for identifying the type
   }
 
   override def get(key: String): GrapevineType = {

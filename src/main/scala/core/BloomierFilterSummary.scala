@@ -54,12 +54,12 @@ class BloomierFilterSummary extends GrapevineSummary {
    *
    */
   override def get(key: String): Any = {
-    // I'm given a byte array, how can I get the type back?
-    // get(keyInput: String) : Option[Array[Byte]]
-    val value = byteArrayBloomierFilter.get(key)
-    if(value.isEmpty) {
-      throw new RuntimeException(s"key(${key}) returns None from get, you should run check() first before using get in BloomierFilter")
-    }
+//    // I'm given a byte array, how can I get the type back?
+//    // get(keyInput: String) : Option[Array[Byte]]
+//    val value = byteArrayBloomierFilter.get(key)
+//    if(value.isEmpty) {
+//      throw new RuntimeException(s"key(${key}) returns None from get, you should run check() first before using get in BloomierFilter")
+//    }
     instance.value
   }
 

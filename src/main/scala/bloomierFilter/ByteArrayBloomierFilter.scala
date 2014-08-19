@@ -156,11 +156,11 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
    * @return
    */
   def getNumberOfElements() = {
-    initialM - this.table.count(p => p.forall(_ == 0))
+    getM() - this.table.count(p => p.forall(_ == 0))
   }
 
   def getSize() = {
-    getNumberOfElements() * byteSize + m
+    getNumberOfElements() * byteSize + m/8
   }
 
   def getM() = {

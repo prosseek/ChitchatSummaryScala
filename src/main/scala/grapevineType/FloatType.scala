@@ -18,7 +18,10 @@ case class FloatType(input:Double) extends GrapevineType {
   def this() = this(FloatType.defaultValue)
 
   override def set(value: Any): Unit = {
-    this.value = value.asInstanceOf[Double].toFloat
+    if (value.isInstanceOf[Float])
+      this.value = value.asInstanceOf[Float]
+    else if (value.isInstanceOf[Double])
+      this.value = value.asInstanceOf[Double].toFloat
   }
 
   override def get() : Float = value.asInstanceOf[Float]
@@ -73,4 +76,5 @@ case class FloatType(input:Double) extends GrapevineType {
 
   override def getId = FloatType.getId
   override def getSize = 4
+  override def getTypeName() = "FloatType"
 }
