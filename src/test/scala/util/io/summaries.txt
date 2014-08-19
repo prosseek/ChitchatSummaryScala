@@ -1,0 +1,17 @@
+latitude -> (10, 10, 10, 10)
+message -> Hello, world
+time -> (11, 11)
+date -> (2014, 10, 01)
+age -> 12
+level of athelete -> 9
+athelete -> 32
+value_f -> 11.2
+
+latitude -> (10, 10, 10, 10)
+message -> Hello, world
+time -> (11, 11)
+date -> (2014, 10, 01)
+age -> 12
+level of athelete -> 9
+athelete -> 32
+value_f -> 11.2

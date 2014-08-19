@@ -1,7 +1,6 @@
 package core
 
 import grapevineType.BottomType._
-import grapevineType.GrapevineType
 
 /**
  * Created by smcho on 8/10/14.
@@ -13,11 +12,11 @@ class LabeledSummary extends GrapevineSummary {
     // dataStructure.size     // 1 byte is used for identifying the type
   }
 
-  override def get(key: String): GrapevineType = {
+  override def get(key: String): Any = {
     val r = getValue(key)
     if (r.nonEmpty)
     //MMap[String, Tuple2[GrapevineType, Object]]()
-      r.get.asInstanceOf[GrapevineType]
+      r.get
     else
       throw new RuntimeException(s"No matching value for key ${key}")
   }
