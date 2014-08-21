@@ -48,7 +48,7 @@ abstract class GrapevineSummary extends ContextSummary {
   override def toString() = {
     val sb = new StringBuilder
     dataStructure.foreach { case (key, gvData) =>
-        sb.append(s"${key} => ${gvData.get}:${gvData.getTypeName}\n")
+        sb.append(s"${key} => ${gvData.get}: ${gvData.getTypeName}\n")
     }
     sb.toString
   }
