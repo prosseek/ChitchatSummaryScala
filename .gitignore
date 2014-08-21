@@ -2,7 +2,7 @@
 .cache/
 .history/
 .lib/
-tmp/*
+experiment/tmp/*
 dist/*
 target/
 lib_managed/
