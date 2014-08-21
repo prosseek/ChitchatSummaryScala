@@ -37,9 +37,9 @@ object Gnuplotter {
   def getPlotCommand(filePath:String, smap:Map[Int, String]) : String = {
     // http://stackoverflow.com/questions/4636610/regular-expression-and-pattern-matching-in-scala
     val params = (ArrayBuffer[String]() /: smap) { (acc, elem) =>
-      acc += s"""using 1:${elem._1} title "${elem._2}" w lp"""
+      acc += s""" "${filePath}" using 1:${elem._1} title "${elem._2}" w lp"""
     }.toArray
-    s"""plot "${filePath}" ${params.mkString(", ")}"""
+    s"plot ${params.mkString(", ")}"
   }
 
   def generateGnuplotCommands(smap:Map[String, String]): String = {

@@ -45,10 +45,19 @@ class Joiner {
   }
 
   def joinString(bbf:ByteArrayBloomierFilter, key:String) : Option[Array[Byte]] = {
-    // check if key can be iterpreted itself
-    val res = bbf.get(key)
-    if (res.isDefined && isInterpretableString(res.get)) res
-    else joinStringFromKeys(bbf, key)
+    // [2014/08/21] bug fix
+    // In some cases re1 is printable character (UW{1) for this case, we return the maximum string
+    val res1 = bbf.get(key)
+    val res2 = joinStringFromKeys(bbf, key)
+
+    if (res1.isEmpty) return res2
+    if (res2.isEmpty) return res1
+
+    val lenght1 = res1.get.size
+    val length2 = res2.get.size
+
+    if (length2 > lenght1) return res2
+    res1
   }
 
   def joinFromBloomierFilter(bbf:ByteArrayBloomierFilter, key:String, dataWidth:Int) : Option[Array[Byte]] = {

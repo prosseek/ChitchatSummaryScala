@@ -5,7 +5,7 @@ import util.conversion.Util._
 /**
  * Created by smcho on 8/16/14.
  */
-class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int, q:Int, initialSeed:Int = 0, maxTry:Int = 5, allowOrder:Boolean = true) {
+class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int, q:Int, initialSeed:Int = 0, maxTry:Int = 5, complete:Boolean = false) {
   val byteSize = getByteSize(q)
 
   var hasher : BloomierHasher = _ // BloomierHasher(m = m, k = k, q = q, hashSeed = seed)
@@ -39,6 +39,10 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
   }
   def find() : Option[OrderAndMatch] = {
     var m = initialM
+    if (initialM == -1) {
+      m = map.size
+    }
+
     var oamf : OrderAndMatchFinder = null
 
     (0 until maxTry).foreach {i =>
@@ -48,14 +52,15 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
       var orderAndMatch = oamf.find()
 
       if (orderAndMatch.isDefined) { // found a solution
-        if (allowOrder || (!allowOrder && oamf.getDepthCount() == 1)) {
+        if (!complete || (complete && oamf.getDepthCount() == 1)) {
           this.m = m
           this.depth = oamf.getDepthCount()
           return orderAndMatch
         }
       }
       //WARNING - quick and dirty code, it should be optimized to return the best m
-      m = (m*1.5).toInt
+      m = (m*1.2).toInt
+      //println(s"Q:${q}/${oamf.getDepthCount()} : ${i}=>${m}")
 //      println(s"m = ${m}")
 //      println(s"depth = ${oamf.getDepthCount()}")
 //      println(s"history = ${oamf.getOrderHistory()}")
@@ -69,7 +74,7 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
   def create(map:Map[String, Array[Byte]]) = {
     val oamf = find()
     if (oamf.isEmpty) {
-      throw new RuntimeException(s"Cannot create a table with m(${m})/k(${k})/allowOrder(${allowOrder})/maxTry(${maxTry})")
+      throw new RuntimeException(s"Cannot create a table with m(${m})/k(${k})/complete(${complete})/maxTry(${maxTry})")
     }
 
     orderAndMatch = oamf.get

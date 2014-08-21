@@ -7,6 +7,9 @@ import BottomType._
 /**
  * The input parameter should be three tuples of data
  * (bits, min, max)
+ *
+ * WARNING: For QuadrupleBitsType, the a is signed bit.
+ *
  */
 abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int, Int), d:(Int, Int, Int)) extends BitsType {
   bits = List(a._1, b._1, c._1, d._1)
@@ -43,7 +46,10 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)
       try {
-        set(BitSetTool.bitSetToInt(bitSets(0)),
+        // [2014/08/21] bug fix
+        // For quadruple bits, the value can be signed
+        // in that case we need to recover the sign bits
+        set(BitSetTool.bitSetToInt(bitSets(0), bits(0)), // <- signed bit
           BitSetTool.bitSetToInt(bitSets(1)),
           BitSetTool.bitSetToInt(bitSets(2)),
           BitSetTool.bitSetToInt(bitSets(3)))

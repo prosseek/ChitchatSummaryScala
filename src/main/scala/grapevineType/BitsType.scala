@@ -39,7 +39,9 @@ abstract class BitsType extends GrapevineType with RangeChecker {
   //  BitSetTool.intToBitSet(values(2),                   + 0)
   def shiftAndJoin(values:List[Int], bits:List[Int]) = {
     // http://stackoverflow.com/questions/25319725/aggregation-of-bitset-collection-data-in-scala
-    (values zipWithIndex) map { case (v, i) => BitSetTool.intToBitSet(v, psum(i+1, bits)) } reduce {_ ++ _}
+    (values zipWithIndex) map { case (v, i) =>
+      val mask = (scala.math.pow(2, bits(i)).toInt - 1)
+      BitSetTool.intToBitSet(v & mask, psum(i+1, bits)) } reduce {_ ++ _}
   }
 
   //  val c = bs.filter(v => v >= psum(3, bits) && v < psum(2, bits)).map(_ - psum(3, bits)) <- lower bits

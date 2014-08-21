@@ -16,7 +16,16 @@ abstract class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int,
     val (a, b, c) = value.asInstanceOf[(Int, Int, Int)]
     set(a, b, c)
   }
-  def set(aValue:Int, bValue:Int, cValue:Int) = {
+
+
+  /**
+   *
+   * @param aValue
+   * @param bValue
+   * @param cValue
+   * @param aValueOffset
+   */
+  def checkAndSet(aValue:Int, bValue:Int, cValue:Int) = {
     val values = List(aValue, bValue, cValue)
     if (check(values, ranges)) {
       this.value = getValues(values, bits, this.signed) match {case List(a,b,c) => (a,b,c)}
@@ -25,7 +34,16 @@ abstract class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int,
       throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})] b [${bValue}(${b._2}-${b._3})] c [${cValue}(${c._2}-${c._3})]")
     }
   }
-  override def get() : (Int, Int, Int) = {
+//
+  def set(aValue:Int, bValue:Int, cValue:Int) = {
+    checkAndSet(aValue, bValue, cValue)
+  }
+//  // fromByteArray calls overriden set method (DateType#set)
+//  // _set is just to make sure that the method is not invoked
+//  def _set(aValue:Int, bValue:Int, cValue:Int) = {
+//    checkAndSet(aValue, bValue, cValue)
+//  }
+  override def get() : Any = { // (Int, Int, Int) = {
     this.value.asInstanceOf[(Int,Int,Int)]
   }
 
@@ -44,7 +62,11 @@ abstract class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int,
       val bitSets = splitBitSets(bs, bits)
 
       try {
-        set(BitSetTool.bitSetToInt(bitSets(0)),
+        // Bug  [2014/08/21]
+        // When DateType calls `fromByteArray`, the DataType.set() extracts
+        // Basedate to cause an error.
+        // This set should be strictly calling TripleBitsType.scala
+        checkAndSet(BitSetTool.bitSetToInt(bitSets(0)),
           BitSetTool.bitSetToInt(bitSets(1)),
           BitSetTool.bitSetToInt(bitSets(2)))
         NoError

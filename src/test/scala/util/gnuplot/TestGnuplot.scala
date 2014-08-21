@@ -36,7 +36,7 @@ class TestGnuplot extends FunSuite with BeforeAndAfter {
    * Execute from command file
    */
   test ("executeGnuplot") {
-    Gnuplotter.executeGnuplot("experiment/tmp/identification_rate.txt")
+    Gnuplotter.executeGnuplot("experiment/tmp/gnuplot.txt")
   }
 
   /**

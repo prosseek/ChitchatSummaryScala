@@ -15,6 +15,10 @@ abstract class GrapevineSummary extends ContextSummary {
     dataStructure(key) = gv
   }
 
+  protected def set(key:String, v:GrapevineType):Unit = {
+    dataStructure(key) = v
+  }
+
   def getValue(key:String) : Option[Any] = {
     if (dataStructure.contains(key)) Some(dataStructure(key).get)
     else None
@@ -32,16 +36,22 @@ abstract class GrapevineSummary extends ContextSummary {
    */
   override def create(dict: Map[String, Any]): Unit = {
     dict.foreach { case (key, v) =>
+      if (v.isInstanceOf[GrapevineType]) {
+        set(key, v.asInstanceOf[GrapevineType])
+      }
+      else {
         val t = GrapevineType.getTypeFromKey(key)
         if (t.nonEmpty) {
           set(key, t.get, v)
-        } else { // t is empty which means the type info is not in the key
+        } else {
+          // t is empty which means the type info is not in the key
           val t = GrapevineType.getTypeFromValue(v)
           if (t.nonEmpty) set(key, t.get, v)
           else {
             throw new RuntimeException(s"No GrapevineType retrieved from key nor value:${key} - value:${v.getClass.toString}")
           }
         }
+      }
     }
   }
 

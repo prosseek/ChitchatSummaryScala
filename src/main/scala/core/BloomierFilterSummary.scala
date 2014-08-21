@@ -27,7 +27,8 @@ class BloomierFilterSummary extends GrapevineSummary {
   def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 5, complete:Boolean = false): Unit = {
     super.create(map) // any map to grapevineDataTypeMap
     val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(q))
-    byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = m, k = k, q = q, initialSeed = 0, maxTry = maxTry, allowOrder = !complete)
+    //println(!complete)
+    byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = m, k = k, q = q, initialSeed = 0, maxTry = maxTry, complete = complete)
   }
 
   /**
@@ -54,13 +55,9 @@ class BloomierFilterSummary extends GrapevineSummary {
    *
    */
   override def get(key: String): Any = {
-//    // I'm given a byte array, how can I get the type back?
-//    // get(keyInput: String) : Option[Array[Byte]]
-//    val value = byteArrayBloomierFilter.get(key)
-//    if(value.isEmpty) {
-//      throw new RuntimeException(s"key(${key}) returns None from get, you should run check() first before using get in BloomierFilter")
-//    }
-    instance.value
+    // [2014/08/21] bug
+    // It should call the method, not the value
+    instance.get()
   }
 
   override def check(key: String): BottomType = {
