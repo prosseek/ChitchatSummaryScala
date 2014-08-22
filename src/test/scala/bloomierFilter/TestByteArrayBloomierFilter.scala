@@ -32,7 +32,7 @@ class TestByteArrayBloomierFilter extends FunSuite with BeforeAndAfter  {
 //    Found solution? true
 //    Depth = 1
 //    M = 6
-val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = true)
+val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, complete = false)
     val r = t.find()
     println(s"Found solution? ${r.isDefined}")
     println(s"Depth = ${t.getDepth()}")
@@ -43,7 +43,7 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     //    Found solution? true
     //    Depth = 3
     //    M = 13
-    var t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = true)
+    var t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 20, complete = false)
     var r = t.find()
     println(s"Found solution? ${r.isDefined}")
     println(s"Depth = ${t.getDepth()}")
@@ -52,7 +52,7 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     //    Found solution? true
     //    Depth = 1
     //    M = 28
-    t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = false)
+    t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 20, complete = true)
     r = t.find()
     println(s"Found solution? ${r.isDefined}")
     println(s"Depth = ${t.getDepth()}")
@@ -60,14 +60,14 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
   }
 
   test ("map1/2 get table") {
-    var t = new ByteArrayBloomierFilter(map1, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = true)
+    var t = new ByteArrayBloomierFilter(map1, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, complete = false)
     printTable(t.getTable())
-    t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = true)
+    t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, complete = false)
     printTable(t.getTable())
   }
 
   test ("map1 get/set test") {
-    var t = new ByteArrayBloomierFilter(map1, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = true)
+    var t = new ByteArrayBloomierFilter(map1, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, complete = false)
     var res = t.get("a").get
     println(s"ByteArray - ${res.mkString(":")}, = ${ByteArrayTool.byteArrayToFloat(res)}")
     res = t.get("b").get
@@ -76,7 +76,7 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     println(s"Empty for ax? - ${t.get("ax").isEmpty}, value = ${res.mkString(":")}/${ByteArrayTool.byteArrayToByte(res)}")
   }
   test ("map2 get/set test") {
-    var t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, allowOrder = true)
+    var t = new ByteArrayBloomierFilter(map2, initialM = 6, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, complete = false)
     var res = t.get("a").get
     println(s"ByteArray - ${res.mkString(":")}, = ${ByteArrayTool.byteArrayToFloat(res)}")
     res = t.get("b").get

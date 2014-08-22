@@ -24,7 +24,7 @@ class BloomierFilterSummary extends GrapevineSummary {
     }.reduce { _ ++ _}
   }
 
-  def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 5, complete:Boolean = false): Unit = {
+  def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, complete:Boolean = false): Unit = {
     super.create(map) // any map to grapevineDataTypeMap
     val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(q))
     //println(!complete)
@@ -60,7 +60,11 @@ class BloomierFilterSummary extends GrapevineSummary {
     instance.get()
   }
 
-  override def check(key: String): BottomType = {
+  override def check(key:String): BottomType = {
+    check(key, useRelation = false)
+  }
+
+  def check(key: String, useRelation:Boolean = false): BottomType = {
     val j = new Joiner
     val value = j.join(byteArrayBloomierFilter, key) // Option[Array[Byte]]
 

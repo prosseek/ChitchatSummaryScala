@@ -33,7 +33,11 @@ class TestJoiner extends FunSuite with BeforeAndAfter {
   }
 
   test ("joinString") {
-    val sampleString = "Hello, world"
+//    val sampleString = "Hello, world" // This will return "Hello, world4
+//    val map = s.split("message", StringType(sampleString), 2)
+//    val bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = 2*8)
+
+    val sampleString = "Hello, world!" // This will return "Hello, world4
     val map = s.split("message", StringType(sampleString), 2)
     val bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = 2*8)
 

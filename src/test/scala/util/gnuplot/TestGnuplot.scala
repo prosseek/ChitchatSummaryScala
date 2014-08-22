@@ -44,7 +44,8 @@ class TestGnuplot extends FunSuite with BeforeAndAfter {
    */
   test ("getPlotCommand") {
     val map = Map[Int, String](1 -> "Hello", 2 -> "World")
-    assert(Gnuplotter.getPlotCommand("Hello", map) == """plot "Hello" using 1:1 title "Hello" w lp, using 1:2 title "World" w lp""")
+    //println(Gnuplotter.getPlotCommand("Hello", map))
+    assert(Gnuplotter.getPlotCommand("Hello", map) == """plot  "Hello" using 1:1 title "Hello" w lp,  "Hello" using 1:2 title "World" w lp""")
   }
 
   /**
