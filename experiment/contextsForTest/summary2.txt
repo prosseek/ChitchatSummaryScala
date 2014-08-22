@@ -1,5 +1,5 @@
-longitude -> (-30, 17, 13, 5)
-latitude -> (-97, 44, 11, 5)
+longitude -> (-97, 44, 11, 5)
+latitude -> (-30, 17, 13, 5)
 message -> This is very critical information.
 time -> (13, 15)
 date -> (2014, 08, 21)

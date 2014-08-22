@@ -5,6 +5,7 @@ package core
 import bloomierFilter.ByteArrayBloomierFilter
 import grapevineType.BottomType._
 import grapevineType._
+import ontology.Relation
 import util.conversion.{Joiner, Splitter, Util}
 
 import scala.collection.mutable.{Map => MMap}
@@ -70,10 +71,18 @@ class BloomierFilterSummary extends GrapevineSummary {
 
     if (value.isEmpty) Bottom
     else {
+      // get the data
       val t = GrapevineType.getTypeFromKey(key)
       var assumedType: Class[_] = if (t.isDefined) t.get else classOf[ByteType]
       instance = assumedType.newInstance.asInstanceOf[GrapevineType]
-      instance.fromByteArray(value.get)
+      val res = instance.fromByteArray(value.get)
+
+      if (useRelation) {
+        val r = new Relation(this)
+        r.check(key)
+      } else
+        // if we don't use relation, we just return the OK/Bottom status 
+        res
     }
   }
 }

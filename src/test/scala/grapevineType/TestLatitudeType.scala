@@ -10,12 +10,13 @@ class TestLatitudeType extends FunSuite with BeforeAndAfter {
   before {
     t = new LatitudeType
   }
+
   test ("simple") {
-    t.set(100, 10, 20, 40)
-    assert(t.get == (100, 10, 20, 40))
+    t.set(32, 10, 20, 40)
+    assert(t.get == (32, 10, 20, 40))
 
     intercept[RuntimeException] {
-      t.set(-181, 10, 20, 40)
+      t.set(-91, 10, 20, 40)
     }
   }
 
@@ -30,4 +31,11 @@ class TestLatitudeType extends FunSuite with BeforeAndAfter {
     val ba = Array[Byte](-1, 74, 33, 3)
     assert(t.fromByteArray(ba) == Computational)
   }
+
+  test("toDouble") {
+    t.set(30, 17,12, 9)
+    //println(t.toDouble)
+    assert(math.abs(t.toDouble - 30.28691) < 0.01)
+  }
+
 }
