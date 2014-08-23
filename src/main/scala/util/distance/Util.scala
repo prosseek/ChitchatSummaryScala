@@ -1,5 +1,7 @@
 package util.distance
 
+import java.util.Date
+
 import grapevineType._
 
 /**
@@ -29,4 +31,17 @@ object Util {
   }
 
   def toMile(kilo:Double) = 0.6214 * kilo
+
+  def getDateDistance(standard:DateType, date:DateType) = {
+    val s = standard.value.asInstanceOf[(Int, Int, Int)]
+    val d = date.value.asInstanceOf[(Int, Int, Int)]
+    val diff = (new Date(d._1, d._2, d._3)).getTime() - (new Date(s._1, s._2, s._3)).getTime()
+    diff / (24*60*60*1000)
+  }
+
+  def getTimeDistance(standard:TimeType, time:TimeType) = {
+    val s = standard.value.asInstanceOf[(Int, Int)]
+    val d = time.value.asInstanceOf[(Int, Int)]
+    (d._1 * 60 + d._2) - (s._1 * 60 + s._2)
+  }
 }

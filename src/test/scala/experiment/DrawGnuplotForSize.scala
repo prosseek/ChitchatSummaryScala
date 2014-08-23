@@ -7,7 +7,7 @@ import util.gnuplot.Gnuplotter
 /**
  * Created by smcho on 8/20/14.
  */
-class TestRun extends FunSuite with BeforeAndAfter {
+class DrawGnuplotForSize extends FunSuite with BeforeAndAfter {
   def getMapForSize(summaryName:String): Map[String, String] = {
     Map[String, String](
       "GNUPLOTFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/size/${summaryName}.txt",
