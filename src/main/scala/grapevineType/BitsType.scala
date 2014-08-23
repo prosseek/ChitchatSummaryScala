@@ -57,7 +57,7 @@ abstract class BitsType extends GrapevineType with RangeChecker {
     if (bs.filter(_ >= bits.sum).size == 0)
       res
     else
-      res ++ List(bs.filter(_ >= bits.sum))
+      res ++ List(bs.filter(_ >= bits.sum).map(_ - bits.sum)) // we may don't need map(_ - psum...) code as this means the error
   }
   override def getSize = getBytes(bits)
 }
