@@ -47,10 +47,17 @@ abstract class BitsType extends GrapevineType with RangeChecker {
   //  val c = bs.filter(v => v >= psum(3, bits) && v < psum(2, bits)).map(_ - psum(3, bits)) <- lower bits
   //  val b = bs.filter(v => v >= psum(2, bits) && v < psum(1, bits)).map(_ - psum(2, bits))
   //  val a = bs.filter(v => v >= psum(1, bits) && v < psum(0, bits)).map(_ - psum(1, bits)) <- higher bits
-  def splitBitSets(bs:BitSet, bits:List[Int]) = {
-    (List[BitSet]() /: Range(0, bits.size)) { (acc, index) =>
+  def splitBitSets(bs:BitSet, bits:List[Int]) : List[BitSet]= {
+    // bug [2014/08/23]
+    // this method returned only the bitsets within the bit range
+    // but it should also return the outside the range, as it indicates the Computational bottom
+    val res = (List[BitSet]() /: Range(0, bits.size)) { (acc, index) =>
       acc ++ List(bs.filter(v => v >= psum(index+1, bits) && v < psum(index, bits)).map(_ - psum(index+1, bits)))
     }
+    if (bs.filter(_ >= bits.sum).size == 0)
+      res
+    else
+      res ++ List(bs.filter(_ >= bits.sum))
   }
   override def getSize = getBytes(bits)
 }

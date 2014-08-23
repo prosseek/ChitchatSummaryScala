@@ -36,4 +36,11 @@ class TestBitsType extends FunSuite with BeforeAndAfter {
     val bits = List(9,6,6,7)
     assert(t.shiftAndJoin(values, bits) == BitSet(0, 2, 7, 8, 10, 15, 16, 18, 19, 20, 21, 22, 23, 26, 27))
   }
+  // Debuging for [2014/08/23]
+  test("debug check - splitBitSets") {
+    // with 1 bit range, this test should return empty bitset
+    val bs = BitSet(1,3)
+    val bits:List[Int] = List(1)
+    assert(t.splitBitSets(bs, bits) == List(BitSet(), BitSet(1,3)))
+  }
 }

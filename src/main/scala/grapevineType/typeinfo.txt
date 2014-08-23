@@ -7,9 +7,14 @@ id   name              bits       bytes     Range/Encoded        Etc
  4 : StringType        n * 8        n       only printable chars
  5 : DateType          16(7/4/5)    2       Modified             Year base is 2000
  6 : TimeType          11(5/6)      2       Custom
- 7 : LatitudeType      28(9/6/6/7)  4       WSG
- 8 : LongitudeType     27(8/6/6/7)  4       WSG
+ 7 : LatitudeType      28(9/6/6/7)  4       WSG                  pair with LongitudeType
+ 8 : LongitudeType     27(8/6/6/7)  4       WSG                  pair with LatitudeType
  9 : AgeType           8            1       (0, 120)
 10 : SpeedType         8            1       (0, 150)
 11 : TemperatureType   8            1       (-50, 60)
 12 : LevelType         8            1       (0, 10)               pair with others
+13 : BitType           1            1       (0, 0)
+-----
+
+LevelType - athelete, recommendation
+BitType - advertisement, urgent

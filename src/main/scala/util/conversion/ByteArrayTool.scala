@@ -107,7 +107,11 @@ object ByteArrayTool {
     scala.collection.immutable.BitSet(res: _*)
   }
 
-  def bitSetToByteArray(x:BitSet, goalSize:Int = -1) = {
+  def bitSetToByteArray(x:BitSet, goalSize:Int = -1) :Array[Byte] = {
+    // bug [2014/08/23]
+    // when there is no input in x:BitSet, should return Array[Byte](0)
+    if (x.size == 0) return Array[Byte](0)
+
     val bits = MMap[Int, Byte]().withDefaultValue(0)
     for (i <- x) {
       val bitLocation = i % 8

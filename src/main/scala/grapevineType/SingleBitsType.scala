@@ -38,20 +38,20 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
     val totalBytes = getBytes(bits) // bits.sum/8 + 1 // get the total bytes for the encoded data
-    if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
-      val bs = byteArrayToBitSet(ba)
-      val bitSets = splitBitSets(bs, bits)
+    if (super.fromByteArray(ba, byteSize = totalBytes) != NoError)
+      return Computational
+    val bs = byteArrayToBitSet(ba)
+    val bitSets = splitBitSets(bs, bits)
 
-      try {
-        set(BitSetTool.bitSetToInt(bitSets(0)))
-        NoError
-      }
-      catch {
-        // RuntimeException is raised from set when the values decoded are out of range
-        case e: RuntimeException => Computational
-      }
-    } else {
-      Computational
+    if (bitSets.size > 1) return Computational
+
+    try {
+      set(BitSetTool.bitSetToInt(bitSets(0)))
+      NoError
+    }
+    catch {
+      // RuntimeException is raised from set when the values decoded are out of range
+      case e: RuntimeException => Computational
     }
   }
 }
