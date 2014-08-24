@@ -26,4 +26,11 @@ class TestUtil extends FunSuite {
       assert(Util.getByteSizeFromSize(i) == results(i))
     }
   }
+  test ("intToShort") {
+    var input = 1.toShort
+    assert(Util.intToShort(1) == input)
+
+    var intInput = 1 << 15
+    assert(Util.intToShort(intInput) == (1 << 15).toShort)
+  }
 }

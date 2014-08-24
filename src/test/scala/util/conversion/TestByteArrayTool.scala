@@ -86,14 +86,20 @@ class TestByteArrayTool extends FunSuite {
   }
 
   // string
-  // TODO!
-  // CHECK THIS OUT, REMAKE THE STRING TEST
-  test ("string to byte array and back test") {
+  test ("stringToByteArray") {
     var value = "Hello, world"
-    assert(value == ByteArrayTool.byteArrayToString(ByteArrayTool.stringToByteArray(value, 12))) // before it was 10
-    // even though the buffer size is bigger, the return value should be OK
-    //assert(value == ByteArray.byteArrayToString(ByteArray.stringToByteArray(value, 100)))
-    //assert("He" == ByteArray.byteArrayToString(ByteArray.stringToByteArray(value, 2)))
+    assert(ByteArrayTool.stringToByteArray(value)(0) == value.size)
+    assert(new String(ByteArrayTool.stringToByteArray(value).slice(1, 1 + value.size), "ASCII") == value)
+  }
+
+  test ("ByteArrayToString") {
+    var value = "Hello"
+    var ba = Array[Byte](5) ++ value.getBytes
+    assert(value == ByteArrayTool.byteArrayToString(ba))
+
+    value = List.fill(255)("a").mkString
+    ba = Array[Byte](-1) ++ value.getBytes
+    assert(value == ByteArrayTool.byteArrayToString(ba))
   }
 
   test("bitSet to bytearray test") {
@@ -113,4 +119,17 @@ class TestByteArrayTool extends FunSuite {
     assert(ByteArrayTool.byteArrayToBitSet(y) == x)
   }
 
+  test ("byteToUnsigned") {
+    assert(ByteArrayTool.byteToUnsigned(2) == 2)
+    assert(ByteArrayTool.byteToUnsigned(1) == 1)
+    assert(ByteArrayTool.byteToUnsigned(-1) == 255)
+    assert(ByteArrayTool.byteToUnsigned(-2) == 254)
+  }
+
+  test ("unsignedToByte") {
+    assert(ByteArrayTool.unsignedToByte(2) == 2)
+    assert(ByteArrayTool.unsignedToByte(1) == 1)
+    assert(ByteArrayTool.unsignedToByte(255) == -1)
+    assert(ByteArrayTool.unsignedToByte(254) == -2)
+  }
 }

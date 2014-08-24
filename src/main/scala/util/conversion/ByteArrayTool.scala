@@ -91,16 +91,47 @@ object ByteArrayTool {
     adjust(intToByteArray(l), originalSize = 4, goalSize = size)
   }
 
+  /**
+   * -1 --> 255
+   * @param x
+   * @return
+   */
+  def byteToUnsigned(x:Byte) :Int = {
+    (0xFF & x).toInt
+  }
+
+  def unsignedToByte(x:Int) :Byte = {
+    assert(x >= 0 && x < 256)
+    if (x >= 0 && x < 256/2) x.toByte
+    else (x - 256).toByte
+  }
+
   // string
   def stringToByteArray(x: String, n:Int = -1) = {
-    val size = if (n == -1) x.size else n
-    assert (size >= x.size)
-    // When n is given a value more than 0, it makes room for storing all of the n bytes
-    //val size = x.size // if (n <= 0) x.size else n
-    //ByteBuffer.allocate(n).put(x.slice(0, size).getBytes()).array()
-    val diff = size - x.size
-//    ByteBuffer.allocate(n).put((x + " "*diff).getBytes()).array()
-    ByteBuffer.allocate(x.size).put((x).getBytes()).array() ++ new Array[Byte](diff)
+    // we implement Pascal type string (that has size of string as the first element)
+    val size = if (n == -1) (x.size + 1) else n
+    assert (size >= (x.size + 1), s"${size} >= ${x.size + 1}???")
+    val diff = size - (x.size + 1)
+    // Array[Byte](unsignedToByte(x.size)) ++ ByteBuffer.allocate(x.size).put((x).getBytes()).array() ++ new Array[Byte](diff)
+    Array[Byte](unsignedToByte(x.size)) ++ x.getBytes() ++ new Array[Byte](diff)
+  }
+
+  /**
+   * detect the location of 0
+   * http://stackoverflow.com/questions/23976309/trimming-byte-array-when-converting-byte-array-to-string-in-java-scala
+   * @param x
+   */
+//  def byteArrayToString(x: Array[Byte]) = {
+//    new String( x.array.takeWhile(_ > 0), "ASCII" )
+//  }
+  def byteArrayToString(x: Array[Byte]) = {
+    val size = byteToUnsigned(x(0))
+    assert(x.size >= size + 1)
+    new String(x.slice(1, size + 1), "ASCII")
+  }
+
+  def byteArrayToStringNoInterpret(x: Array[Byte]) = {
+    new String(x, "ASCII")
   }
 
   // byte array
@@ -147,14 +178,7 @@ object ByteArrayTool {
 //    if (header.forall(_ == 0)) Some(f(value)) else None
 //  }
 
-  /**
-   * detect the location of 0
-   * http://stackoverflow.com/questions/23976309/trimming-byte-array-when-converting-byte-array-to-string-in-java-scala
-   * @param x
-   */
-  def byteArrayToString(x: Array[Byte]) = {
-    new String( x.array.takeWhile(_ > 0), "ASCII" )
-  }
+
 
   // byte
   /**

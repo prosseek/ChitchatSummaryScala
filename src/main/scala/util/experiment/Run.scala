@@ -1,4 +1,4 @@
-package util.conversion.experiment
+package util.experiment
 
 import core.{BloomierFilterSummary, GrapevineSummary}
 import util.io.File

@@ -3,14 +3,12 @@ package experiment
 import core.BloomierFilterSummary
 import grapevineType.BottomType._
 import grapevineType._
-import org.scalatest.FunSuite
-import util.conversion.experiment.Run
+import util.experiment.Run
 
 /**
  * Created by smcho on 8/21/14.
  */
-class TestNoFalsePositives extends FunSuite {
-  test ("Simple") {
+object AppNoFalsePositives extends App {
     def getValueFromBF(bf:BloomierFilterSummary, key:String): Any = {
       if (bf.check(key) == NoError)
         bf.get(key)
@@ -28,11 +26,12 @@ class TestNoFalsePositives extends FunSuite {
           assert(math.abs(getValueFromBF(bf, key).asInstanceOf[Float] - ls.get(key).asInstanceOf[Float]) <= 0.01)
         }
         else
-          assert(getValueFromBF(bf, key) == ls.get(key))
+          assert(getValueFromBF(bf, key) == ls.get(key), s"key (${key}) BF - ${getValueFromBF(bf, key)} vs Labeled - ${ls.get(key)}")
       }
     }
-  //  (1 to 10).foreach { check("experiment/contextsForTest/summary1.txt", _) }
-  //  (1 to 10).foreach { check("experiment/contextsForTest/summary2.txt", _) }
-  //  (1 to 10).foreach { check("experiment/scenario/s1.txt", _) }
+  (1 to 10).foreach { check("experiment/contextsForTest/summary1.txt", _) }
+  (1 to 10).foreach { check("experiment/contextsForTest/summary2.txt", _) }
+  (1 to 10).foreach { i =>
+    check("experiment/scenario/s1.txt", i)
   }
 }

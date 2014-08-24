@@ -4,10 +4,14 @@ package util.conversion
  * Created by smcho on 8/16/14.
  */
 object Util {
-  def getByteSize(q:Int) = {
+  def getIteration(q:Int, d:Int) = {
     if (q == 0) 1
-    else if (q % 8 == 0) q / 8
-    else q / 8 + 1
+    else if (q % d == 0) q / d
+    else q / d + 1
+  }
+
+  def getByteSize(q:Int) = {
+    getIteration(q, 8)
   }
 
   def getBitWidth(size:Int) : Int = {
@@ -26,5 +30,11 @@ object Util {
 
   def getByteSizeFromSize(size:Int) = {
     getByteSize(getBitSizeFromSize(size))
+  }
+
+  def intToShort(v:Int) : Short = {
+    val shortMax = ((1 << 15) - 1) // 32767
+    if (v > shortMax) (v - (1 << 16)).toShort
+    else v.toShort
   }
 }

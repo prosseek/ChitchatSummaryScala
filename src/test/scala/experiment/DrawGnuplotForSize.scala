@@ -1,13 +1,12 @@
 package experiment
 
-import org.scalatest._
-import util.conversion.experiment.Run
+import util.experiment.Run
 import util.gnuplot.Gnuplotter
 
 /**
  * Created by smcho on 8/20/14.
  */
-class DrawGnuplotForSize extends FunSuite with BeforeAndAfter {
+object DrawGnuplotForSize extends App {
   def getMapForSize(summaryName:String): Map[String, String] = {
     Map[String, String](
       "GNUPLOTFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/size/${summaryName}.txt",
@@ -23,7 +22,8 @@ class DrawGnuplotForSize extends FunSuite with BeforeAndAfter {
     )
   }
 
-  test ("Simple test: bytes vs size") {
+  def testIt(message:String) { // } () {
+    println(message)
     //var arrays = Run.getSizes(summaryPath="experiment/contextsForTest/summary1.txt")
     //Gnuplotter.plot(getMapForSize("summary1"), arrays)
 
@@ -33,4 +33,6 @@ class DrawGnuplotForSize extends FunSuite with BeforeAndAfter {
     val arrays = Run.getSizes(summaryPath="experiment/scenario/s1.txt")
     Gnuplotter.plot(getMapForSize("scenario1"), arrays)
   }
+
+  testIt("Simple test: bytes vs size")
 }

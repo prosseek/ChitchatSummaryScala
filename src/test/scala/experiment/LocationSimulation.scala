@@ -1,13 +1,12 @@
 package experiment
 
 import grapevineType._
-import org.scalatest._
-import util.conversion.experiment.Simulation
+import util.experiment.Simulation
 
 /**
  * Created by smcho on 8/22/14.
  */
-class LocationSimulation extends FunSuite {
+object LocationSimulation extends App {
   val latitudeHere = new LatitudeType((30, 25, 7, 1))
   val longitudeHere = new LongitudeType((-97, 53, 24, 9))
 
@@ -46,7 +45,9 @@ class LocationSimulation extends FunSuite {
     else false
   }
 
-  test ("Bottom number check") {
+  def testIt(message:String) { // } ("") {
+    println(message)
+
     var bottom = 0
     var non_bottom = 0
     var near_me = 0
@@ -66,4 +67,5 @@ class LocationSimulation extends FunSuite {
     }
     println(s"BOTTOM - ${bottom}, NON-BOTTOM - ${non_bottom}, NEAR_ME - ${near_me}")
   }
+  testIt("Bottom number check")
 }

@@ -1,13 +1,12 @@
 package experiment
 
 import grapevineType._
-import org.scalatest.FunSuite
-import util.conversion.experiment.Simulation
+import util.experiment.Simulation
 
 /**
  * Created by smcho on 8/22/14.
  */
-class OneBitSimulation extends FunSuite {
+object OneBitSimulation extends App {
 
   val oneBit = new BitType
 
@@ -23,7 +22,9 @@ class OneBitSimulation extends FunSuite {
     getOneBit(Simulation.getRandomByteArray(size))
   }
 
-  test("OneBit") {
+  def testIt(message:String = "OneBit") {
+    println(message)
+
     var bottom = 0
     var non_bottom = 0
     (1 to 100000).foreach { i =>
@@ -36,4 +37,6 @@ class OneBitSimulation extends FunSuite {
     }
     println(s"Date check: BOTTOM - ${bottom}, NON-BOTTOM - ${non_bottom}")
   }
+
+  testIt()
 }

@@ -21,22 +21,19 @@ class TestJoiner extends FunSuite with BeforeAndAfter {
   test ("getInterpretableString") {
     val str = "Hello"
     val ba = ByteArrayTool.stringToByteArray(str, str.size + 10)
-    assert(t.getInterpretableString(ba) == str)
+    assert(t.getInterpretableString(ba.slice(1, ba.size)) == str)
+    //assert(t.getInterpretableString(ba) == str)
   }
 
   test ("isInterpretableString") {
     val str = "Hello"
     val ba10 = ByteArrayTool.stringToByteArray(str, str.size + 10)
-    val ba = ByteArrayTool.stringToByteArray(str, str.size + 0)
-    assert(t.isInterpretableString(ba10) == false)
-    assert(t.isInterpretableString(ba))
+    val ba = ByteArrayTool.stringToByteArray(str, str.size + 1)
+    assert(t.isInterpretableString(ba10.slice(1, ba10.size)) == false)
+    assert(t.isInterpretableString(ba.slice(1, ba.size)))
   }
 
   test ("joinString") {
-//    val sampleString = "Hello, world" // This will return "Hello, world4
-//    val map = s.split("message", StringType(sampleString), 2)
-//    val bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = 2*8)
-
     val sampleString = "Hello, world!" // This will return "Hello, world4
     val map = s.split("message", StringType(sampleString), 2)
     val bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = 2*8)

@@ -24,7 +24,7 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
       throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})]")
     }
   }
-  override def get() : Int = {
+  override def get() : Any = {
     this.value.asInstanceOf[Int]
   }
 
@@ -35,7 +35,6 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
     val res = shiftAndJoin(values, bits)
     bitSetToByteArray(res, goalSize = goalSize)
   }
-
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
     val totalBytes = getBytes(bits) // bits.sum/8 + 1 // get the total bytes for the encoded data

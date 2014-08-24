@@ -28,23 +28,21 @@ class TestStringType extends FunSuite with BeforeAndAfter {
 
   test("to/from bytearray") {
     t.set("Hello")
-    assert(t.toByteArray().mkString(":") == "72:101:108:108:111")
-    assert(t.toByteArray(10).mkString(":") == "72:101:108:108:111:0:0:0:0:0")
+    //println(t.toByteArray().mkString(":"))
+    assert(t.toByteArray().mkString(":") == "5:72:101:108:108:111")
+    assert(t.toByteArray(10).mkString(":") == "5:72:101:108:108:111:0:0:0:0")
 
     val st = "Hello, World"
-    val b = ByteArrayTool.stringToByteArray(st, st.size)
+    val b = ByteArrayTool.stringToByteArray(st, (st.size + 1))
     t.fromByteArray(b)
     assert(t.get == st)
-//
-//    val c = t.toByteArray()
-//    assert(b == c)
   }
 
   test("Bottom_c test") {
     // upper bits contain 1
-    var b = Array[Byte](33, 1)
+    var b = Array[Byte](2, 33, 1)
     assert(t.fromByteArray(b) == Computational)
-    b = Array[Byte](33, 33)
+    b = Array[Byte](2, 33, 33)
     assert(t.fromByteArray(b) == NoError)
   }
 }

@@ -1,4 +1,4 @@
-package util.conversion.experiment
+package util.experiment
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random

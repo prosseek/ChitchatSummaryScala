@@ -3,6 +3,8 @@ package util.conversion
 import bloomierFilter.ByteArrayBloomierFilter
 import grapevineType._
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
  * Created by smcho on 8/17/14.
  */
@@ -34,59 +36,82 @@ class Joiner {
   }
 
   def joinStringFromKeys(bbf:ByteArrayBloomierFilter, key:String) : Option[Array[Byte]] = {
-    val sb = new StringBuilder
+    val ba = ArrayBuffer[Byte]()
 
-    (0 until 256).foreach { i =>
+    var res = bbf.get(s"${key}0")
+    if (res.isEmpty) return None
+
+    val size = 0xFF & (res.get)(0)
+    val totalSize = size + 1
+    val width = bbf.getWidth()
+
+    if (width >= totalSize) return None // in this case, there should be no joining byte arrays
+    val iteration = Util.getIteration(totalSize, width)
+
+    // process the first (0th) result
+    ba ++= res.get
+
+    // process everything in between
+    (1 until (iteration - 1)).foreach { i =>
       val newKey = s"${key}${i}"
       val res = bbf.get(newKey)
-
-      // when there is no value with key0 assigned, it's None
-      if (i == 0) {
-        // bug [2014/08/23]
-        // string should start with " character
-        if (res.isEmpty) return None
-        //if (res.get(0) != '\"') return None
-        if (!isInterpretableString(res.get)) return None
-      }
-      if (res.isDefined && isInterpretableString(res.get)) {
-        sb.append(ByteArrayTool.byteArrayToString(res.get))
-      }
-      else { // this is the last one
-        sb.append(getInterpretableString(res.get))
-        return Some(ByteArrayTool.stringToByteArray(sb.toString))
-      }
+      if (res.isEmpty) return None
+      if (!isInterpretableString(res.get)) return None
+      ba ++= res.get
     }
-    throw new RuntimeException(s"Substrings exceed maximum 256")
+
+    // process the last one
+    res = bbf.get(s"${key}${iteration-1}")
+    if (res.isEmpty) return None
+    var lastItem = totalSize % width
+    if (lastItem == 0) lastItem = width
+    val lastRes = res.get.slice(0, lastItem)
+    if (!isInterpretableString(lastRes)) return None
+    ba ++= lastRes
+
+    Some(ba.toArray)
   }
 
   def joinString(bbf:ByteArrayBloomierFilter, key:String) : Option[Array[Byte]] = {
-    // [2014/08/21] bug fix
-    // In some cases re1 is printable character (UW{1) for this case, we return the maximum string
-    val res1 = bbf.get(key)
+    var str1:String = ""
+    var str2:String = ""
+
+    val res1 = bbf.get(key) // just an Array[Byte]
+    if (res1.isDefined) {
+      val ba = res1.get
+      val width = bbf.getWidth()
+      val size = ba(0) & 0xFF
+      if (width >= (size + 1))
+        str1 = ByteArrayTool.byteArrayToString(ba)
+    }
     val res2 = joinStringFromKeys(bbf, key)
+    if (res2.isDefined) {
+      str2 = ByteArrayTool.byteArrayToString(res2.get)
+    }
 
-    if (res1.isEmpty) return res2
-    if (res2.isEmpty) return res1
-
-    val lenght1 = res1.get.size
-    val length2 = res2.get.size
-
-    if (length2 > lenght1) return res2
-    res1
+    if (res1.isEmpty && res2.isEmpty) return None
+    if (res1.isEmpty) {
+      if (str2 == "") None else str2
+    }
+    if (res2.isEmpty) {
+      if (str1 == "") None else str1
+    }
+    if (str2.size > str1.size) return res2
+    return res1
   }
 
   def joinFromBloomierFilter(bbf:ByteArrayBloomierFilter, key:String, dataWidth:Int) : Option[Array[Byte]] = {
-    def getIterationNumber(dataWidth:Int, tableWidth:Int) = {
-      val q1 = dataWidth / tableWidth
-      val q2 = dataWidth % tableWidth
-      if (q2 == 0) q1
-      else q1 + 1
-    }
+//    def getIterationNumber(dataWidth:Int, tableWidth:Int) = {
+//      val q1 = dataWidth / tableWidth
+//      val q2 = dataWidth % tableWidth
+//      if (q2 == 0) q1
+//      else q1 + 1
+//    }
 
     val tableWidth = bbf.getWidth()
     if (tableWidth >= dataWidth) bbf.get(key)
     else {
-      val range = Range(0, getIterationNumber(dataWidth, tableWidth))
+      val range = Range(0, Util.getIteration(dataWidth, tableWidth))
       val res = (Array[Byte]() /: range) { (acc, i) =>
         val newKey = s"${key}${i}"
         val value = bbf.get(newKey)

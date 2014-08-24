@@ -1,13 +1,12 @@
 package experiment
 
 import grapevineType._
-import org.scalatest.FunSuite
-import util.conversion.experiment.Simulation
+import util.experiment.Simulation
 
 /**
  * Created by smcho on 8/22/14.
  */
-class DateTimeSimulation extends FunSuite {
+object DateTimeSimulation extends App {
 
   val dateType = new DateType((2014,8,23))
   val timeType = new TimeType((13,0))
@@ -50,7 +49,7 @@ class DateTimeSimulation extends FunSuite {
     getTime(Simulation.getRandomByteArray(size))
   }
 
-  test("Date") {
+  def testDate():Unit = {
     var bottom = 0
     var non_bottom = 0
     var recent_me = 0
@@ -74,7 +73,7 @@ class DateTimeSimulation extends FunSuite {
     println(s"Date check: BOTTOM - ${bottom}, NON-BOTTOM - ${non_bottom}, NEAR_ME - ${recent_me}, FUTURE_ME - ${future_me}")
  }
 
-  test("Time") {
+  def testTime() {
     var bottom = 0
     var non_bottom = 0
     var near_me = 0
@@ -90,4 +89,7 @@ class DateTimeSimulation extends FunSuite {
     }
     println(s"Time check: BOTTOM - ${bottom}, NON-BOTTOM - ${non_bottom}, NEAR_ME - ${near_me}")
   }
+
+  testDate()
+  testTime()
 }

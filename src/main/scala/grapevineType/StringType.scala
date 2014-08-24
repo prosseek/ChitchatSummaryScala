@@ -9,9 +9,7 @@ import util.conversion.ByteArrayTool
 
 object StringType {
   def isPrintable(v:Char) = {
-    // [2014/08/23]
-    // Check the issues.txt why some of the characters are excluded
-    (v >= 0x20 && v <= 0x7E)  // && (v != '#' && v != '+' && v != '=')
+    (v >= 0x20 && v <= 0x7E)
   }
   def getId = 4
 }
@@ -21,7 +19,7 @@ case class StringType(input:String) extends GrapevineType {
   def this() = this(null)
 
   def check(value:String) = {
-    //value(0) == '\"' && // value(value.size-1) == '\"' &&
+    assert(value.size < 256) // 1 byte can describe 0 to 255, so 255 is the maximum
     value.forall {StringType.isPrintable}
   }
   def set(value: Any) : Unit = {
@@ -33,16 +31,13 @@ case class StringType(input:String) extends GrapevineType {
 
   override def toByteArray(goalSize: Int): Array[Byte] = {
     val v = this.value.asInstanceOf[String]
-    val size = if (goalSize == -1) v.size else goalSize
+    val size = if (goalSize == -1) (v.size + 1) else goalSize
     ByteArrayTool.stringToByteArray(v, size)
   }
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
-    // http://stackoverflow.com/questions/25328027/detecting-the-index-in-a-string-that-is-not-printable-character-with-scala
-    val npList = ba.indexWhere(v => !StringType.isPrintable(v.toChar))
-    val strlen = if (npList == -1) ba.size else npList
-
-    if (super.fromByteArray(ba, byteSize = strlen, f = ByteArrayTool.byteArrayToString) == NoError) {
+    val size = (ByteArrayTool.byteToUnsigned(ba(0)) + 1) // pascal type string
+    if (super.fromByteArray(ba, byteSize = size, f = ByteArrayTool.byteArrayToString) == NoError) {
       try {
         val result = this.value.asInstanceOf[String]
         if (check(result)) {
@@ -61,6 +56,6 @@ case class StringType(input:String) extends GrapevineType {
     }
   }
   override def getId = StringType.getId
-  override def getSize = this.value.asInstanceOf[String].size
+  override def getSize = this.value.asInstanceOf[String].size + 1 // for 1 byte to indicate the size
   override def getTypeName() = "StringType"
 }

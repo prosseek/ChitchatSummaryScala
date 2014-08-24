@@ -4,6 +4,7 @@ import util.conversion.ByteArrayTool._
 /**
  * Created by smcho on 8/16/14.
  */
+
 object Util {
   def printTable(t: Array[Array[Byte]]) : Unit = {
     println(s"TABLE HEIGHT ${t.size} WIDTH ${t(0).size}")
@@ -17,7 +18,7 @@ object Util {
     val keys = map.keys.toList.sorted
     keys.map {key =>
       if (showInChar) {
-        sb.append(s"${key}-${byteArrayToString(map(key))}\n")
+        sb.append(s"${key}-${byteArrayToStringNoInterpret(map(key))}\n")
       }
       else
         sb.append(s"${key}-(${map(key).mkString(":")})\n")

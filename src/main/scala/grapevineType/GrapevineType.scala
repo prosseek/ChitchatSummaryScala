@@ -70,7 +70,6 @@ object GrapevineType {
     val lowerKey = key.toLowerCase()
     val keyType = Map[String, Class[_]](
       "ttl" -> classOf[UnsignedShortType],
-      //"hop count" -> classOf[UnsignedShortType],
       "age" -> classOf[AgeType],
       "speed" -> classOf[SpeedType],
       "number" -> classOf[ByteType],
