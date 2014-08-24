@@ -2,6 +2,6 @@ ttl -> 90
 hop count -> 3
 date -> (2014, 6, 23)
 time -> (12, 11)
-athelete -> "football
+athelete -> football
 level of athelete -> 5
-kakao talk id -> "john
+kakao talk id -> john

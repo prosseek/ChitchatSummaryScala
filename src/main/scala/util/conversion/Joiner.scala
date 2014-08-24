@@ -20,10 +20,10 @@ class Joiner {
   def getInterpretableString(value:Array[Byte]) : String = {
     filterString(value, v => StringType.isPrintable(v.toChar))
   }
-
-  def getUptoQuote(value:Array[Byte]) = {
-    filterString(value, v => v.toChar != '\"')
-  }
+//
+//  def getUptoQuote(value:Array[Byte]) = {
+//    filterString(value, v => v.toChar != '\"')
+//  }
 
   def isAllString(value:Array[Byte], f:Byte => Boolean) = {
     value.forall(v => f(v))
