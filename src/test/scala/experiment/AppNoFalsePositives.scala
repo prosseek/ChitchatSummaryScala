@@ -29,7 +29,9 @@ object AppNoFalsePositives extends App {
           assert(getValueFromBF(bf, key) == ls.get(key), s"key (${key}) BF - ${getValueFromBF(bf, key)} vs Labeled - ${ls.get(key)}")
       }
     }
-  (1 to 10).foreach { check("experiment/contextsForTest/summary1.txt", _) }
-  (1 to 10).foreach { check("experiment/contextsForTest/summary2.txt", _) }
-  (1 to 10).foreach { check("experiment/scenario/s1.txt", _)}
+//  (1 to 10).foreach { check("experiment/contextsForTest/summary1.txt", _) }
+//  (1 to 10).foreach { check("experiment/contextsForTest/summary2.txt", _) }
+//  (1 to 10).foreach { check("experiment/scenario/s1.txt", _)}
+  (1 to 10).foreach { check("experiment/scenario/s5.txt", _)}
+  (1 to 10).foreach { check("experiment/scenario/s5_2.txt", _)}
 }

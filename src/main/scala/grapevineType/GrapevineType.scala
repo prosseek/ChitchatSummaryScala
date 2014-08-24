@@ -83,7 +83,9 @@ object GrapevineType {
       "athelete" -> classOf[StringType],
       "recommenation" -> classOf[StringType],
       "advertisement" -> classOf[BitType],
-      "urgent" -> classOf[BitType]
+      "urgent" -> classOf[BitType],
+      "notification" -> classOf[StringType],
+      "average" -> classOf[FloatType]
     )
     keyType.foreach { case(key, grapevineType)  =>
       if (lowerKey.startsWith(key)) return Some(grapevineType)

@@ -1,0 +1,9 @@
+ttl -> 1
+hop count -> 20
+date -> (2014, 6, 23)
+time -> (12, 11)
+message -> meet me at GPS location
+latitude -> (30, 25, 38, 2)
+longitude -> (-17, 47, 11, 0)
+group -> marathon lovers group
+sender -> Sam

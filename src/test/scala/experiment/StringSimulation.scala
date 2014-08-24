@@ -20,7 +20,7 @@ object StringSimulation extends App  {
   }
 
   def getRandomString() :Option[StringType] = {
-    val x = random.nextInt(256)
+    val x = random.nextInt(254) + 2
     getString(Simulation.getRandomByteArray(x))
   }
 
@@ -31,7 +31,7 @@ object StringSimulation extends App  {
     var non_bottom = 0
     var near_me = 0
 
-    (1 to 100000).foreach { i =>
+    (1 to 1000000).foreach { i =>
       val ra = getRandomString()
       if (ra.isEmpty)
         bottom += 1

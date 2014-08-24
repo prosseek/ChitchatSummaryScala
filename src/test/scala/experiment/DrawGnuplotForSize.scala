@@ -30,8 +30,8 @@ object DrawGnuplotForSize extends App {
 //    val arrays = Run.getSizes(summaryPath="experiment/contextsForTest/summary2.txt")
 //    Gnuplotter.plot(getMapForSize("summary2"), arrays)
 
-    val arrays = Run.getSizes(summaryPath="experiment/scenario/s1.txt")
-    Gnuplotter.plot(getMapForSize("scenario1"), arrays)
+    val arrays = Run.getSizes(summaryPath="experiment/scenario/s5_2.txt")
+    Gnuplotter.plot(getMapForSize("scenario5_2"), arrays)
   }
 
   testIt("Simple test: bytes vs size")
