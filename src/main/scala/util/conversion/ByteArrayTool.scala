@@ -126,7 +126,8 @@ object ByteArrayTool {
 //  }
   def byteArrayToString(x: Array[Byte]) = {
     val size = byteToUnsigned(x(0))
-    assert(x.size >= size + 1)
+    if(x.size < size + 1)
+      throw new RuntimeException(s"x.size(${x.size}}) is smaller than (size+1)(${size+1}) ")
     new String(x.slice(1, size + 1), "ASCII")
   }
 

@@ -36,9 +36,9 @@ case class StringType(input:String) extends GrapevineType {
   }
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
-    val size = (ByteArrayTool.byteToUnsigned(ba(0)) + 1) // pascal type string
-    if (super.fromByteArray(ba, byteSize = size, f = ByteArrayTool.byteArrayToString) == NoError) {
-      try {
+    try {
+      val size = (ByteArrayTool.byteToUnsigned(ba(0)) + 1) // pascal type string
+      if (super.fromByteArray(ba, byteSize = size, f = ByteArrayTool.byteArrayToString) == NoError) {
         val result = this.value.asInstanceOf[String]
         if (check(result)) {
           NoError
@@ -46,14 +46,15 @@ case class StringType(input:String) extends GrapevineType {
           Computational
         }
       }
-      // whenever we have an error, we return false
-      catch {
-        case e: Exception => Computational
+      else {
+        Computational
       }
     }
-    else {
-      Computational
+    // whenever we have an error, we return false
+    catch {
+      case e: Exception => Computational
     }
+
   }
   override def getId = StringType.getId
   override def getSize = this.value.asInstanceOf[String].size + 1 // for 1 byte to indicate the size
