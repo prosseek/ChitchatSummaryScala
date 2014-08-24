@@ -9,7 +9,9 @@ import util.conversion.ByteArrayTool
 
 object StringType {
   def isPrintable(v:Char) = {
-    v >= 0x20 && v <= 0x7E
+    // [2014/08/23]
+    // Check the issues.txt why some of the characters are excluded
+    (v >= 0x20 && v <= 0x7E)  // && (v != '#' && v != '+' && v != '=')
   }
   def getId = 4
 }
@@ -18,10 +20,13 @@ case class StringType(input:String) extends GrapevineType {
   if (input != null) set(input)
   def this() = this(null)
 
-  def check(value:String) = value.forall {StringType.isPrintable}
+  def check(value:String) = {
+    //value(0) == '\"' && // value(value.size-1) == '\"' &&
+    value.forall {StringType.isPrintable}
+  }
   def set(value: Any) : Unit = {
     if (check(value.asInstanceOf[String])) this.value = value
-    else throw new RuntimeException(s"ERROR: [${value}]")
+    else throw new RuntimeException(s"String Error: [${value}]")
   }
 
   override def get() : String = this.value.asInstanceOf[String]

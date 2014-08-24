@@ -14,7 +14,10 @@ id   name              bits       bytes     Range/Encoded        Etc
 11 : TemperatureType   8            1       (-50, 60)
 12 : LevelType         8            1       (0, 10)               pair with others
 13 : BitType           1            1       (0, 0)
------
+14 : UnsignedShortType 16           2       (0, 2^16 - 1)
 
-LevelType - athelete, recommendation
+-----
+message - StringType (string type is the default type)
+LevelType - level of .. [athelete, recommendation]
 BitType - advertisement, urgent
+UnsignedShortType - ttl, .. count

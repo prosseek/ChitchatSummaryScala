@@ -44,11 +44,11 @@ class TestGrapevineSummary extends FunSuite with BeforeAndAfter  {
   }
 
   test ("Test create from value") {
-    val m = Map[String, Any]("A"->10, "B"->20.5, "C"->"Hello")
+    val m = Map[String, Any]("A count"->10, "B_f"->20.5, "C"->"Hello")
     t.create(m)
 
-    assert(t.getValue("A").get == m("A"))
-    assert(t.getValue("B").get == m("B"))
+    assert(t.getValue("A count").get == m("A count"))
+    assert(t.getValue("B_f").get == m("B_f"))
     assert(t.getValue("C").get == m("C"))
     assert(t.getValue("D").isEmpty)
   }

@@ -1,0 +1,7 @@
+[2014/08/23]
+
+1. => "[Ei++R#]" did not equal "[john]"
+2. => "...ritical information.[=]" did not equal "...ritical information.[]"
+3. => "football[a]" did not equal "football[]"
+4. => ""football"[8qm]" did not equal ""football"[]"
+-> may need to make string to starts and ends with "

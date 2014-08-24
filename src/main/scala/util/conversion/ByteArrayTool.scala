@@ -43,6 +43,11 @@ object ByteArrayTool {
     adjust(value = res, originalSize = 4, goalSize = size, signExtension = true)
   }
 
+  /*
+  def changeEndian(input:Array[Byte]) = {
+
+  }
+  */
   // short
   def shortToByteArray(x: Short) = ByteBuffer.allocate(2).putShort(x).array()
   def shortToByteArray(x: Short, size: Int) : Array[Byte] = {
@@ -159,6 +164,10 @@ object ByteArrayTool {
    */
   def byteArrayToByte(x: Array[Byte]) = {
     ByteBuffer.wrap(x).get()
+  }
+
+  def byteArrayToShort(x: Array[Byte]) = {
+    ByteBuffer.wrap(x).getShort
   }
 
 //  def checkedByteArrayToByte(x: Array[Byte]) = {

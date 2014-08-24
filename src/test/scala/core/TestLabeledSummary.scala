@@ -11,11 +11,11 @@ class TestLabeledSummary extends FunSuite with BeforeAndAfter {
     t = new LabeledSummary
   }
   test ("Get size test") {
-    val m = Map("A" -> 10, "B"->20, "C"->"test")
+    val m = Map("A count" -> 10, "B count"->20, "C"->"test")
     t.create(m)
     val totalItem = m.size
     val keySize = (0 /: m.keys) {(acc, value) => acc + value.size}
-    val valueSize = 1 + 1 + "test".size
+    val valueSize = 2 + 2 + "test".size
     assert(t.getSize() == keySize + valueSize)
   }
 }

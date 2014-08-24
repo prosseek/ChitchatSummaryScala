@@ -69,6 +69,8 @@ object GrapevineType {
   def getTypeFromKey(key:String) : Option[Class[_]] = {
     val lowerKey = key.toLowerCase()
     val keyType = Map[String, Class[_]](
+      "ttl" -> classOf[UnsignedShortType],
+      //"hop count" -> classOf[UnsignedShortType],
       "age" -> classOf[AgeType],
       "speed" -> classOf[SpeedType],
       "number" -> classOf[ByteType],
@@ -79,16 +81,21 @@ object GrapevineType {
       "message" -> classOf[StringType],
       "temperature" -> classOf[TemperatureType],
       "level" -> classOf[LevelType],
-      "athelete" -> classOf[UnsignedByteType]
+      "athelete" -> classOf[StringType],
+      "recommenation" -> classOf[StringType],
+      "advertisement" -> classOf[BitType],
+      "urgent" -> classOf[BitType]
     )
-
     keyType.foreach { case(key, grapevineType)  =>
       if (lowerKey.startsWith(key)) return Some(grapevineType)
     }
 
+    if (key.endsWith(" count")) return Some(classOf[UnsignedShortType])
+    if (key.endsWith(" id")) return Some(classOf[StringType])
     if (key.endsWith("_f")) return Some(classOf[FloatType])
 
-    None
+    Some(classOf[StringType])
+    //None
   }
 
   /**

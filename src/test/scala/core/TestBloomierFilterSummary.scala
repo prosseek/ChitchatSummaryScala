@@ -9,7 +9,7 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 class TestBloomierFilterSummary extends FunSuite with BeforeAndAfter {
   var message = "hello, world?"
   var t: BloomierFilterSummary = _
-  var map1: Map[String, Any] = Map("a_f" -> 10.0, "message" -> "hi", "c" -> 20, "d" -> 30)
+  var map1: Map[String, Any] = Map("a_f" -> 10.0, "message" -> "hi", "c count" -> 20, "d count" -> 30)
 
   def getMap(message:String) = {
     var map: Map[String, Any] = Map("latitude" ->(10, 10, 10, 10),

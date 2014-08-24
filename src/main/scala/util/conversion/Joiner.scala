@@ -7,20 +7,32 @@ import grapevineType._
  * Created by smcho on 8/17/14.
  */
 class Joiner {
-  def getInterpretableString(value:Array[Byte]) : String = {
+  def filterString(value:Array[Byte], f:Byte => Boolean) :String = {
     val sb = new StringBuilder
 
     value.foreach {v =>
-      if (StringType.isPrintable(v.toChar)) sb.append(v.toChar)
+      if (f(v)) sb.append(v.toChar)
       else
         return sb.toString
     }
     sb.toString
   }
+  def getInterpretableString(value:Array[Byte]) : String = {
+    filterString(value, v => StringType.isPrintable(v.toChar))
+  }
+
+  def getUptoQuote(value:Array[Byte]) = {
+    filterString(value, v => v.toChar != '\"')
+  }
+
+  def isAllString(value:Array[Byte], f:Byte => Boolean) = {
+    value.forall(v => f(v))
+  }
 
   def isInterpretableString(value:Array[Byte]) = {
-    value.forall(v => StringType.isPrintable(v.toChar))
+    isAllString(value, v => StringType.isPrintable(v.toChar))
   }
+
   def joinStringFromKeys(bbf:ByteArrayBloomierFilter, key:String) : Option[Array[Byte]] = {
     val sb = new StringBuilder
 
@@ -30,13 +42,16 @@ class Joiner {
 
       // when there is no value with key0 assigned, it's None
       if (i == 0) {
-        if (res.isEmpty || (res.isDefined && !isInterpretableString(res.get)))
-          return None
+        // bug [2014/08/23]
+        // string should start with " character
+        if (res.isEmpty) return None
+        //if (res.get(0) != '\"') return None
+        if (!isInterpretableString(res.get)) return None
       }
       if (res.isDefined && isInterpretableString(res.get)) {
         sb.append(ByteArrayTool.byteArrayToString(res.get))
       }
-      else {
+      else { // this is the last one
         sb.append(getInterpretableString(res.get))
         return Some(ByteArrayTool.stringToByteArray(sb.toString))
       }
@@ -99,6 +114,8 @@ class Joiner {
        case Some(c) if c == classOf[SpeedType] => joinFromBloomierFilter(bbf, key, SpeedType.getSize)
        case Some(c) if c == classOf[TemperatureType] => joinFromBloomierFilter(bbf, key, TemperatureType.getSize)
        case Some(c) if c == classOf[LevelType] => joinFromBloomierFilter(bbf, key, LevelType.getSize)
+       case Some(c) if c == classOf[BitType] => joinFromBloomierFilter(bbf, key, BitType.getSize)
+       case Some(c) if c == classOf[UnsignedShortType] => joinFromBloomierFilter(bbf, key, UnsignedShortType.getSize)
        case None => None // Bottom
        case _ => throw new RuntimeException(s"${key} not implemented")
      }

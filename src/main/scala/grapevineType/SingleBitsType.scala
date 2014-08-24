@@ -1,8 +1,8 @@
 package grapevineType
 
-import util.conversion.ByteArrayTool._
+import grapevineType.BottomType._
 import util.conversion.BitSetTool
-import BottomType._
+import util.conversion.ByteArrayTool._
 
 /**
  * The input parameter should be three tuples of data
@@ -36,11 +36,14 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
     bitSetToByteArray(res, goalSize = goalSize)
   }
 
+
   def fromByteArray(ba: Array[Byte]): BottomType = {
     val totalBytes = getBytes(bits) // bits.sum/8 + 1 // get the total bytes for the encoded data
     if (super.fromByteArray(ba, byteSize = totalBytes) != NoError)
       return Computational
-    val bs = byteArrayToBitSet(ba)
+    // bug [2014/08/23]
+    // You should not use byteArrayToBitSet, because the byte array is big endian.
+    val bs = byteArrayToBitSet(ba.reverse)
     val bitSets = splitBitSets(bs, bits)
 
     if (bitSets.size > 1) return Computational
