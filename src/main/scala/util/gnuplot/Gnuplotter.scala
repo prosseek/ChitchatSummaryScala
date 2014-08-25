@@ -27,7 +27,10 @@ object Gnuplotter {
                    |""".stripMargin
 
   def getGnuplotPath = {
-    "/usr/local/bin/gnuplot"
+    if (System.getProperty("os.name").startsWith("Mac OS X"))
+      "/usr/local/bin/gnuplot"
+    else  // linux (ubuntu)
+      "/usr/bin/gnuplot"
   }
 
   /**
