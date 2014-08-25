@@ -26,18 +26,13 @@ object LocationSimulation extends App {
     else None
   }
 
-  def getRandomLatitude() :Option[LatitudeType] = {
-    getLatitude(Simulation.getRandomByteArray(4))
+  def getRandomLatitude(byteWidth:Int = 4) :Option[LatitudeType] = {
+    getLatitude(Simulation.getRandomByteArray(byteWidth))
   }
 
-  def getRandomLongitude() :Option[LongitudeType] = {
-    getLongitude(Simulation.getRandomByteArray(4))
+  def getRandomLongitude(byteWidth:Int = 4) :Option[LongitudeType] = {
+    getLongitude(Simulation.getRandomByteArray(byteWidth))
   }
-
-//  test ("getRandomByteArray") {
-//    println(getRandomByteArray(4).mkString(":"))
-//  }
-
 
   def nearMe(la:LatitudeType, lo:LongitudeType, range:Int) = {
     val distance = util.distance.Util.getDistance(latitudeHere, longitudeHere, la, lo)
@@ -45,27 +40,52 @@ object LocationSimulation extends App {
     else false
   }
 
-  def testIt(message:String) { // } ("") {
+  def latitude(message:String, byteWidth:Int, size:Int, near:Int) = {
     println(message)
 
-    var bottom = 0
-    var non_bottom = 0
-    var near_me = 0
+    var bottom_computation = 0
+    var fp_computation = 0
+    var bottom_relation_pair = 0
+    var fp_relation_pair = 0
+    var bottom_relation_near = 0
+    var fp_relation_near = 0
 
-    (1 to 500000).foreach { i =>
-      val la = getRandomLatitude()
-      val lo = getRandomLongitude()
-      if (la.isEmpty || lo.isEmpty)
-        bottom += 1
+    (1 to size).foreach { i =>
+      val la = getRandomLatitude(byteWidth)
+      val lo = getRandomLongitude(byteWidth)
+      if (la.isEmpty)
+        bottom_computation += 1 // get bottom_computation
       else {
-        non_bottom += 1
-        if (nearMe(la.get, lo.get, 100)) {
-          println(s"Near me: ${la.get.toDouble},${lo.get.toDouble}")
-          near_me += 1
+        fp_computation += 1 // survived the bottom
+
+        if (lo.isEmpty) { // if longitude is None, we know it's bottom
+          bottom_relation_pair += 1
+        }
+        else {
+          fp_relation_pair += 1
+
+          // we check if the survived location is near me
+
+          if (!nearMe(la.get, lo.get, near)) {
+            // println(s"Near me: ${la.get.toDouble},${lo.get.toDouble}")
+            bottom_relation_near += 1
+          }
+          else {
+            fp_relation_near += 1
+          }
         }
       }
     }
-    println(s"BOTTOM - ${bottom}, NON-BOTTOM - ${non_bottom}, NEAR_ME - ${near_me}")
+
+    Map[String, Double](
+      "bottom_computation" -> bottom_computation/size.toDouble,
+      "fp_computation" -> fp_computation/size.toDouble,
+      "bottom_relation_pair" -> bottom_relation_pair/size.toDouble,
+      "fp_relation_pair" -> fp_relation_pair/size.toDouble,
+      "bottom_relation_near" -> bottom_relation_near/size.toDouble,
+      "fp_relation_near" -> fp_relation_near/size.toDouble
+    )
   }
-  testIt("Bottom number check")
+  val res = latitude("Latitude check", byteWidth=4, size=100000, near = 10)
+  println(res.mkString("","\n",""))
 }

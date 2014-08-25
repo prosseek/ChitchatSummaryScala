@@ -5,6 +5,13 @@ import scala.util.hashing.MurmurHash3
 case class CustomException(smth:String) extends Exception(smth)
 
 object Hash {
+  def get(key:String, m:Int, k:Int, seed:Int, useUnique:Boolean = false) = {
+    if (useUnique)
+      getUniqueHashes(key, count = k, maxVal = m, startSeed = seed)
+    else
+      getHashes(key, count = k, maxVal = m, startSeed = seed)
+  }
+
   /**
    * Generates hash value between 0 and maxVal - 1
    * This is special because MurmurHash3 returns hash value from -(MaxVal - 1) to MaxVal -1

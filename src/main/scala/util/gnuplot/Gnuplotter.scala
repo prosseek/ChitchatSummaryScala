@@ -17,11 +17,13 @@ object Gnuplotter {
                    |
                    |set xtics font ", 15"
                    |set ytics font ", 15"
-                   |set key font ",18"
-                   |set key top right
+                   |set key font ",12"
+                   |set key top left box
                    |set xlabel "#{XLABEL}" font ",20"
-                   |set ylabel "#{YLABEL}" font ",20"
+                   |set ylabel "#{YLABEL}" font ",20" offset 1,0
                    |set title "#{TITLE}" font ",25"
+                   |set key spacing 1.5
+                   |set key below
                    |""".stripMargin
 
   def getGnuplotPath = "/usr/local/bin/gnuplot"

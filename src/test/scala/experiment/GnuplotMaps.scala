@@ -1,12 +1,11 @@
 package experiment
 
-import util.experiment.Run
 import util.gnuplot.Gnuplotter
 
 /**
- * Created by smcho on 8/20/14.
+ * Created by smcho on 8/25/14.
  */
-object DrawGnuplotForSize extends App {
+trait GnuplotMaps {
   def getMapForSize(summaryName:String): Map[String, String] = {
     Map[String, String](
       "GNUPLOTFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/size/${summaryName}.txt",
@@ -21,18 +20,4 @@ object DrawGnuplotForSize extends App {
       "DATAFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/size/${summaryName}.data"
     )
   }
-
-  def testIt(message:String) { // } () {
-    println(message)
-    //var arrays = Run.getSizes(summaryPath="experiment/contextsForTest/summary1.txt")
-    //Gnuplotter.plot(getMapForSize("summary1"), arrays)
-
-//    val arrays = Run.getSizes(summaryPath="experiment/contextsForTest/summary2.txt")
-//    Gnuplotter.plot(getMapForSize("summary2"), arrays)
-
-    val arrays = Run.getSizes(summaryPath="experiment/scenario/s5_2.txt")
-    Gnuplotter.plot(getMapForSize("scenario5_2"), arrays)
-  }
-
-  testIt("Simple test: bytes vs size")
 }
