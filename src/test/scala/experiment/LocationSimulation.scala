@@ -86,6 +86,6 @@ object LocationSimulation extends App {
       "fp_relation_near" -> fp_relation_near/size.toDouble
     )
   }
-  val res = latitude("Latitude check", byteWidth=4, size=100000, near = 10)
+  val res = latitude("Latitude check", byteWidth=4, size=10000, near = 10)
   println(res.mkString("","\n",""))
 }
