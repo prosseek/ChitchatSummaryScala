@@ -40,7 +40,26 @@ object LocationSimulation extends App {
     else false
   }
 
-  def latitude(message:String, byteWidth:Int, size:Int, near:Int) = {
+  def getFp(near:Int, lat:Boolean = true) = {
+    def theory_location(lat:Boolean) :Double = {
+      (if (lat) 180.0 else 360.0)*60*60*100 / (1.toLong << 32)
+    }
+    val RADIUS_OF_EARTH = 6387.1
+    val fp_computation :Double = theory_location(lat)
+    val fp_relation_par = theory_location(true) * theory_location(false)
+    val fp_relation_near = fp_relation_par * 0.25 * (near.toDouble/RADIUS_OF_EARTH)*(near.toDouble/RADIUS_OF_EARTH)
+
+    Map[String, Double](
+      "theory_fp_computation" -> fp_computation,
+      "theory_fp_relation_pair" -> fp_relation_par,
+      "theory_fp_relation_near" -> fp_relation_near
+    )
+  }
+
+  def latitude(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = true)
+  def longitude(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = false)
+
+  def position(message:String, byteWidth:Int, size:Int, near:Int, lat:Boolean) = {
     println(message)
 
     var bottom_computation = 0
@@ -53,12 +72,12 @@ object LocationSimulation extends App {
     (1 to size).foreach { i =>
       val la = getRandomLatitude(byteWidth)
       val lo = getRandomLongitude(byteWidth)
-      if (la.isEmpty)
+      if (if (lat) la.isEmpty else lo.isEmpty)
         bottom_computation += 1 // get bottom_computation
       else {
         fp_computation += 1 // survived the bottom
 
-        if (lo.isEmpty) { // if longitude is None, we know it's bottom
+        if (if (lat) lo.isEmpty else la.isEmpty) { // if longitude is None, we know it's bottom
           bottom_relation_pair += 1
         }
         else {
@@ -78,13 +97,13 @@ object LocationSimulation extends App {
     }
 
     Map[String, Double](
-      "bottom_computation" -> bottom_computation/size.toDouble,
+      //"bottom_computation" -> bottom_computation/size.toDouble,
       "fp_computation" -> fp_computation/size.toDouble,
-      "bottom_relation_pair" -> bottom_relation_pair/size.toDouble,
+      //"bottom_relation_pair" -> bottom_relation_pair/size.toDouble,
       "fp_relation_pair" -> fp_relation_pair/size.toDouble,
-      "bottom_relation_near" -> bottom_relation_near/size.toDouble,
+      //"bottom_relation_near" -> bottom_relation_near/size.toDouble,
       "fp_relation_near" -> fp_relation_near/size.toDouble
-    )
+    ) ++ getFp(near, lat)
   }
   val res = latitude("Latitude check", byteWidth=4, size=100000, near = 10)
   println(res.mkString("","\n",""))
