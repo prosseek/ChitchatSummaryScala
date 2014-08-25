@@ -26,7 +26,9 @@ object Gnuplotter {
                    |set key below
                    |""".stripMargin
 
-  def getGnuplotPath = "/usr/local/bin/gnuplot"
+  def getGnuplotPath = {
+    "/usr/local/bin/gnuplot"
+  }
 
   /**
    * smap : 1 -> "hello"
