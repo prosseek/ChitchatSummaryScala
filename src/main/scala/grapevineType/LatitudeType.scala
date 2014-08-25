@@ -1,5 +1,8 @@
 package grapevineType
 
+import grapevineType.BottomType.BottomType
+import util.conversion.ByteArrayTool
+
 object LatitudeType {
   def getId = 7
   def getSize = (new LatitudeType).getSize
@@ -31,5 +34,12 @@ case class LatitudeType(input:(Int, Int, Int, Int))
   override def getTypeName() = "LatitudeType"
   def toDouble() = {
     dms2dd(value)
+  }
+  override def fromByteArray(ba: Array[Byte]): BottomType = {
+    val sumBits = bits.sum
+    if (ByteArrayTool.byteArrayToBitSet(ba).filter(_ >= sumBits).size > 0)
+      BottomType.Computational
+    else
+      super.fromByteArray(ba)
   }
 }
