@@ -117,7 +117,7 @@ object LocationSimulation extends App {
       "fp_near" -> fp_near/size.toDouble
     ) ++ getFp(near, lat)
   }
-
-  val res = latitude("Latitude check", byteWidth=4, size=100000, near = 10)
+  
+  val res = latitude("Latitude check", byteWidth=4, size=10000, near = 10)
   println(res.mkString("","\n",""))
 }
