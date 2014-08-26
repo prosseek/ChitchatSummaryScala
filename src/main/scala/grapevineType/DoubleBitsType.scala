@@ -37,7 +37,7 @@ abstract class DoubleBitsType(a:(Int, Int, Int), b:(Int, Int, Int)) extends Bits
     bitSetToByteArray(res, goalSize = goalSize)
   }
 
-  def fromByteArray(ba: Array[Byte]): BottomType = {
+  override def fromByteArray(ba: Array[Byte]): BottomType = {
     val totalBytes = getBytes(bits) // get the total bytes for the encoded data
     if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
       val bs = byteArrayToBitSet(ba)

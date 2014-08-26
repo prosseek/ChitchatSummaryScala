@@ -1,8 +1,5 @@
 package grapevineType
 
-import grapevineType.BottomType._
-import util.conversion.ByteArrayTool
-
 object LongitudeType {
   def getId = 8
   def getSize = (new LongitudeType).getSize
@@ -35,13 +32,13 @@ case class LongitudeType(input:(Int, Int, Int, Int)) extends QuadrupleBitsType((
     dms2dd(value)
   }
 
-  //TODO - duplicate code
-  // This code checks the upper bits of the 4 bytes if they are zero or not
-  override def fromByteArray(ba: Array[Byte]): BottomType = {
-    val sumBits = bits.sum
-    if (ByteArrayTool.byteArrayToBitSet(ba).filter(_ >= sumBits).size > 0)
-      BottomType.Computational
-    else
-      super.fromByteArray(ba)
-  }
+//  //TODO - duplicate code
+//  // This code checks the upper bits of the 4 bytes if they are zero or not
+//  override def fromByteArray(ba: Array[Byte]): BottomType = {
+//    val sumBits = bits.sum
+//    if (ByteArrayTool.byteArrayToBitSet(ba).filter(_ >= sumBits).size > 0)
+//      BottomType.Computational
+//    else
+//      super.fromByteArray(ba)
+//  }
 }

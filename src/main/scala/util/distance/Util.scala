@@ -32,6 +32,22 @@ object Util {
 
   def toMile(kilo:Double) = 0.6214 * kilo
 
+  def isWithinDays(standard:DateType, date:DateType, days:Int, bothDirection:Boolean = false) = {
+    val diff = getDateDistance(standard, date)
+
+    var dateDiff = diff
+    if (bothDirection) {
+      dateDiff = math.abs(diff)
+      if (dateDiff <= days) true
+      else false
+    }
+    else { // one direction
+      if (dateDiff < 0) false
+      else if (dateDiff <= days) true else false
+    }
+
+  }
+
   def getDateDistance(standard:DateType, date:DateType) = {
     val s = standard.value.asInstanceOf[(Int, Int, Int)]
     val d = date.value.asInstanceOf[(Int, Int, Int)]

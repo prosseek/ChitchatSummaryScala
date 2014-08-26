@@ -36,7 +36,7 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
     bitSetToByteArray(res, goalSize = goalSize)
   }
 
-  def fromByteArray(ba: Array[Byte]): BottomType = {
+  override def fromByteArray(ba: Array[Byte]): BottomType = {
     val totalBytes = getBytes(bits) // bits.sum/8 + 1 // get the total bytes for the encoded data
     if (super.fromByteArray(ba, byteSize = totalBytes) != NoError)
       return Computational

@@ -12,6 +12,7 @@ object StringType {
     (v >= 0x20 && v <= 0x7E)
   }
   def getId = 4
+  def minimumLength = 2
 }
 
 case class StringType(input:String) extends GrapevineType {
@@ -37,7 +38,14 @@ case class StringType(input:String) extends GrapevineType {
 
   def fromByteArray(ba: Array[Byte]): BottomType = {
     try {
-      val size = (ByteArrayTool.byteToUnsigned(ba(0)) + 1) // pascal type string
+      val strlen = ByteArrayTool.byteToUnsigned(ba(0)) & 0xFF // make sure the strlen is 0 - 255 (non negative)
+      if (strlen < StringType.minimumLength) return Computational
+
+      val size = (strlen + 1) // pascal type string
+      if (size > ba.size) return Computational
+//      val highBits = ByteArrayTool.byteArrayToBitSet(ba).filter(_ >= 8*size).size
+//      if (highBits > 0) return Computational
+
       if (super.fromByteArray(ba, byteSize = size, f = ByteArrayTool.byteArrayToString) == NoError) {
         val result = this.value.asInstanceOf[String]
         if (check(result)) {

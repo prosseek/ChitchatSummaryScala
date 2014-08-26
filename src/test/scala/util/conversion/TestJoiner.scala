@@ -46,6 +46,7 @@ class TestJoiner extends FunSuite with BeforeAndAfter {
   test ("joinFromBloomierFilter latitude") {
     def test(width: Int, input: (Int, Int, Int, Int)) = {
       // table width 1
+      println(s"${width}:")
       var map = s.split("latitude", LatitudeType(input), width)
       var bfs = new ByteArrayBloomierFilter(map, initialM = 6, k = 3, q = width * 8)
       var res = t.joinFromBloomierFilter(bfs, "latitude", LatitudeType.getSize).get

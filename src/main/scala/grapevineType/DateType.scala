@@ -4,7 +4,7 @@ object DateType {
   def getId = 5
   def getSize = (new DateType).getSize
   val defaultValue = (2014,1,1)
-  val yearBase = 2000
+  val yearBase = 2010
 }
 
 //WARNING
@@ -17,10 +17,14 @@ object DateType {
 //  val yearBits = 7 // 0 - 127
 //  val monthBits = 4 // 0 - 15
 //  val dayBits = 5 // 0 - 31
-case class DateType(input:(Int, Int, Int)) extends TripleBitsType((7, 0, 127), (4, 1, 12), (5, 1, 31)) {
+case class DateType(input:(Int, Int, Int)) extends TripleBitsType((7, 0, 9), (4, 1, 12), (5, 1, 31)) {
+  this.signed = false
   set(input)
   def this() = this(DateType.defaultValue)
 
+  def set(value:(Int, Int, Int)) :Unit = {
+    set(value._1, value._2, value._3)
+  }
   override def set(year:Int, month:Int, day:Int) = {
     val yearp = year - DateType.yearBase
     super.set(yearp, month, day)

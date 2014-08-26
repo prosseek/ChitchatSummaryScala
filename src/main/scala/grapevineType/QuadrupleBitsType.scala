@@ -1,8 +1,8 @@
 package grapevineType
 
-import util.conversion.ByteArrayTool._
+import grapevineType.BottomType._
 import util.conversion.BitSetTool
-import BottomType._
+import util.conversion.ByteArrayTool._
 
 /**
  * The input parameter should be three tuples of data
@@ -40,8 +40,10 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
     bitSetToByteArray(res, goalSize = goalSize)
   }
 
-  def fromByteArray(ba: Array[Byte]): BottomType = {
+  override def fromByteArray(ba: Array[Byte]): BottomType = {
     val totalBytes = getBytes(bits) // get the total bytes for the encoded data
+    //if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
+
     if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)
@@ -53,7 +55,7 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
           BitSetTool.bitSetToInt(bitSets(1)),
           BitSetTool.bitSetToInt(bitSets(2)),
           BitSetTool.bitSetToInt(bitSets(3)))
-          //(set _).tupled(r) <-- tried but not so successful
+        //(set _).tupled(r) <-- tried but not so successful
         NoError
       }
       catch {

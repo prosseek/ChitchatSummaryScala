@@ -1,7 +1,8 @@
 package grapevineType
 
 
-import util.conversion.BitSetTool
+import grapevineType.BottomType._
+import util.conversion.{ByteArrayTool, BitSetTool}
 
 import scala.collection.BitSet
 
@@ -60,4 +61,9 @@ abstract class BitsType extends GrapevineType with RangeChecker {
       res ++ List(bs.filter(_ >= bits.sum).map(_ - bits.sum)) // we may don't need map(_ - psum...) code as this means the error
   }
   override def getSize = getBytes(bits)
+
+  def fromByteArray(ba: Array[Byte], byteSize:Int): BottomType = {
+    if (ByteArrayTool.byteArrayToBitSet(ba).filter(_ >= bits.sum).size > 0) Computational
+    else super.fromByteArray(ba, byteSize)
+  }
 }

@@ -28,7 +28,12 @@ class TestUtil extends FunSuite {
     val t2 = DateType((2014,1,2))
     val t3 = DateType((2015,1,1))
     assert(Util.getDateDistance(t1, t2) == 1)
-    assert(Util.getDateDistance(t1, t3) == 365)
+    assert(Util.getDateDistance(t1, t3) == 366)
+  }
+
+  // date distance from byteFromArray
+  test ("Date distance from array") {
+
   }
 
   test ("Time Distance") {
