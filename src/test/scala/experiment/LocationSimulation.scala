@@ -53,28 +53,29 @@ object LocationSimulation extends App {
     (if (lat) 180.0 else 360.0)*60*60*100 / (1.toLong << 32)
   }
 
-  def getFp(near:Int, lat:Boolean = true) = {
+  def getFp(near:Int, bytes:Int = 4, lat:Boolean = true) :Map[String, Double] = {
     val RADIUS_OF_EARTH = 6387.1
     val fp :Double = theory_location(lat)
     val fp_pair = theory_location(true) * theory_location(false)
     val fp_near = fp_pair * 0.25 * (near.toDouble/RADIUS_OF_EARTH)*(near.toDouble/RADIUS_OF_EARTH)
 
     Map[String, Double](
-      "theory_fp" -> fp,
-      "theory_fp_pair" -> fp_pair,
-      "theory_fp_near" -> fp_near
+      "theory_fp" -> Util.reduced(fp, totalBytes = bytes, thresholdBytes = LatitudeType.getSize),
+      "theory_fp_pair" -> Util.reduced(fp_pair, totalBytes = bytes, thresholdBytes = LatitudeType.getSize),
+      "theory_fp_near" -> Util.reduced(fp_near, totalBytes = bytes, thresholdBytes = LatitudeType.getSize)
     )
   }
 
-  def latitude(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = true)
+  def simulation(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = true)
   def longitude(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = false)
 
   /*
     GENERATE TABLES - RUN TESTS
   */
-  def position(message:String, byteWidth:Int, size:Int, near:Int, lat:Boolean) = {
+  def position(message:String, bs:Int, size:Int, near:Int, lat:Boolean) = {
     println(message)
 
+    var bytes = math.max(bs, FloatType.getSize)
     var bottom_computation = 0
     var fp = 0
     var bottom_relation_pair = 0
@@ -83,8 +84,8 @@ object LocationSimulation extends App {
     var fp_near = 0
 
     (1 to size).foreach { i =>
-      val la = getRandomLatitude(byteWidth)
-      val lo = getRandomLongitude(byteWidth)
+      val la = getRandomLatitude(bytes)
+      val lo = getRandomLongitude(bytes)
       if (if (lat) la.isEmpty else lo.isEmpty)
         bottom_computation += 1 // get bottom_computation
       else {
@@ -115,9 +116,11 @@ object LocationSimulation extends App {
       "fp_pair" -> fp_pair/size.toDouble,
       //"bottom_relation_near" -> bottom_relation_near/size.toDouble,
       "fp_near" -> fp_near/size.toDouble
-    ) ++ getFp(near, lat)
+    ) ++ getFp(near, bytes, lat)
   }
-  
-  val res = latitude("Latitude check", byteWidth=4, size=10000, near = 10)
-  println(res.mkString("","\n",""))
+
+  (3 to 5).foreach { i =>
+    val res = simulation("Latitude check", byteWidth = i, size = 10000, near = 10)
+    println(res.mkString("", "\n", "") + "\n")
+  }
 }

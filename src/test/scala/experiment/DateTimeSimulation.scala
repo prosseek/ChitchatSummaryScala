@@ -1,14 +1,14 @@
 package experiment
 
 import grapevineType._
-import util.distance.Util
+import util.distance.{Util => DUtil}
 import util.experiment.Simulation
 
 /**
  * Created by smcho on 8/22/14.
  */
 object DateTimeSimulation extends App {
-
+  val INTEREST_DAYS = 60
   val dateType = new DateType((2014,8,23))
   val timeType = new TimeType((13,0))
 
@@ -71,15 +71,17 @@ object DateTimeSimulation extends App {
     if (bothDirection) res*2 else res
   }
 
-  def getFpTime() = {
+  def getFpTime(bytes:Int) = {
+    // get just 10 years out of 256 years
     val theory_fp :Double = theory_fp_time
     val theory_pair = theory_fp * theory_fp_date(10)
-    val theory_near = theory_fp * 7.0/(1.toLong << 16) // theory_withinDays(7)
+    // get just 7 days in the future
+    val theory_near = theory_fp * DateTimeSimulation.INTEREST_DAYS/(1.toLong << 16) // theory_withinDays(7)
 
     Map[String, Double](
-      "theory_fp" -> theory_fp,
-      "theory_pair"->theory_pair,
-      "theory_near"->theory_near
+      "theory_fp" -> Util.reduced(theory_fp, totalBytes = bytes, thresholdBytes = TimeType.getSize),
+      "theory_pair"->Util.reduced(theory_pair, totalBytes = bytes, thresholdBytes = TimeType.getSize),
+      "theory_near"->Util.reduced(theory_near,totalBytes = bytes, thresholdBytes = TimeType.getSize)
     )
   }
 
@@ -107,15 +109,17 @@ object DateTimeSimulation extends App {
 //    println(s"Date check: BOTTOM - ${fp.toDouble/size}, NON-BOTTOM - ${theory_fp_date(10)}")
 // }
 
-  def testTime(size:Int = 100000) :Map[String, Double] = {
+  def simulation(bs:Int = 2, size:Int = 100000) :Map[String, Double] = {
     var bottom = 0
     var fp = 0
     var fp_pair = 0
     var fp_near = 0
 
+    var bytes = math.max(bs, TimeType.getSize)
+    
     (1 to size).foreach { i =>
-      val tm = getRandomTime()
-      val dt = getRandomDate()
+      val tm = getRandomTime(bytes)
+      val dt = getRandomDate(bytes)
       if (tm.isEmpty)
         bottom += 1
       else {
@@ -125,9 +129,9 @@ object DateTimeSimulation extends App {
 //          val fd = new DateType
 //          fd.set(dt.get)
           // check only 7 days
-          if (Util.isWithinDays(dateType, dt.get, 7, bothDirection = false)) {
+          if (DUtil.isWithinDays(dateType, dt.get, DateTimeSimulation.INTEREST_DAYS , bothDirection = false)) {
             fp_near += 1
-            println(dt.get.get)
+            //println(dt.get.get)
           }
 //          else {
 //            println(dt.get.get)
@@ -139,10 +143,11 @@ object DateTimeSimulation extends App {
       "fp" -> fp.toDouble/size,
       "fp_pair"->fp_pair.toDouble/size,
       "fp_near"->fp_near.toDouble/size
-    ) ++ getFpTime
+    ) ++ getFpTime(bytes)
   }
 
-  //testDate()
-  val res = testTime(1000000)
-  println(res.mkString("","\n",""))
+  (1 to 3).foreach { i =>
+    val res = simulation(bs = i, size = 100000)
+    println(res.mkString("", "\n", "") + "\n")
+  }
 }

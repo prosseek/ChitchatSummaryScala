@@ -5,9 +5,9 @@ import util.conversion.ByteArrayTool
 
 object FloatType {
   def getId = 3
-  def getSize = (new FloatType).getSize
-  val floatShift = 20.0F
-  val defaultValue = 20.0F
+  def getSize = 4
+  val floatShift = 10.0F
+  val defaultValue = 10.0F
 }
 
 /**
@@ -75,6 +75,6 @@ case class FloatType(input:Double) extends GrapevineType {
   }
 
   override def getId = FloatType.getId
-  override def getSize = 4
+  override def getSize = FloatType.getSize
   override def getTypeName() = "FloatType"
 }

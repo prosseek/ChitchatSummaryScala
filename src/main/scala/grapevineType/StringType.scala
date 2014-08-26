@@ -12,7 +12,11 @@ object StringType {
     (v >= 0x20 && v <= 0x7E)
   }
   def getId = 4
-  def minimumLength = 2
+  private var minimumLength = 2
+  def setMinimumLength(minimumLength:Int) = {
+    StringType.minimumLength = minimumLength
+  }
+  def getMiniumLength = minimumLength
 }
 
 case class StringType(input:String) extends GrapevineType {
@@ -43,6 +47,7 @@ case class StringType(input:String) extends GrapevineType {
 
       val size = (strlen + 1) // pascal type string
       if (size > ba.size) return Computational
+
 //      val highBits = ByteArrayTool.byteArrayToBitSet(ba).filter(_ >= 8*size).size
 //      if (highBits > 0) return Computational
 

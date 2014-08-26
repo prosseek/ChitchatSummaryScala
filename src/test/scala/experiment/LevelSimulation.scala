@@ -30,23 +30,23 @@ object LevelSimulation extends App {
       (10.0) / (1.toLong << 8)
     }
 
-    def getFp() = {
+    def getFp(bytes:Int) = {
       val theory_fp :Double = getTheoryFp()
       val theory_pair = theory_fp * StringSimulation.theory_bf()
 
       Map[String, Double](
-        "theory_fp" -> theory_fp,
-        "theory_pair"->theory_pair
+        "theory_fp" -> Util.reduced(theory_fp, totalBytes = bytes, thresholdBytes = LevelType.getSize),
+        "theory_pair"->Util.reduced(theory_pair, totalBytes = bytes, thresholdBytes = LevelType.getSize)
       )
     }
 
-    def simulation(size:Int = 100000) :Map[String, Double] = {
+    def simulation(bytes:Int = 1, size:Int = 100000) :Map[String, Double] = {
       var bottom = 0
       var fp = 0
       var fp_pair = 0
 
       (1 to size).foreach { i =>
-        val level = getRandomLevel()
+        val level = getRandomLevel(bytes)
         val str = StringSimulation.getRandomStringThatPassesBf()
         if (level.isEmpty)
           bottom += 1
@@ -60,10 +60,13 @@ object LevelSimulation extends App {
       Map[String, Double](
         "fp" -> fp.toDouble/size,
         "fp_pair"->fp_pair.toDouble/size
-      ) ++ getFp
+      ) ++ getFp(bytes)
     }
 
-    val res = simulation()
-//    val res = testTime(1000000)
-    println(res.mkString("","\n",""))
+  (1 to 3).foreach { i =>
+    println(s"Working with i = ${i}")
+    val res = simulation(bytes = i)
+    //    val res = testTime(1000000)
+    println(res.mkString("", "\n", "") + "\n")
   }
+}
