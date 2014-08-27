@@ -1,12 +1,14 @@
-package experiment
+package simulation
 
 import grapevineType._
-import util.experiment.Simulation
 
 /**
  * Created by smcho on 8/22/14.
  */
-object LocationSimulation extends App {
+class LocationSimulation extends Simulation {
+  /*
+    BASE DATA
+   */
   val latitudeHere = new LatitudeType((30, 25, 7, 1))
   val longitudeHere = new LongitudeType((-97, 53, 24, 9))
 
@@ -66,15 +68,14 @@ object LocationSimulation extends App {
     )
   }
 
-  def simulation(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = true)
+  def simulate(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = true)
   def longitude(message:String, byteWidth:Int, size:Int, near:Int) = position(message, byteWidth, size, near, lat = false)
 
   /*
     GENERATE TABLES - RUN TESTS
   */
   def position(message:String, bs:Int, size:Int, near:Int, lat:Boolean) = {
-    println(message)
-
+    // println(message)
     var bytes = math.max(bs, FloatType.getSize)
     var bottom_computation = 0
     var fp = 0
@@ -119,8 +120,20 @@ object LocationSimulation extends App {
     ) ++ getFp(near, bytes, lat)
   }
 
+  override def simulate(message:String, width:Int, m: Map[String, Int]) :Map[String,Double] = {
+    simulate(message = message,
+      byteWidth = width,
+      size = m("size"),
+      near = m("near"))
+  }
+}
+
+object LocationSimulation extends App {
+  val ls = new LocationSimulation
+  val m = Map[String,Int]("size" -> 10000, "near" -> 10)
+
   (3 to 5).foreach { i =>
-    val res = simulation("Latitude check", byteWidth = i, size = 10000, near = 10)
+    val res = ls.simulate("Latitude", width = i, m)
     println(res.mkString("", "\n", "") + "\n")
   }
 }

@@ -1,6 +1,5 @@
 package experiment
 
-import util.experiment.Run
 import util.gnuplot.Gnuplotter
 
 /**
@@ -16,7 +15,7 @@ object DrawGnuplotForSize extends App with GnuplotMaps {
 //    val arrays = Run.getSizes(summaryPath="experiment/contextsForTest/summary2.txt")
 //    Gnuplotter.plot(getMapForSize("summary2"), arrays)
 
-    val arrays = Run.getSizes(summaryPath="experiment/scenario/s4.txt")
+    val arrays = SizeExperiment.getSizes(summaryPath="experiment/scenario/s4.txt")
     Gnuplotter.plot(getMapForSize("scenario4"), arrays)
   }
 

@@ -1,7 +1,7 @@
 package experiment
 
 import grapevineType._
-import util.experiment.Simulation
+import simulation._
 
 /**
  * 12 : LevelType         8            1       (0, 10)               pair with others

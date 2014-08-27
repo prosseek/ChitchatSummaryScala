@@ -1,4 +1,4 @@
-package util.experiment
+package experiment
 
 import core.{BloomierFilterSummary, GrapevineSummary}
 import util.io.File
@@ -8,7 +8,7 @@ import scala.collection.mutable.ListBuffer
 /**
  * Created by smcho on 8/21/14.
  */
-object Run {
+object SizeExperiment {
 
   def getLabeledSummary(summaryPath:String) = {
     val summaries = File.fileToSummary(summaryPath)

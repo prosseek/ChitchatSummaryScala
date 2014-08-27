@@ -1,6 +1,6 @@
 package experiment
 
-import util.experiment.FalsePositiveProbability
+import simulation.FalsePositiveProbability
 
 /**
  * Created by smcho on 8/25/14.

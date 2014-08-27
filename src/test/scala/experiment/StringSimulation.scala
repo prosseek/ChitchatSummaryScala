@@ -2,7 +2,7 @@ package experiment
 
 import bloomFilter.BloomFilter
 import grapevineType.{BottomType, StringType}
-import util.experiment.Simulation
+import simulation.Simulation
 
 import scala.util.Random
 import math._

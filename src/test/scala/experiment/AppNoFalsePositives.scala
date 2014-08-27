@@ -3,7 +3,6 @@ package experiment
 import core.BloomierFilterSummary
 import grapevineType.BottomType._
 import grapevineType._
-import util.experiment.Run
 
 /**
  * Created by smcho on 8/21/14.
@@ -18,8 +17,8 @@ object AppNoFalsePositives extends App {
     }
 
     def check(summaryPath:String, byteWidth:Int) = {
-      val bf = Run.getBF(summaryPath, byteWidth = byteWidth)
-      val ls = Run.getLabeledSummary(summaryPath)
+      val bf = SizeExperiment.getBF(summaryPath, byteWidth = byteWidth)
+      val ls = SizeExperiment.getLabeledSummary(summaryPath)
       ls.getKeys().foreach { key =>
         if (GrapevineType.getTypeFromKey(key).get == classOf[FloatType]) {
           //println(math.abs(getValueFromBF(bf, key).asInstanceOf[Float] - ls.get(key).asInstanceOf[Float]))

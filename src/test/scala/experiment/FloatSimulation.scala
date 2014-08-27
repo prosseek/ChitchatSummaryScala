@@ -1,7 +1,7 @@
 package experiment
 
 import grapevineType._
-import util.experiment.Simulation
+import simulation._
 
 /**
  * Created by smcho on 8/26/14.

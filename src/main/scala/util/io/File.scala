@@ -1,5 +1,8 @@
 package util.io
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
+
 import core.LabeledSummary
 
 import scala.collection.mutable.ArrayBuffer
@@ -17,5 +20,9 @@ object File {
       summaries += String.parseSummary(b)
     }
     summaries.toArray
+  }
+
+  def resultsToFile(filePath:String, results:String) = {
+    Files.write(Paths.get(filePath), results.getBytes(StandardCharsets.UTF_8))
   }
 }

@@ -2,7 +2,7 @@ package experiment
 
 import grapevineType._
 import util.distance.{Util => DUtil}
-import util.experiment.Simulation
+import simulation._
 
 /**
  * Created by smcho on 8/22/14.

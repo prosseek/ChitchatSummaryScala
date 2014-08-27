@@ -1,18 +1,14 @@
-package util.experiment
+package simulation
 
 import scala.util.Random
-
-/**
- * Created by smcho on 8/24/14.
- */
-
 import scala.collection.mutable.{Map => MMap}
-
-// http://alvinalexander.com/scala/creating-random-strings-in-scala
-object Util {
-  val random = new Random
-  val x = Random.alphanumeric
+/**
+ * Created by smcho on 8/27/14.
+ */
+object Generate {
   def getRandomMaps(size:Int) = {
+    val random = new Random
+    val x = Random.alphanumeric
     def getRandomString(length: Int) = {
       val r = new scala.util.Random
       val sb = new StringBuilder
@@ -29,8 +25,8 @@ object Util {
     mmap.toMap
   }
 
-  def generateRandomContextSummary() = {
-    val res = getRandomMaps(10)
+  def randomContextSummary(size:Int) = {
+    val res = getRandomMaps(size)
     println(res.mkString)
   }
 }
