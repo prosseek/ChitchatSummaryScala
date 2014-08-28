@@ -5,6 +5,7 @@ object DateType {
   def getSize = (new DateType).getSize
   val defaultValue = (2014,1,1)
   val yearBase = 2010
+  val range = 10 // ten years (0 - 9) in 7 bits
 }
 
 //WARNING
@@ -17,7 +18,7 @@ object DateType {
 //  val yearBits = 7 // 0 - 127
 //  val monthBits = 4 // 0 - 15
 //  val dayBits = 5 // 0 - 31
-case class DateType(input:(Int, Int, Int)) extends TripleBitsType((7, 0, 9), (4, 1, 12), (5, 1, 31)) {
+case class DateType(input:(Int, Int, Int)) extends TripleBitsType((7, 0, DateType.range-1), (4, 1, 12), (5, 1, 31)) {
   this.signed = false
   set(input)
   def this() = this(DateType.defaultValue)
