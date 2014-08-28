@@ -10,6 +10,9 @@ import scala.util.Random
  */
 class StringSimulation(config:Map[String, Int]) extends Simulation(config) {
   val random = new Random
+  if (StringSimulation.bf == null) {
+    StringSimulation.bf = getBf()
+  }
   //  val filePath = "experiment/data/words.txt"
   //  // false positive rate - 0.017551354431981234 (1.7%)
   //  val bf = new BloomFilter(filePath, m = 20*100000, k = 5, seed = 0)
@@ -74,13 +77,13 @@ class StringSimulation(config:Map[String, Int]) extends Simulation(config) {
   /*
     Simulation
    */
-  override def simulate(width: Int): Map[String, Double] = {
-    var size = config("size")
-    var minimumSize = config("minimum_size")
-
+  def simulate(minimumSize: Int): Map[String, Double] = {
+    //var minimumSize = config("minimum_size")
     var bottom = 0
     var fp = 0
     var fp_bf = 0
+
+    var size = config("size")
 
     (1 to size).foreach { i =>
       val ra = getRandomString(minimumSize)
@@ -101,16 +104,16 @@ class StringSimulation(config:Map[String, Int]) extends Simulation(config) {
       "fp_bf" -> fp_bf / size.toDouble
     ) ++ getTheoryFp(minimumSize)
   }
-
-
 }
 
 object StringSimulation extends App {
   var bf: BloomFilter = null
-  var config = Map[String, Int]()
+  var config = Map[String, Int]("iteration" -> 1, "minimum_size" -> 2, "size" -> 100000)
   var ss = new StringSimulation(config)
 
-  (1 to 5).foreach { i =>
+  // for string we simulate over the minimum string
+  (1 to 10).foreach { i =>
     val res = ss.simulate(i)
+    println(s"minimum ${i} -> ${Util.map2string(res)}")
   }
 }
