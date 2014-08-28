@@ -1,11 +1,10 @@
-package experiment
+package simulation
 
 import bloomFilter.BloomFilter
 import grapevineType.{BottomType, StringType}
-import simulation.Simulation
 
+import scala.math._
 import scala.util.Random
-import math._
 /**
  * Created by smcho on 8/24/14.
  */
