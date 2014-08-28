@@ -2,56 +2,32 @@ package simulation
 
 import bloomFilter.BloomFilter
 import grapevineType.{BottomType, StringType}
-
-import scala.math._
+import simulation.theoryFalsePositives.String 
 import scala.util.Random
+
 /**
  * Created by smcho on 8/24/14.
  */
-object StringSimulation extends App  {
+class StringSimulation(config:Map[String, Int]) extends Simulation(config) {
   val random = new Random
-  var bf:BloomFilter = null
-//  val filePath = "experiment/data/words.txt"
-//  // false positive rate - 0.017551354431981234 (1.7%)
-//  val bf = new BloomFilter(filePath, m = 20*100000, k = 5, seed = 0)
-
-  /*
-    Theory
-   */
-  def theory_string(minimumSize:Int=2) = {
-    // 0x20 - 0x7E (95/256)
-    // 1/256 * a^(start)*(a^(255 - start + 1) - 1)/(a - 1)
-    // or 1/256 * a^(start)/(a - 1)
-    val alpha = (95.0/256.0)
-    1.0/256.0 * pow(alpha, minimumSize) * (pow(alpha, 256 - minimumSize) - 1)/(alpha - 1.0)
-  }
-  def theory_bf(bfInput:BloomFilter = null, minimumSize:Int=2) = {
-
-    var newBf = bfInput
-    if (newBf == null) {
-      val filePath = "experiment/data/words.txt"
-      val bf = new BloomFilter(filePath, m = 20*100000, k = 5, seed = 0)
-      newBf = bf
-    }
-
-    //println(bf.getFP)
-    newBf.getFP * theory_string(minimumSize)
-  }
+  //  val filePath = "experiment/data/words.txt"
+  //  // false positive rate - 0.017551354431981234 (1.7%)
+  //  val bf = new BloomFilter(filePath, m = 20*100000, k = 5, seed = 0)
 
 
-  def getFp(minimumSize:Int) = {
+  def getTheoryFp(minimumSize: Int) = {
     Map[String, Double](
       //"bottom_computation" -> bottom_computation/size.toDouble,
-      "theory_fp" -> theory_string(minimumSize),
+      "theory_fp" -> String.fp(minimumSize),
       //"bottom_relation_pair" -> bottom_relation_pair/size.toDouble,
-      "theory_fp_filter" -> theory_bf(getBF(), minimumSize)
+      "theory_fp_bf" -> String.fp_bf(getBf(), minimumSize)
     )
   }
 
   /*
     Get random string
    */
-  def getString(ba:Array[Byte], minimumSize:Int=2) :Option[StringType] = {
+  def getString(ba: Array[Byte], minimumSize: Int = 2): Option[StringType] = {
     assert((ba(0) & 0xFF) + 1 == ba.size, s"${ba(0) + 1} != ${ba.size}")
     StringType.setMinimumLength(minimumSize)
     val stringType = new StringType
@@ -61,20 +37,20 @@ object StringSimulation extends App  {
     else None
   }
 
-  def getRandomString(minimumSize:Int = 2) :Option[StringType] = {
+  def getRandomString(minimumSize: Int = 2): Option[StringType] = {
     val random = new Random
     val size = random.nextInt(255) & 0xFF
     getString(Array[Byte](size.toByte) ++ Simulation.getRandomByteArray(size), minimumSize = minimumSize)
   }
 
-  def getRandomStringThatPassesBf(bf:BloomFilter = null, minimumSize:Int = 2) :Option[StringType] = {
-    var blf =  bf
+  def getRandomStringThatPassesBf(bf: BloomFilter = null, minimumSize: Int = 2): Option[StringType] = {
+    var blf = bf
     if (blf == null)
-      blf = getBF()
+      blf = getBf()
     val ra = getRandomString(minimumSize = minimumSize)
     if (ra.isEmpty) None
     else {
-      if (checkBF(blf, ra.get.get)) {
+      if (checkBf(blf, ra.get.get)) {
         ra
       }
       else None
@@ -84,29 +60,27 @@ object StringSimulation extends App  {
   /*
     BF
    */
-
-  def getBF() = {
+  def getBf() = {
     if (StringSimulation.bf == null) {
-      val filePath = "experiment/data/words.txt"
-      // false positive rate - 0.017551354431981234 (1.7%)
-      StringSimulation.bf = new BloomFilter(filePath, m = 20 * 100000, k = 5, seed = 0)
+      StringSimulation.bf = theoryFalsePositives.Util.getBf()
     }
     StringSimulation.bf
   }
 
-  def checkBF(bf:BloomFilter, str:String) = {
+  def checkBf(bf: BloomFilter, str: String) = {
     bf.get(str)
   }
 
   /*
     Simulation
    */
-  def simulate(message:String, bf:BloomFilter, minimumSize:Int = 2, size:Int = 100000) = {
-    println(message)
+  override def simulate(width: Int): Map[String, Double] = {
+    var size = config("size")
+    var minimumSize = config("minimum_size")
 
     var bottom = 0
     var fp = 0
-    var fp_filter = 0
+    var fp_bf = 0
 
     (1 to size).foreach { i =>
       val ra = getRandomString(minimumSize)
@@ -114,25 +88,29 @@ object StringSimulation extends App  {
         bottom += 1
       else {
         fp += 1
-        if (checkBF(bf, ra.get.get)) {
-          fp_filter += 1
+        if (checkBf(StringSimulation.bf, ra.get.get)) {
+          fp_bf += 1
         }
       }
     }
 
     Map[String, Double](
       //"bottom_computation" -> bottom_computation/size.toDouble,
-      "fp" -> fp/size.toDouble,
+      "fp" -> fp / size.toDouble,
       //"bottom_relation_pair" -> bottom_relation_pair/size.toDouble,
-      "fp_filter" -> fp_filter/size.toDouble
-    ) ++ getFp(minimumSize)
+      "fp_bf" -> fp_bf / size.toDouble
+    ) ++ getTheoryFp(minimumSize)
   }
 
-  //println(getRandomString())
+
+}
+
+object StringSimulation extends App {
+  var bf: BloomFilter = null
+  var config = Map[String, Int]()
+  var ss = new StringSimulation(config)
 
   (1 to 5).foreach { i =>
-    val mybf = getBF()
-    val res = simulate(s"minimum size = ${i}", mybf, minimumSize = i)
-    println(res.mkString("", "\n", "") + "\n")
+    val res = ss.simulate(i)
   }
 }

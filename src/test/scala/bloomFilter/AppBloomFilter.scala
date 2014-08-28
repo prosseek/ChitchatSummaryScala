@@ -36,7 +36,7 @@ object AppBloomFilter extends App {
       out += 1
     }
   }
-  println(s"FP - ${getFP(size, in)}, THEORY - ${bf.getFP()}")
+  println(s"FP - ${getFP(size, in)}, THEORY - ${bf.getFp()}")
 }
 
 /*

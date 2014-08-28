@@ -2,7 +2,7 @@ package experiment
 
 import grapevineType._
 import simulation.theoryFalsePositives.Util
-import simulation.Simulation
+import simulation.{StringSimulation, Simulation}
 
 /**
  * Created by smcho on 8/26/14.
@@ -32,7 +32,7 @@ object FloatSimulation extends App {
 
   def getFp(bytes:Int = 4) = {
     val theory_fp :Double = getTheoryFp()
-    val theory_pair = theory_fp * StringSimulation.theory_bf()
+    val theory_pair = theory_fp // * StringSimulation.theory_bf()
 
     Map[String, Double](
       "theory_fp" -> Util.reduced(theory_fp, totalBytes = bytes, thresholdBytes = FloatType.getSize),
@@ -48,7 +48,7 @@ object FloatSimulation extends App {
 
     (1 to size).foreach { i =>
       val level = getRandomFloat(bytes)
-      val str = StringSimulation.getRandomStringThatPassesBf()
+      val str = None // StringSimulation.getRandomStringThatPassesBf()
       if (level.isEmpty)
         bottom += 1
       else {

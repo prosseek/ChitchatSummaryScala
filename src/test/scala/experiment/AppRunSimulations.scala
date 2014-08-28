@@ -3,6 +3,8 @@ package experiment
 import java.io.File
 import java.nio.file.{Files, Paths}
 
+import simulation.LatitudeSimulation
+
 /**
  * Created by smcho on 8/26/14.
  */
@@ -45,15 +47,34 @@ object AppRunSimulations extends App {
 
   }
 
-//  def runLocationSimulation(size:Int, near:Int, iter:Int) = {
-//    val directoryName = "latitude"
-//    val directoryPath = s"${resultsDirectory}/${directoryName}"
-//    directoryCheck(directoryPath)
-//  }
+  def generateDataFromMaps(maps:Map[Int, Map[String, Double]], keys:Array[String]) = {
+    val size = maps.size
+    val sb = new StringBuilder
+    (1 to size).foreach {i =>
+      val m = maps(i)
+      val str = keys.map(key => s"${m(key)}\t").reduce(_ ++ _)
+      sb.append(s"${i}\t" + str + "\n")
+    }
+    sb.toString
+  }
+
+  def runLatitudeSimulation(size:Int, near:Int, iter:Int) = {
+    val directoryName = "latitude"
+    val directoryPath = s"${resultsDirectory}/${directoryName}"
+    directoryCheck(directoryPath)
+
+    val m = Map[String,Int]("size" -> size, "near" -> near, "both_directions"->0, "iteration" -> iter, "verbose" ->0)
+    val ls = new LatitudeSimulation(m)
+    val res = ls.simulateOverWidth(1,10)
+    val keys = Array[String]("fp", "fp_pair", "fp_near","theory_fp", "theory_fp_pair", "theory_fp_near")
+    println(generateDataFromMaps(res, keys))
+    //println(res.mkString("\n\n"))
+  }
 //
-//  val size = 100
-//  val iter = 1
-//  runLocationSimulation(size = size, near = 10, iter = iter)
+  val size = 100000
+  val iter = 5
+  val near = 10
+  runLatitudeSimulation(size = size, near = near, iter = iter)
 //  runLocationSimulation(size = size, near = 50, iter = iter)
 //  runLocationSimulation(size = size, near = 100, iter = iter)
 }

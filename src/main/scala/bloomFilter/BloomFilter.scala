@@ -45,7 +45,7 @@ case class BloomFilter(keys:Set[String], m: Int, k: Int, seed: Int = 0) {
   keys.foreach(key => Hash.get(key = key, m = m, k = k, seed = seed).foreach(bitSet.add(_)))
   def get(key:String) = Hash.get(key = key, m = m, k = k, seed = seed).map(bitSet(_)).forall(identity)
   def debug() = println(bitSet.mkString(":"))
-  def getFP() = {
+  def getFp() = {
     BloomFilter.getFalsePositiveProbability(m=getM, k = getK, n = getN)
   }
   def getM() = m

@@ -2,7 +2,7 @@ package experiment
 
 import grapevineType._
 import simulation.theoryFalsePositives.Util
-import simulation.Simulation
+import simulation.{StringSimulation, Simulation}
 
 /**
  * 12 : LevelType         8            1       (0, 10)               pair with others
@@ -33,7 +33,7 @@ object LevelSimulation extends App {
 
     def getFp(bytes:Int) = {
       val theory_fp :Double = getTheoryFp()
-      val theory_pair = theory_fp * StringSimulation.theory_bf()
+      val theory_pair = theory_fp // * StringSimulation.theory_bf()
 
       Map[String, Double](
         "theory_fp" -> Util.reduced(theory_fp, totalBytes = bytes, thresholdBytes = LevelType.getSize),
@@ -48,7 +48,7 @@ object LevelSimulation extends App {
 
       (1 to size).foreach { i =>
         val level = getRandomLevel(bytes)
-        val str = StringSimulation.getRandomStringThatPassesBf()
+        val str = None // StringSimulation.getRandomStringThatPassesBf()
         if (level.isEmpty)
           bottom += 1
         else {
