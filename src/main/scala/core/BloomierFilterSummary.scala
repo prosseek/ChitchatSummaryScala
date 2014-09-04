@@ -16,6 +16,11 @@ import scala.collection.mutable.{Map => MMap}
 class BloomierFilterSummary extends GrapevineSummary {
   var instance: GrapevineType = _
   var byteArrayBloomierFilter: ByteArrayBloomierFilter = _
+  var k:Int = 3
+  var q:Int = 4*8
+  var maxTry:Int = 20
+  var complete:Boolean = false
+  var initM:Int = -1
 
   def grapevineToByteArrayMap(inputMap:Map[String, GrapevineType], goalByteSize:Int)  = {
     val splitter = new Splitter
@@ -30,7 +35,16 @@ class BloomierFilterSummary extends GrapevineSummary {
     }.reduce { _ ++ _}
   }
 
+  def createFromGrapevineMap(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, complete:Boolean = false): Unit = {
+  }
+
   def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, complete:Boolean = false): Unit = {
+    this.initM = m
+    this.k = k
+    this.q = q
+    this.maxTry = maxTry
+    this.complete = complete
+
     super.create(map) // any map to grapevineDataTypeMap
     val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(q))
     //println(!complete)
@@ -89,5 +103,11 @@ class BloomierFilterSummary extends GrapevineSummary {
         // if we don't use relation, we just return the OK/Bottom status 
         res
     }
+  }
+
+  override def load(filePath:String) :Unit = {
+    super.load(filePath) // fill in the dataStructure
+    val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(q))
+    byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = this.initM, k = k, q = q, initialSeed = 0, maxTry = maxTry, complete = complete)
   }
 }

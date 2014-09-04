@@ -1,5 +1,6 @@
 package core
 
+import grapevineType.BottomType
 import grapevineType.BottomType._
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
@@ -61,5 +62,33 @@ class TestBloomierFilterSummary extends FunSuite with BeforeAndAfter {
     val ls = new LabeledSummary
     ls.create(dict = getMap(message))
     println(s"Labeled - ${ls.getSize}")
+  }
+  test ("load") {
+    val ls = t
+    ls.load("experiment/data/sample_context.txt")
+    assert(ls.check("abc") == BottomType.NoError)
+    assert(ls.get("abc") == "Hello, world")
+    assert(ls.check("recommendation") == BottomType.NoError)
+    assert(ls.get("recommendation") == "Chef")
+    assert(ls.check("level of recommendation") == BottomType.NoError)
+    assert(ls.get("level of recommendation") == 5)
+    assert(ls.check("level of recommendations") != BottomType.NoError)
+  }
+  test ("store") {
+    val filePath = "experiment/data/save_test_context.txt"
+    val ls = t
+    val file = new java.io.File(filePath)
+    if (file.exists()) {
+      file.delete()
+    }
+    val m = Map[String, Any]("a" -> "helloa", "level of a" -> 3)
+    ls.create(m)
+    ls.save(filePath)
+
+    ls.load(filePath)
+    assert(ls.check("a") == BottomType.NoError)
+    assert(ls.get("a") == m("a"))
+    assert(ls.check("level of a") == BottomType.NoError)
+    assert(ls.get("level of a") == m("level of a"))
   }
 }

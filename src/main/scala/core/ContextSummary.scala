@@ -33,4 +33,7 @@ abstract class ContextSummary {
    * @param dict
    */
   def create(dict:Map[String, Any]);
+
+  def load(filePath:String);
+  def save(filePath:String);
 }

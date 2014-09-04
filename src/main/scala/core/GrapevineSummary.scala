@@ -1,6 +1,8 @@
 package core
 
 import grapevineType._
+import util.io.File
+import java.io._
 
 import scala.collection.mutable.{Map => MMap}
 /**
@@ -17,6 +19,16 @@ abstract class GrapevineSummary extends ContextSummary {
 
   protected def set(key:String, v:GrapevineType):Unit = {
     dataStructure(key) = v
+  }
+
+  def copy(gvSummary:GrapevineSummary) = {
+    // copy all the dataStructure
+    // copy dataStructure
+    dataStructure.empty
+
+    gvSummary.dataStructure.keySet.foreach { k =>
+      dataStructure(k) = gvSummary.dataStructure(k)
+    }
   }
 
   def getValue(key:String) : Option[Any] = {
@@ -61,5 +73,24 @@ abstract class GrapevineSummary extends ContextSummary {
         sb.append(s"${key} => ${gvData.get}: ${gvData.getTypeName}\n")
     }
     sb.toString
+  }
+
+  def toFileString() = {
+    val sb = new StringBuilder
+    dataStructure.foreach { case (key, gvData) =>
+      sb.append(s"${key} -> ${gvData.get}\n")
+    }
+    sb.toString
+  }
+
+  override def load(filePath: String): Unit = {
+    val summaries = File.fileToSummary(filePath)
+    val summary = summaries(0)
+    copy(summary)
+  }
+  override def save(filePath: String): Unit = {
+    val f = new PrintWriter(new File(filePath))
+    (f.write(toFileString()))
+    f.close()
   }
 }
