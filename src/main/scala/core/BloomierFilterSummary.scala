@@ -25,6 +25,7 @@ class BloomierFilterSummary extends GrapevineSummary {
   def grapevineToByteArrayMap(inputMap:Map[String, GrapevineType], goalByteSize:Int)  = {
     val splitter = new Splitter
     val tableWidth = goalByteSize
+    assert(inputMap.size > 0, "Null input map")
     inputMap.map { case (key, value) => {
         var ba = value.toByteArray()
         if (ba.size < tableWidth) {
@@ -38,7 +39,7 @@ class BloomierFilterSummary extends GrapevineSummary {
   def createFromGrapevineMap(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, complete:Boolean = false): Unit = {
   }
 
-  def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, complete:Boolean = false): Unit = {
+  def create(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, initialSeed:Int = 0, complete:Boolean = false): Unit = {
     this.initM = m
     this.k = k
     this.q = q
@@ -48,7 +49,7 @@ class BloomierFilterSummary extends GrapevineSummary {
     super.create(map) // any map to grapevineDataTypeMap
     val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(q))
     //println(!complete)
-    byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = m, k = k, q = q, initialSeed = 0, maxTry = maxTry, complete = complete)
+    byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = m, k = k, q = q, initialSeed = initialSeed, maxTry = maxTry, complete = complete)
   }
 
   /**
@@ -58,6 +59,10 @@ class BloomierFilterSummary extends GrapevineSummary {
    */
   override def getSize(): Int = {
     byteArrayBloomierFilter.getSize()
+  }
+
+  def getDetailedSize() = {
+    byteArrayBloomierFilter.getDetailedSize()
   }
 
   def getM() = {

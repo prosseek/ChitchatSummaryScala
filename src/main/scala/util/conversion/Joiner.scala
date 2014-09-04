@@ -46,7 +46,7 @@ class Joiner {
     val width = bbf.getWidth()
 
     if (width >= totalSize) return None // in this case, there should be no joining byte arrays
-    val iteration = Util.getIteration(totalSize, width)
+    val iteration = Util.ceil(totalSize, width)
 
     // process the first (0th) result
     ba ++= res.get
@@ -111,7 +111,7 @@ class Joiner {
     val tableWidth = bbf.getWidth()
     if (tableWidth >= dataWidth) bbf.get(key)
     else {
-      val range = Range(0, Util.getIteration(dataWidth, tableWidth))
+      val range = Range(0, Util.ceil(dataWidth, tableWidth))
       val res = (Array[Byte]() /: range) { (acc, i) =>
         val newKey = s"${key}${i}"
         val value = bbf.get(newKey)

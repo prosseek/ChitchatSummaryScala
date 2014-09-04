@@ -48,7 +48,10 @@ abstract class GrapevineSummary extends ContextSummary {
    */
   override def create(dict: Map[String, Any]): Unit = {
     dict.foreach { case (key, v) =>
-      if (v.isInstanceOf[GrapevineType]) {
+      if (v == null) {
+        // do nothing when the input value is null
+      }
+      else if (v.isInstanceOf[GrapevineType]) {
         set(key, v.asInstanceOf[GrapevineType])
       }
       else {
