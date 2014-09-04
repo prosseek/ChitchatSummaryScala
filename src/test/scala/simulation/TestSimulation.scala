@@ -1,6 +1,7 @@
 package simulation
 
 import org.scalatest.{BeforeAndAfter, FunSuite}
+import simulation.grapevineType.{Util, Simulation}
 
 class S(m:Map[String, Int]) extends Simulation(m) {
   override def simulate(width: Int): Map[String, Double] = null

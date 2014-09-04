@@ -1,6 +1,7 @@
 package simulation
 
 import org.scalatest.FunSuite
+import simulation.grapevineType.Util
 
 /**
  * Created by smcho on 8/26/14.

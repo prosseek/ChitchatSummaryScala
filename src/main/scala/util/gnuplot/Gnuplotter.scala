@@ -13,7 +13,7 @@ object Gnuplotter {
 
   // plot "/Users/smcho/tmp/imgs/gnuplot/mass/dense_meshes_dir/cohorts.txt.data" using 1:2 title "singles" w lp, "/Users/smcho/tmp/imgs/gnuplot/mass/dense_meshes_dir/cohorts.txt.data" using 1:3 title "aggregates" w lp
   val template = s"""set terminal pngcairo font 'DroidSerif'
-                   |set output "#{GIFFILEPATH}"
+                   |set output "#{PNGFILEPATH}"
                    |
                    |set xtics font ", 15"
                    |set ytics font ", 15"

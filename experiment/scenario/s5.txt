@@ -1,7 +1,0 @@
-ttl -> 1
-hop count -> 20
-date -> (2014, 6, 23)
-time -> (12, 11)
-average of recommendation -> 2.5
-recommendation -> Chef's special
-sender -> Best sushi

@@ -1,9 +1,0 @@
-ttl -> 90
-hop count -> 3
-date -> (2014, 6, 23)
-time -> (12, 11)
-athelete -> football
-level of athelete -> 5
-kakao talk id -> john
-latitude -> (30, 25, 38, 2)
-longitude -> (-17, 47, 11, 0)

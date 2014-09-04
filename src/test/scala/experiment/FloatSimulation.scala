@@ -1,8 +1,9 @@
 package experiment
 
 import grapevineType._
+import simulation.grapevineType.Simulation
 import simulation.theoryFalsePositives.Util
-import simulation.{StringSimulation, Simulation}
+//import simulation.StringSimulation
 
 /**
  * Created by smcho on 8/26/14.

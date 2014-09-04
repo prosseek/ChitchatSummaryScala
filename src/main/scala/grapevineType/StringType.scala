@@ -29,7 +29,15 @@ case class StringType(input:String) extends GrapevineType {
   }
   def set(value: Any) : Unit = {
     if (check(value.asInstanceOf[String])) this.value = value
-    else throw new RuntimeException(s"String Error: [${value}]")
+    else {
+      val s = value.asInstanceOf[String]
+      s.foreach {i  =>
+        if (!StringType.isPrintable(i)) {
+          println(s"Well ${i}(${i.toInt}) is not printable.")
+        }
+      }
+      throw new RuntimeException(s"String Error: [${value}]")
+    }
   }
 
   override def get() : String = this.value.asInstanceOf[String]

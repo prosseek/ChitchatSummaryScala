@@ -1,0 +1,7 @@
+hop count -> 1
+date -> (2014, 1, 23)
+time -> (12, 11)
+notification -> traffic accident at I-35.
+message -> route to 138
+latitude -> (30, 25, 38, 2)
+longitude -> (-17, 47, 11, 0)

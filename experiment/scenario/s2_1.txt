@@ -1,0 +1,8 @@
+hop count -> 3
+date -> (2014, 6, 13)
+time -> (12, 11)
+ride -> merry go round
+recommendation of ride -> 9
+kids count -> 2
+age of kid1 -> 2
+age of kid2 -> 5

@@ -1,14 +1,15 @@
 package experiment
 
-import core.BloomierFilterSummary
+import core.ContextSummary
 import grapevineType.BottomType._
 import grapevineType._
+import util.gen.Summary
 
 /**
  * Created by smcho on 8/21/14.
  */
 object AppNoFalsePositives extends App {
-    def getValueFromBF(bf:BloomierFilterSummary, key:String): Any = {
+    def getValueFromBF(bf:ContextSummary, key:String): Any = {
       if (bf.check(key) == NoError)
         bf.get(key)
       else {
@@ -17,8 +18,8 @@ object AppNoFalsePositives extends App {
     }
 
     def check(summaryPath:String, byteWidth:Int) = {
-      val bf = SizeExperiment.getBF(summaryPath, byteWidth = byteWidth)
-      val ls = SizeExperiment.getLabeledSummary(summaryPath)
+      val bf = Summary.getBF(summaryPath, m = -1, k = 3, byteWidth = byteWidth, complete=false)
+      val ls = Summary.getLabeledSummary(summaryPath)
       ls.getKeys().foreach { key =>
         if (GrapevineType.getTypeFromKey(key).get == classOf[FloatType]) {
           //println(math.abs(getValueFromBF(bf, key).asInstanceOf[Float] - ls.get(key).asInstanceOf[Float]))

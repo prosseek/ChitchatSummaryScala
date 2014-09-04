@@ -3,7 +3,7 @@ package experiment
 import java.io.File
 import java.nio.file.{Files, Paths}
 
-import simulation.LatitudeSimulation
+import simulation.grapevineType.LatitudeSimulation
 
 /**
  * Created by smcho on 8/26/14.
