@@ -29,6 +29,9 @@ class TestBitSetTool extends FunSuite {
     assert(BitSetTool.shortToBitSet(1) == BitSet(0))
   }
 
+  test ("bitSetToInt") {
+    assert(BitSetTool.bitSetToInt(BitSet(0,1,2), bitWidth=8) == 7)
+  }
   test ("bitSetToInt when the result is negative") {
     assert(BitSetTool.bitSetToInt(BitSet(0,1,2,3,4,7,8), bitWidth=9) == -97)
   }

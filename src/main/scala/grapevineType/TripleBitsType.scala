@@ -66,9 +66,9 @@ abstract class TripleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, Int,
         // When DateType calls `fromByteArray`, the DataType.set() extracts
         // Basedate to cause an error.
         // This set should be strictly calling TripleBitsType.scala
-        checkAndSet(BitSetTool.bitSetToInt(bitSets(0)),
-          BitSetTool.bitSetToInt(bitSets(1)),
-          BitSetTool.bitSetToInt(bitSets(2)))
+        checkAndSet(BitSetTool.bitSetToInt(bitSets(0), bits(0)),
+          BitSetTool.bitSetToInt(bitSets(1), bits(1)),
+          BitSetTool.bitSetToInt(bitSets(2), bits(2)))
         NoError
       }
       catch {

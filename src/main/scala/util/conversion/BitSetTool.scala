@@ -18,7 +18,7 @@ object BitSetTool {
   }
   def bitSetToByte(b:BitSet, sh:Int=0) = ((0 /: b) {(acc, input) => acc + (1 << (input - sh))}).toByte
   def bitSetToShort(b:BitSet, sh:Int=0) = ((0 /: b) {(acc, input) => acc + (1 << (input - sh))}).toShort
-  def bitSetToInt(b:BitSet, bitWidth:Int = 32, sh:Int=0) = {
+  def bitSetToInt(b:BitSet, bitWidth:Int, sh:Int=0) = {
     val res = ((0 /: b) {(acc, input) => acc + (1 << (input - sh))})
     val maxInt = scala.math.pow(2.0, bitWidth-1).toInt - 1
     if (res > maxInt) {

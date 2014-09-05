@@ -52,9 +52,9 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
         // For quadruple bits, the value can be signed
         // in that case we need to recover the sign bits
         set(BitSetTool.bitSetToInt(bitSets(0), bits(0)), // <- signed bit
-          BitSetTool.bitSetToInt(bitSets(1)),
-          BitSetTool.bitSetToInt(bitSets(2)),
-          BitSetTool.bitSetToInt(bitSets(3)))
+          BitSetTool.bitSetToInt(bitSets(1), bits(1)),
+          BitSetTool.bitSetToInt(bitSets(2), bits(2)),
+          BitSetTool.bitSetToInt(bitSets(3), bits(3)))
         //(set _).tupled(r) <-- tried but not so successful
         NoError
       }

@@ -38,8 +38,8 @@ object GenerateContexts extends App {
 
   var mapMap = Map[String, GrapevineType]("latitude" -> LatitudeType((30, 17, 14, 0)), "longitude" -> LongitudeType((-97, 44, 11, 6)))
   var nullMap = Map[String, GrapevineType]("latitude" -> null, "longitude" -> null)
-
   //var nullMap = Map[String, GrapevineType]()
+
   var mp: Map[String, GrapevineType] = nullMap
   //var mp = Map[String, GrapevineType]()
   val strs = readFromDictionary()

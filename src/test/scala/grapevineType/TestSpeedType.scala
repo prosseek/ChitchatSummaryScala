@@ -52,7 +52,7 @@ class TestSpeedType extends FunSuite with BeforeAndAfter {
     var b = Array[Byte](-85) // 85 + 171 = 256, so -85 is 171
     assert(t.fromByteArray(b) == Computational)
 
-    b = Array[Byte](-106) // -105 -> 151
+    b = Array[Byte](-108) // -105 -> 151, -108 -> 148, so it should be OK
     assert(t.fromByteArray(b) == NoError)
   }
 }

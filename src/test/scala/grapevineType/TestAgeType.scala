@@ -45,7 +45,7 @@ class TestAgeType extends FunSuite with BeforeAndAfter {
 
   test("Bottom_c test from check()") {
     // It's 1 byte data, but the range is over for this data type
-    var b = Array[Byte](127)
+    var b = Array[Byte](-1)
     assert(t.fromByteArray(b) == Computational)
   }
 

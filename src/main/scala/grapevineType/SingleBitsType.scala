@@ -17,11 +17,18 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
     set(a)
   }
   def set(aValue:Int) = {
-    if (check(List(aValue), ranges)) {
-      this.value = getValue(aValue, bits(0), this.signed)
+    // if this is unsigned, the given aValue can be a negative number to represent the larger value
+    var value = aValue
+    if (this.signed == false) {
+      // to create 1...1 witht he bits(0) width
+      // this will convert the negative into positive one
+      value = aValue & ((1 << bits(0)) - 1)
+    }
+    if (check(List(value), ranges)) {
+      this.value = getValue(value, bits(0), this.signed)
     }
     else {
-      throw new RuntimeException(s"ERROR: a [${aValue}(${a._2}-${a._3})]")
+      throw new RuntimeException(s"ERROR: a [${value}(${a._2}-${a._3})]")
     }
   }
   override def get() : Any = {
@@ -48,7 +55,9 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
     if (bitSets.size > 1) return Computational
 
     try {
-      set(BitSetTool.bitSetToInt(bitSets(0)))
+      // bug [2014/09/05]
+      // it's very dangerous to use default parameters.
+      set(BitSetTool.bitSetToInt(bitSets(0), bitWidth = bits(0)))
       NoError
     }
     catch {
