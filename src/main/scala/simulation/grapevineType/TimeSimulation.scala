@@ -100,22 +100,22 @@ class TimeSimulation(config:Map[String, Int]) extends Simulation(config) {
 }
 
 object TimeSimulation extends App {
-  var m = Map[String,Int]("size" -> 10000, "interest_days" -> 60, "iteration" -> 10, "verbose" ->1, "both_directions" -> 1)
+  var m = Map[String,Int]("size" -> 100000, "interest_days" -> 60, "iteration" -> 1, "verbose" ->1, "both_directions" -> 1)
   var ls = new TimeSimulation(m)
   val f = (i :Int) => ls.simulate(bytes = i)
 
-  (1 to 3).foreach { i =>
-    println(s"SIMULATION FOR WIDTH ${i}")
+  (1 to 1).foreach { i =>
+    println(s"SIMULATION TIME - FOR WIDTH ${i}")
     println(s"${Util.map2string(f(i))}")
   }
 
-  m = Map[String,Int]("size" -> 10000, "interest_days" -> 60, "iteration" -> 10, "verbose" ->0, "both_directions" -> 1)
-  ls = new TimeSimulation(m)
-  val res = ls.simulateOverWidth(1,10)
-  println(res.mkString("\n\n"))
+//  m = Map[String,Int]("size" -> 100000, "interest_days" -> 60, "iteration" -> 3, "verbose" ->0, "both_directions" -> 1)
+//  ls = new TimeSimulation(m)
+//  val res = ls.simulateOverWidth(1,1)
+//  println(res.mkString("\n\n"))
 
-  (1 to 3).foreach { i =>
-    val res =ls.simulate(bytes = i)
-    println(res.mkString("", "\n", "") + "\n")
-  }
+//  (1 to 1).foreach { i =>
+//    val res =ls.simulate(bytes = i)
+//    println(res.mkString("", "\n", "") + "\n")
+//  }
 }
