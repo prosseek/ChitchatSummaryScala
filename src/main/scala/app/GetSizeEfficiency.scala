@@ -1,4 +1,4 @@
-package experiment
+package app
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
@@ -20,8 +20,8 @@ object GetSizeEfficiency extends App{
     res.foreach { v =>
       val values = v.split("\\s+")
       val i = values(0).toInt
-      bf += (i -> values(1).toInt)
-      cbf += (i -> values(3).toInt)
+      bf += (i -> values(1).toDouble.toInt)
+      cbf += (i -> values(3).toDouble.toInt)
       labeled += values(2).toInt
       complete += values(4).toInt
     }

@@ -2,18 +2,18 @@ package app
 
 import java.io.File
 
-import grapevineType._
-import util.conversion.Util
+import core.BloomierFilterSummary
+import grapevineType.GrapevineType
 import util.gen.Summary
 
+import scala.collection.mutable.{Set => MSet}
 import scala.io.Source
 import scala.util.Random
-import scala.collection.mutable.{Set => MSet}
 
 /**
  * Created by smcho on 8/24/14.
  */
-object GenerateContexts extends App {
+object GenerateContexts {
   //simulation.Util.generateRandomContextSummary()
   def getTempContextName() = {
     var tempFile = File.createTempFile("temp", "%06d".format(1))
@@ -36,50 +36,31 @@ object GenerateContexts extends App {
     s.toArray
   }
 
-  var mapMap = Map[String, GrapevineType]("latitude" -> LatitudeType((30, 17, 14, 0)), "longitude" -> LongitudeType((-97, 44, 11, 6)))
-  var nullMap = Map[String, GrapevineType]("latitude" -> null, "longitude" -> null)
-  //var nullMap = Map[String, GrapevineType]()
+  def execute(configuration:Map[String, Any], f:(Int, BloomierFilterSummary) => Unit) = {
+    // var mapMap = Map[String, GrapevineType]("latitude" -> LatitudeType((30, 17, 14, 0)), "longitude" -> LongitudeType((-97, 44, 11, 6)))
+    var nullMap = Map[String, GrapevineType]() // ("latitude" -> null, "longitude" -> null)
+    val mapMap: Map[String, GrapevineType] = configuration("map").asInstanceOf[Map[String, GrapevineType]]
+    val iteration:Int = configuration.getOrElse("iteration", 10000).asInstanceOf[Int]
+    val number:Int = configuration.getOrElse("number", 1).asInstanceOf[Int]
+    val m:Int = configuration.getOrElse("m", -1).asInstanceOf[Int]
+    val k:Int = configuration.getOrElse("k", 3).asInstanceOf[Int]
+    val byteWidth:Int = configuration.getOrElse("byteWidth", 4).asInstanceOf[Int]
+    val complete:Boolean = configuration.getOrElse("complete", false).asInstanceOf[Boolean]
 
-  var mp: Map[String, GrapevineType] = nullMap
-  //var mp = Map[String, GrapevineType]()
-  val strs = readFromDictionary()
+    var mp: Map[String, GrapevineType] = nullMap
+    val strs = GenerateContexts.readFromDictionary()
 
-  var countFp = 0
-  var countFp_r1 = 0
-
-  val javascript1 = new StringBuilder()
-  val javascript2 = new StringBuilder()
-
-  (1 to 1000).foreach { i =>
-    //println(s"count -> ${i}")
-    if (i == 1) {
-      mp = mapMap
-    } // there should only one location in the contexts
-    else {
-      mp = nullMap
-    }
-    val bf = Summary.getRandomBF(strings = strs, summary = mp, m = -1, k = 3, byteWidth = 4, complete = true)
-
-
-    //bf.save("experiment/tmp/random.txt")
-    if (bf.check("latitude") == BottomType.NoError) {
-      countFp += 1
-      val lat = bf.get("latitude")
-
-      if (bf.check("longitude") == BottomType.NoError) {
-        countFp_r1 += 1
-        val long = bf.get("longitude")
-        println(s"${countFp}/${countFp_r1}: (${Util.dms2dd(lat)}, ${Util.dms2dd(long)})")
-        bf.save(s"experiment/tmp/random${countFp_r1}.txt")
-
-        javascript1.append(s"latlngArray[${countFp_r1-1}] = new google.maps.LatLng(${Util.dms2dd(lat)}, ${Util.dms2dd(long)});\n")
-        javascript2.append(s"var marker${countFp_r1-1} = new google.maps.Marker({position : latlngArray[${countFp_r1-1}], map : map});\n")
+    (1 to iteration).foreach { i =>
+      //println(s"count -> ${i}")
+      if (i >= 1 && i < (1 + number)) {
+        mp = mapMap
+      } // there should only one location in the contexts
+      else {
+        mp = nullMap
       }
+      val bf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
+      // run the given code
+      f(i, bf)
     }
   }
-  println(javascript1.toString)
-  println(javascript2.toString)
-  //println(bf.getMap)
-  //println(bf.check("hello"))
-  //println(bf.get("hello"))
 }
