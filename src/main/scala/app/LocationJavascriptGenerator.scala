@@ -38,8 +38,8 @@ object LocationJavascriptGenerator extends App {
     }
   }
 
-  GenerateContexts.execute(configuration = conf.toMap, javaScript)
-
+  //GenerateContexts.execute(configuration = conf.toMap, javaScript)
+  GenerateContexts.parallelExecute(configuration = conf.toMap, javaScript)
   //println(bf.getMap)
   //println(bf.check("hello"))
   //println(bf.get("hello"))
