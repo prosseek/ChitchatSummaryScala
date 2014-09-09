@@ -28,4 +28,8 @@ object BitSetTool {
     else
       res
   }
+  def bitSetToUnsignedInt(b:BitSet, bitWidth:Int, sh:Int=0) = {
+    val res = ((0 /: b) {(acc, input) => acc + (1 << (input - sh))})
+    res
+  }
 }

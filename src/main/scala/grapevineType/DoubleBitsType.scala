@@ -43,9 +43,11 @@ abstract class DoubleBitsType(a:(Int, Int, Int), b:(Int, Int, Int)) extends Bits
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)
 
+      //TODO:
+      // it's to unsigned transform. Make sure this is the case
       try {
-        set(BitSetTool.bitSetToInt(bitSets(0), bits(0)),
-          BitSetTool.bitSetToInt(bitSets(1), bits(1)))
+        set(BitSetTool.bitSetToUnsignedInt(bitSets(0), bits(0)),
+          BitSetTool.bitSetToUnsignedInt(bitSets(1), bits(1)))
         NoError
       }
       catch {

@@ -44,6 +44,8 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
     val totalBytes = getBytes(bits) // get the total bytes for the encoded data
     //if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
 
+    //TODO:
+    // it's to signed/unsigned/unsigned transform. Make sure this is the case
     if (super.fromByteArray(ba, byteSize = totalBytes) == NoError) {
       val bs = byteArrayToBitSet(ba)
       val bitSets = splitBitSets(bs, bits)
@@ -52,9 +54,9 @@ abstract class QuadrupleBitsType(a:(Int, Int, Int), b:(Int, Int, Int), c:(Int, I
         // For quadruple bits, the value can be signed
         // in that case we need to recover the sign bits
         set(BitSetTool.bitSetToInt(bitSets(0), bits(0)), // <- signed bit
-          BitSetTool.bitSetToInt(bitSets(1), bits(1)),
-          BitSetTool.bitSetToInt(bitSets(2), bits(2)),
-          BitSetTool.bitSetToInt(bitSets(3), bits(3)))
+          BitSetTool.bitSetToUnsignedInt(bitSets(1), bits(1)),
+          BitSetTool.bitSetToUnsignedInt(bitSets(2), bits(2)),
+          BitSetTool.bitSetToUnsignedInt(bitSets(3), bits(3)))
         //(set _).tupled(r) <-- tried but not so successful
         NoError
       }
