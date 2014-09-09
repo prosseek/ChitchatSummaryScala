@@ -70,7 +70,7 @@ object GenerateContexts {
 
     (1 to iteration).foreach { i =>
       receive {
-        case msg => println(msg)
+        case msg => msg
       }
     }
 
