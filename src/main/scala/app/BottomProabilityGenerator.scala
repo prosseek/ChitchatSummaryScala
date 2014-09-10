@@ -8,7 +8,7 @@ import scala.collection.mutable.{Map => MMap}
 /**
  * Created by smcho on 9/9/14.
  */
-object BottomChecker extends App {
+object BottomProabilityGenerator extends App {
   var count = 0
   var countFp = 0
   val totalSize = 100000
