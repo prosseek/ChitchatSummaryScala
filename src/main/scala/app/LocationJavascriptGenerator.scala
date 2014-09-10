@@ -10,6 +10,9 @@ import scala.collection.mutable.{Map => MMap}
  * Created by smcho on 9/9/14.
  */
 object LocationJavascriptGenerator extends App {
+  var count = 0
+  var countFp = 0
+  var countFp_r1 = 0
 
   var mapMap = Map[String, GrapevineType]("latitude" -> LatitudeType((30, 17, 14, 0)), "longitude" -> LongitudeType((-97, 44, 11, 6)))
   val conf = MMap[String, Any]()
@@ -17,11 +20,10 @@ object LocationJavascriptGenerator extends App {
   conf("map") = mapMap
 
   def javaScript(i:Int, bf: BloomierFilterSummary) : Unit = {
-    var countFp = 0
-    var countFp_r1 = 0
+    count += 1
 
-    if (i % 1000 == 0)
-      println(s"${i}")
+    if (count % 1000 == 0)
+      println(s"${count}")
     if (bf.check("latitude") == BottomType.NoError) {
       countFp += 1
       val lat = bf.get("latitude")
