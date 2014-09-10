@@ -44,10 +44,14 @@ object GenerateContexts {
             mp = nullMap
           }
 
-          if (bf == null)
-            bf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
-          // run the given code
-          f(i, bf)
+          if (bf == null) {
+            val newBf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
+            // run the given code
+            f(i, newBf)
+          }
+          else {
+            f(i, bf)
+          }
         }
       }
     }
@@ -57,7 +61,6 @@ object GenerateContexts {
         case msg => msg
       }
     }
-
   }
 
   def execute(configuration:Map[String, Any], f:(Int, BloomierFilterSummary) => Unit) = {
@@ -70,21 +73,27 @@ object GenerateContexts {
     val k:Int = configuration.getOrElse("k", 3).asInstanceOf[Int]
     val byteWidth:Int = configuration.getOrElse("byteWidth", 4).asInstanceOf[Int]
     val complete:Boolean = configuration.getOrElse("complete", false).asInstanceOf[Boolean]
+    var bf:BloomierFilterSummary = configuration.getOrElse("bf", null).asInstanceOf[BloomierFilterSummary]
 
     var mp: Map[String, GrapevineType] = nullMap
     val strs = Summary.getDictionaryStrings()
 
     (1 to iteration).foreach { i =>
-      //println(s"count -> ${i}")
       if (i >= 1 && i < (1 + number)) {
         mp = mapMap
       } // there should only one location in the contexts
       else {
         mp = nullMap
       }
-      val bf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
-      // run the given code
-      f(i, bf)
+
+      if (bf == null) {
+        val newBf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
+        // run the given code
+        f(i, newBf)
+      }
+      else {
+        f(i, bf)
+      }
     }
   }
 }
