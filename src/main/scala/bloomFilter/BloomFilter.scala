@@ -9,6 +9,11 @@ import scala.collection.mutable.{Set => MSet}
 import scala.io.Source
 
 object BloomFilter {
+  def checkInput(bf:BloomFilter, input:String) = {
+    val inputs = input.split("[\\s+,;.]").filterNot(_ == "")
+    inputs.forall(bf.get(_))
+  }
+
   def getSet(path:String) = {
     val keys = MSet[String]()
 

@@ -50,7 +50,6 @@ object ScenarioTests extends App {
 
   // Summary.getBF(Map[String, GrapevineType](), m = 10, n = 2, k = 3)
 
-
   def calculate(i:Int, bf: BloomierFilterSummary) : Unit = {
     count += 1
     if (count % 1000 == 0)

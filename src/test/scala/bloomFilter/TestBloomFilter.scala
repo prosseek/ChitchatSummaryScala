@@ -7,6 +7,7 @@ import org.scalatest.FunSuite
  */
 class TestBloomFilter extends FunSuite {
   val filePath = "experiment/data/simple_words.txt"
+  val fullWordsPath = "experiment/data/words.txt"
 
   test ("getSet") {
     val keys = BloomFilter.getSet(filePath)
@@ -31,5 +32,10 @@ class TestBloomFilter extends FunSuite {
     assert(bf.get("abaff"))
     assert(bf.get("abaft"))
     assert(bf.get("hello") == false)
+  }
+
+  test ("checkInput test") {
+    val bf = new BloomFilter(fullWordsPath, m = 100000, k = 3, seed=0)
+    assert(BloomFilter.checkInput(bf, "hello world"))
   }
 }
