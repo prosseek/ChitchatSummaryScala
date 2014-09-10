@@ -10,7 +10,7 @@ class TestGnuplot extends FunSuite with BeforeAndAfter {
   before {
     smap = Map[String, String](
       "GNUPLOTFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/tmp/gnuplot.txt",
-      "GIFFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/tmp/t1.gif",
+      "PNGFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/tmp/t1.gif",
       "TITLE" -> "Dense meshes",
       "XLABEL" -> "Node size",
       "YLABEL" -> "Identification rate (%)",
