@@ -1,5 +1,6 @@
 package app
 
+import bloomFilter.BloomFilter
 import core.BloomierFilterSummary
 import grapevineType._
 import util.gen.Summary
@@ -9,9 +10,18 @@ import scala.collection.mutable.{Map => MMap}
  * Created by smcho on 9/9/14.
  */
 object ScenarioTests extends App {
+  def getBloomFilter(m:Int = 20*100000, k:Int = 5) = {
+    val filePath = "experiment/data/words.txt"
+    val bf = new BloomFilter(filePath, m = m, k = k, seed = 0)
+    bf
+  }
+
   var count = 0
   var countFp = 0
   var countFp2 = 0
+
+  var countFpBloom = 0
+  var countFp2Bloom = 0
 
   val totalSize = 1000000
   var multiply = 1
@@ -19,6 +29,8 @@ object ScenarioTests extends App {
   val n = 10
   val k = 3
 
+
+  val bloom = getBloomFilter()
   val strs = Summary.getDictionaryStrings()
   var mapMap = Map[String, Any](
     "hop count" -> 3,
@@ -48,14 +60,22 @@ object ScenarioTests extends App {
     if (bf.check(key) == BottomType.NoError) {
       countFp += 1
       println(s"${key} - ${bf.get(key)}")
+      if (bloom.get(key)) {
+        countFpBloom += 1
+      }
+
       val key2 = "athelete"
       if (bf.check(key2) == BottomType.NoError) {
         countFp2 += 1
         println(s"${key2} - ${bf.get(key2)}")
+        if (bloom.get(key2)) {
+          countFp2Bloom += 1
+        }
       }
     }
   }
 
   GenerateContexts.parallelExecute(configuration = conf.toMap, calculate)
   println("%5.3f%% - %5.3f%%".format(countFp.toDouble/totalSize, countFp2.toDouble/totalSize))
+  println("%5.3f%% - %5.3f%%".format(countFpBloom.toDouble/totalSize, countFp2Bloom.toDouble/totalSize))
 }
