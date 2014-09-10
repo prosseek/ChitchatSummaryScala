@@ -16,7 +16,7 @@ object LocationJavascriptGenerator extends App {
 
   var mapMap = Map[String, GrapevineType]("latitude" -> LatitudeType((30, 17, 14, 0)), "longitude" -> LongitudeType((-97, 44, 11, 6)))
   val conf = MMap[String, Any]()
-  conf("iteration") = 100000
+  conf("iteration") = 1000000
   conf("map") = mapMap
 
   def javaScript(i:Int, bf: BloomierFilterSummary) : Unit = {

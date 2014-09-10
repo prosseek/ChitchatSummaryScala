@@ -7,9 +7,6 @@ import grapevineType.GrapevineType
 import util.gen.Summary
 
 import scala.actors.Actor._
-import scala.collection.mutable.{Set => MSet}
-import scala.io.Source
-import scala.util.Random
 
 /**
  * Created by smcho on 8/24/14.
@@ -19,22 +16,6 @@ object GenerateContexts {
   def getTempContextName() = {
     var tempFile = File.createTempFile("temp", "%06d".format(1))
     tempFile
-  }
-
-  def readFromDictionary() :Array[String] = {
-    val lines = Source.fromFile("experiment/data/words.txt").getLines()
-    //var count = lines.size
-    val s = MSet[String]()
-
-    lines.foreach { l =>
-      val randValue = Random.nextInt(20)
-      if (l.size > 4 && randValue == 0) {
-        s += l
-        if (s.size >= 1000) return s.toArray
-      }
-    }
-    assert(s.size > 0)
-    s.toArray
   }
 
   def parallelExecute(configuration:Map[String, Any], f:(Int, BloomierFilterSummary) => Unit) = {
@@ -47,9 +28,10 @@ object GenerateContexts {
     val k:Int = configuration.getOrElse("k", 3).asInstanceOf[Int]
     val byteWidth:Int = configuration.getOrElse("byteWidth", 4).asInstanceOf[Int]
     val complete:Boolean = configuration.getOrElse("complete", false).asInstanceOf[Boolean]
+    var bf:BloomierFilterSummary = configuration.getOrElse("bf", null).asInstanceOf[BloomierFilterSummary]
 
     var mp: Map[String, GrapevineType] = nullMap
-    val strs = GenerateContexts.readFromDictionary()
+    val strs = Summary.getDictionaryStrings()
 
     val caller = self
     (1 to iteration).foreach { i =>
@@ -61,7 +43,9 @@ object GenerateContexts {
           else {
             mp = nullMap
           }
-          val bf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
+
+          if (bf == null)
+            bf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
           // run the given code
           f(i, bf)
         }
@@ -88,7 +72,7 @@ object GenerateContexts {
     val complete:Boolean = configuration.getOrElse("complete", false).asInstanceOf[Boolean]
 
     var mp: Map[String, GrapevineType] = nullMap
-    val strs = GenerateContexts.readFromDictionary()
+    val strs = Summary.getDictionaryStrings()
 
     (1 to iteration).foreach { i =>
       //println(s"count -> ${i}")

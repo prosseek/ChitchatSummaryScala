@@ -168,6 +168,10 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     (getNumberOfElements(), byteSize, ceil(m, 8))
   }
 
+  def getN() = {
+    getNumberOfElements()
+  }
+
   def getSize() = {
     getNumberOfElements() * byteSize + ceil(m, 8)
   }

@@ -69,6 +69,9 @@ class BloomierFilterSummary extends GrapevineSummary {
     byteArrayBloomierFilter.getM()
   }
 
+  def getN() = {
+    byteArrayBloomierFilter.getN()
+  }
   /**
    * Returns the value from the input key
    * The returned value can be null, so Option type is used.
