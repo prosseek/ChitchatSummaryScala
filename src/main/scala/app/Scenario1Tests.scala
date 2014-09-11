@@ -9,7 +9,7 @@ import scala.collection.mutable.{Map => MMap}
 /**
  * Created by smcho on 9/9/14.
  */
-object ScenarioTests extends App {
+object Scenario1Tests extends App {
   def getBloomFilter(m:Int = 20*100000, k:Int = 5) = {
     val filePath = "experiment/data/words.txt"
     val bf = new BloomFilter(filePath, m = m, k = k, seed = 0)
@@ -74,7 +74,29 @@ object ScenarioTests extends App {
     }
   }
 
-  GenerateContexts.parallelExecute(configuration = conf.toMap, calculate)
-  println("%5.3f%% - %5.3f%%".format(countFp.toDouble/totalSize, countFp2.toDouble/totalSize))
-  println("%5.3f%% - %5.3f%%".format(countFpBloom.toDouble/totalSize, countFp2Bloom.toDouble/totalSize))
+  def calculate2(i:Int, bf: BloomierFilterSummary) : Unit = {
+    count += 1
+    if (count % 10000 == 0)
+      println(s"${count}")
+
+    val key = "level of athelete"
+    if (bf.check(key) == BottomType.NoError) {
+      countFp += 1
+      println(s"${key} - ${bf.get(key)}")
+
+      val key2 = "athelete"
+      if (bf.check(key2) == BottomType.NoError) {
+        countFp2 += 1
+        println(s"${key2} - ${bf.get(key2)}")
+        if (bloom.get(key2)) {
+          countFp2Bloom += 1
+        }
+      }
+    }
+  }
+
+  conf("byteWidth") = 1
+  GenerateContexts.parallelExecute(configuration = conf.toMap, calculate2)
+  println("%5.3f%% (%d) - %5.3f%% (%d)".format(countFp.toDouble/totalSize, countFp, countFp2.toDouble/totalSize, countFp2))
+  println("%5.3f%% (%d) - %5.3f%% (%d)".format(countFpBloom.toDouble/totalSize, countFpBloom, countFp2Bloom.toDouble/totalSize, countFp2Bloom))
 }
