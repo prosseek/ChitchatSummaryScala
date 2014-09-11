@@ -23,7 +23,7 @@ object Scenario1Tests extends App {
   var countFpBloom = 0
   var countFp2Bloom = 0
 
-  val totalSize = 100000
+  val totalSize = 1000000
   var multiply = 1
   var m = 10*multiply
   val n = 10
@@ -79,12 +79,12 @@ object Scenario1Tests extends App {
     if (count % 10000 == 0)
       println(s"${count}")
 
-    val key = "level of athelete"
+    val key = "athelete"
     if (bf.check(key) == BottomType.NoError) {
       countFp += 1
       println(s"${key} - ${bf.get(key)}")
 
-      val key2 = "athelete"
+      val key2 = s"level of ${key}"
       if (bf.check(key2) == BottomType.NoError) {
         countFp2 += 1
         println(s"${key2} - ${bf.get(key2)}")
@@ -95,7 +95,7 @@ object Scenario1Tests extends App {
     }
   }
 
-  conf("byteWidth") = 1
+  conf("byteWidth") = -1
   GenerateContexts.parallelExecute(configuration = conf.toMap, calculate2)
   println("%5.3f%% (%d) - %5.3f%% (%d)".format(countFp.toDouble/totalSize, countFp, countFp2.toDouble/totalSize, countFp2))
   println("%5.3f%% (%d) - %5.3f%% (%d)".format(countFpBloom.toDouble/totalSize, countFpBloom, countFp2Bloom.toDouble/totalSize, countFp2Bloom))
