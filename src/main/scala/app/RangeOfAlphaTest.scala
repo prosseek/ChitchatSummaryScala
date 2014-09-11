@@ -16,11 +16,12 @@ object RangeOfAlphaTest extends App {
   val count = 1000000
   var amax = Double.MinPositiveValue
   var amin = Double.MaxValue
-  var i = 0
+  var ic = 0
 
   def calculate2(i:Int, bf: BloomierFilterSummary) : Unit = {
-    if (i % 10000 == 0) println(s"${i}")
-    
+    ic += 1
+    if (ic % 10000 == 0) println(s"${ic}")
+
     val n = bf.getN()
     val m = bf.getM()
     //println(s"${n}-${m} => ${m.toDouble/n}")
