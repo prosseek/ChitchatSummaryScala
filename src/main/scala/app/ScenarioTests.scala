@@ -23,7 +23,7 @@ object ScenarioTests extends App {
   var countFpBloom = 0
   var countFp2Bloom = 0
 
-  val totalSize = 1000000
+  val totalSize = 100000
   var multiply = 1
   var m = 10*multiply
   val n = 10
