@@ -13,7 +13,7 @@ object RangeOfAlphaTest extends App {
   var mmax = Int.MinValue
   var mmin = Int.MaxValue
   var alphasum = 0.0
-  val count = 100
+  val count = 1000000
 
   def calculate2(i:Int, bf: BloomierFilterSummary) : Unit = {
     val n = bf.getN()
