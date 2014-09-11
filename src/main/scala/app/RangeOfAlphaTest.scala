@@ -14,8 +14,13 @@ object RangeOfAlphaTest extends App {
   var mmin = Int.MaxValue
   var alphasum = 0.0
   val count = 1000000
+  var amax = Double.MinPositiveValue
+  var amin = Double.MaxValue
+  var i = 0
 
   def calculate2(i:Int, bf: BloomierFilterSummary) : Unit = {
+    if (i % 10000 == 0) println(s"${i}")
+    
     val n = bf.getN()
     val m = bf.getM()
     //println(s"${n}-${m} => ${m.toDouble/n}")
@@ -23,12 +28,15 @@ object RangeOfAlphaTest extends App {
     if (n < nmin) nmin = n
     if (m > mmax) mmax = m
     if (m < mmin) mmin = m
-    alphasum += (m.toDouble)/n
+    val alpha = (m.toDouble)/n
+    if (alpha > amax) amax = alpha
+    if (alpha < amin) amin = alpha
+    alphasum += alpha
   }
 
   val conf = MMap[String, Any]()
   conf("iteration") = count
   conf("byteWidth") = -1 // random byte width
   GenerateContexts.parallelExecute(configuration = conf.toMap, calculate2)
-  println(s"N(${nmin} - ${nmax}) M(${mmin} - ${nmax}) ALPHA AVG ${alphasum/count})")
+  println(s"A(${amin} - ${amax}) N(${nmin} - ${nmax}) M(${mmin} - ${nmax}) ALPHA AVG ${alphasum/count})")
 }
