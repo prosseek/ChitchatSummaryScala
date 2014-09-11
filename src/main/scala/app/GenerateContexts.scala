@@ -22,7 +22,7 @@ object GenerateContexts {
   def parallelExecute(configuration:Map[String, Any], f:(Int, BloomierFilterSummary) => Unit) = {
     // var mapMap = Map[String, GrapevineType]("latitude" -> LatitudeType((30, 17, 14, 0)), "longitude" -> LongitudeType((-97, 44, 11, 6)))
     var nullMap = Map[String, GrapevineType]() // ("latitude" -> null, "longitude" -> null)
-    val mapMap: Map[String, GrapevineType] = configuration("map").asInstanceOf[Map[String, GrapevineType]]
+    val mapMap: Map[String, GrapevineType] = configuration.getOrElse("map", nullMap).asInstanceOf[Map[String, GrapevineType]]
     val iteration:Int = configuration.getOrElse("iteration", 10000).asInstanceOf[Int]
     val number:Int = configuration.getOrElse("number", 1).asInstanceOf[Int]
     val m:Int = configuration.getOrElse("m", -1).asInstanceOf[Int]
