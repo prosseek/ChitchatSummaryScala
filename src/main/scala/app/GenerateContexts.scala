@@ -7,6 +7,7 @@ import grapevineType.GrapevineType
 import util.gen.Summary
 
 import scala.actors.Actor._
+import scala.util.Random
 
 /**
  * Created by smcho on 8/24/14.
@@ -26,7 +27,7 @@ object GenerateContexts {
     val number:Int = configuration.getOrElse("number", 1).asInstanceOf[Int]
     val m:Int = configuration.getOrElse("m", -1).asInstanceOf[Int]
     val k:Int = configuration.getOrElse("k", 3).asInstanceOf[Int]
-    val byteWidth:Int = configuration.getOrElse("byteWidth", 4).asInstanceOf[Int]
+    var byteWidth:Int = configuration.getOrElse("byteWidth", -1).asInstanceOf[Int]
     val complete:Boolean = configuration.getOrElse("complete", false).asInstanceOf[Boolean]
     var bf:BloomierFilterSummary = configuration.getOrElse("bf", null).asInstanceOf[BloomierFilterSummary]
 
@@ -45,6 +46,9 @@ object GenerateContexts {
           }
 
           if (bf == null) {
+            if (byteWidth == -1) {
+              byteWidth = Random.nextInt(6) + 1
+            }
             val newBf = Summary.getRandomBF(strings = strs, summary = mp, m = m, k = k, byteWidth = byteWidth, complete = complete)
             // run the given code
             f(i, newBf)
