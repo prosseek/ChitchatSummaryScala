@@ -28,7 +28,7 @@ abstract class SingleBitsType(a:(Int, Int, Int)) extends BitsType {
       this.value = getValue(value, bits(0), this.signed)
     }
     else {
-      throw new RuntimeException(s"ERROR: a [${value}(${a._2}-${a._3})]")
+      throw new RuntimeException(s"ERROR: aValue(${aValue}) [${value}(${a._2}-${a._3})]")
     }
   }
   override def get() : Any = {

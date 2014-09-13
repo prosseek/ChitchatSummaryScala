@@ -3,8 +3,10 @@ package grapevineType
 object LevelType {
   def getId = 12
   def getSize = (new LevelType).getSize
-  val defaultValue = 0
-  val min = 0
+  // BUG [2014/09/13]
+  // the default value should be within the range
+  val defaultValue = 5
+  val min = 1
   val max = 10
   val bits = 8
 }

@@ -91,6 +91,9 @@ object GrapevineType {
       if (lowerKey.startsWith(key)) return Some(grapevineType)
     }
 
+    if (key.endsWith(" date")) return Some(classOf[DateType])
+    if (key.endsWith(" time")) return Some(classOf[TimeType])
+    if (key.endsWith(" rating")) return Some(classOf[LevelType])
     if (key.endsWith(" count")) return Some(classOf[UnsignedShortType])
     if (key.endsWith(" id")) return Some(classOf[StringType])
     if (key.endsWith("_f")) return Some(classOf[FloatType])

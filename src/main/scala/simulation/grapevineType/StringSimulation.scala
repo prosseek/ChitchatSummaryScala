@@ -110,11 +110,11 @@ class StringSimulation(config:Map[String, Int]) extends Simulation(config) {
 
 object StringSimulation extends App {
   var bf: BloomFilter = null
-  var config = Map[String, Int]("iteration" -> 1, "minimum_size" -> 2, "size" -> 100000)
+  var config = Map[String, Int]("iteration" -> 1, "minimum_size" -> 2, "size" -> 10000000)
   var ss = new StringSimulation(config)
 
   // for string we simulate over the minimum string
-  (1 to 10).foreach { i =>
+  (1 to 4).foreach { i =>
     val res = ss.simulate(i)
     println(s"minimum ${i} -> ${Util.map2string(res)}")
   }

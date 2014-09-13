@@ -1,9 +1,11 @@
-package app
+package app.scenarios
 
+import app.GenerateContexts
 import bloomFilter.BloomFilter
 import core.BloomierFilterSummary
 import grapevineType._
 import util.gen.Summary
+
 import scala.collection.mutable.{Map => MMap}
 
 /**

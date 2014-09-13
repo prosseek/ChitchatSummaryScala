@@ -35,7 +35,12 @@ class TestBloomFilter extends FunSuite {
   }
 
   test ("checkInput test") {
-    val bf = new BloomFilter(fullWordsPath, m = 100000, k = 3, seed=0)
+    val m = 100000 * 20
+    val k = 3
+    val n = 235886
+
+    val bf = new BloomFilter(fullWordsPath, m = m, k = k, seed=0)
+    println(BloomFilter.getFalsePositiveProbability(m = m, k = k, n = n))
     assert(BloomFilter.checkInput(bf, "hello world"))
   }
 }
