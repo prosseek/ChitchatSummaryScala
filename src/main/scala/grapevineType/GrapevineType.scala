@@ -90,7 +90,7 @@ object GrapevineType {
     keyType.foreach { case(key, grapevineType)  =>
       if (lowerKey.startsWith(key)) return Some(grapevineType)
     }
-
+    if (key.endsWith(" level")) return Some(classOf[LevelType])
     if (key.endsWith(" date")) return Some(classOf[DateType])
     if (key.endsWith(" time")) return Some(classOf[TimeType])
     if (key.endsWith(" rating")) return Some(classOf[LevelType])

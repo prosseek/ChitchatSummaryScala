@@ -6,7 +6,7 @@ import bloomierFilter.ByteArrayBloomierFilter
 import grapevineType.BottomType._
 import grapevineType._
 import ontology.Relation
-import util.conversion.{ByteArrayTool, Joiner, Splitter, Util}
+import util.conversion.{Joiner, Util}
 
 import scala.collection.mutable.{Map => MMap}
 
@@ -21,20 +21,6 @@ class BloomierFilterSummary extends GrapevineSummary {
   var maxTry:Int = 20
   var complete:Boolean = false
   var initM:Int = -1
-
-  def grapevineToByteArrayMap(inputMap:Map[String, GrapevineType], goalByteSize:Int)  = {
-    val splitter = new Splitter
-    val tableWidth = goalByteSize
-    assert(inputMap.size > 0, "Null input map")
-    inputMap.map { case (key, value) => {
-        var ba = value.toByteArray()
-        if (ba.size < tableWidth) {
-          ba = ByteArrayTool.adjust(value = ba, originalSize = ba.size, goalSize = tableWidth)
-        }
-        splitter.split(key, ba, goalByteSize)
-      }
-    }.reduce { _ ++ _}
-  }
 
   def createFromGrapevineMap(map: Map[String, Any], m:Int, k:Int, q:Int, maxTry:Int = 20, complete:Boolean = false): Unit = {
   }

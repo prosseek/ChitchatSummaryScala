@@ -1,6 +1,7 @@
 package core
 
 import grapevineType._
+import util.conversion.{ByteArrayTool, Splitter}
 import util.io.File
 import java.io._
 
@@ -10,6 +11,20 @@ import scala.collection.mutable.{Map => MMap}
  */
 abstract class GrapevineSummary extends ContextSummary {
   protected val dataStructure = MMap[String, GrapevineType]()
+
+  def grapevineToByteArrayMap(inputMap:Map[String, GrapevineType], goalByteSize:Int)  = {
+    val splitter = new Splitter
+    val tableWidth = goalByteSize
+    assert(inputMap.size > 0, "Null input map")
+    inputMap.map { case (key, value) => {
+      var ba = value.toByteArray()
+      if (ba.size < tableWidth) {
+        ba = ByteArrayTool.adjust(value = ba, originalSize = ba.size, goalSize = tableWidth)
+      }
+      splitter.split(key, ba, goalByteSize)
+    }
+    }.reduce { _ ++ _}
+  }
 
   protected def set(key:String, t:Class[_], v:Any):Unit = {
     val gv = t.newInstance.asInstanceOf[GrapevineType]
