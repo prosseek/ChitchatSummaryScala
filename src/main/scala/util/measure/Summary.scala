@@ -64,8 +64,9 @@ object Summary {
 //    listCount.foreach { i =>
 //      println(s"${summaryPath}/${getSizeNormalDetail(summary, i)}")
 //    }
-    val listLabeled = List.fill(10)(summary.getSize())
-    val listComplete = List.fill(10)(summary.getCompleteSize())
+    val totalSize = stop - start + 1
+    val listLabeled = List.fill(totalSize)(summary.getSize())
+    val listComplete = List.fill(totalSize)(summary.getCompleteSize())
 
     Array[Array[AnyVal]](listCount.toArray, listBFNormal.toArray, listLabeled.toArray, listBFComplte.toArray, listComplete.toArray)
   }

@@ -129,7 +129,7 @@ case class Tables(m:Seq[Int] = List(10,5,3), keys:Seq[Int] = List(3,3,2), startS
     if (debug) {
       val sb = new StringBuffer()
       val keys = oneBuffer.keySet.toList.sorted
-      sb.append("ONE-ZERO\n")
+      sb.append("ONE-ZERO [LEVEL]ALLOC SIZE(USED SIZE)\n")
       keys.foreach { level =>
         sb.append(s"[${level}]${getM(level)}(${oneBuffer(level).size}) ")
       }

@@ -35,8 +35,8 @@ class BloomFilterCascadeSummary extends GrapevineSummary {
    *
    * @return
    */
-  override def getSize(): Int = {
-    bloomFilterCascade.getSize()
+  def getSize(debug:Boolean = false): Int = {
+    bloomFilterCascade.getSize(debug)
   }
 
   /**
@@ -75,5 +75,12 @@ class BloomFilterCascadeSummary extends GrapevineSummary {
     val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(r))
     //byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = this.initM, k = k, q = q, initialSeed = 0, maxTry = maxTry, complete = complete)
   }
+
+  /**
+   * Returns the size of the summary
+   *
+   * @return
+   */
+  override def getSize(): Int = getSize(false)
 }
 
