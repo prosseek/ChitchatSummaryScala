@@ -16,8 +16,8 @@ object DrawGnuplotForSize extends App with GnuplotMaps {
 //    val arrays = Run.getSizes(summaryPath="experiment/contextsForTest/summary2.txt")
 //    Gnuplotter.plot(getMapForSize("summary2"), arrays)
 
-//    val files = Array[String]("string_only", "no_string","s1_1", "s1_2", "s2_1", "s2_2", "s3_1", "s3_2")
-    val files = Array[String]("s1_1")
+    val files = Array[String]("string_only", "no_string","s1_1", "s1_2", "s2_1", "s2_2", "s3_1", "s3_2")
+//    val files = Array[String]("s1_1")
 
     files.foreach { f =>
       val file = s"experiment/scenario/${f}.txt"

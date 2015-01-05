@@ -47,4 +47,10 @@ class TestLabeledSummary extends FunSuite with BeforeAndAfter {
     assert(ls.check("level of a") == BottomType.NoError)
     assert(ls.get("level of a") == 3)
   }
+  test("serialize") {
+    val m = Map("A count" -> 10, "B count"->20, "C"->"test")
+    t.create(m)
+    val s = t.serialize()
+    println(s)
+  }
 }
