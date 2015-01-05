@@ -32,6 +32,6 @@ object AppNoFalsePositives extends App {
 //  (1 to 10).foreach { check("experiment/contextsForTest/summary1.txt", _) }
 //  (1 to 10).foreach { check("experiment/contextsForTest/summary2.txt", _) }
 //  (1 to 10).foreach { check("experiment/scenario/s1.txt", _)}
-  (1 to 10).foreach { check("experiment/scenario/s5.txt", _)}
-  (1 to 10).foreach { check("experiment/scenario/s5_2.txt", _)}
+//  (1 to 10).foreach { check("experiment/scenario/s5.txt", _)}
+  (1 to 10).foreach { check("experiment/scenario/s3_2.txt", _)}
 }

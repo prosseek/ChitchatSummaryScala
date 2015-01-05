@@ -1,6 +1,8 @@
 package bloomierFilter
 
+import scala.collection.mutable.BitSet
 import util.conversion.Util._
+import util.conversion.ByteArrayTool._
 
 /**
  * Created by smcho on 8/16/14.
@@ -190,4 +192,24 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
 //    }
 //    println("---------------------------------------------BL")
 //  }
+  def serialize() : Array[Byte] = {
+    // the format
+    // HEADER
+    var res = Array[Byte]()
+
+    // get the total number of rows
+    //   var table : Array[Array[Byte]]
+
+    var header = BitSet()
+
+    for ((row, i) <- this.table.zipWithIndex) {
+      if (row.forall(_ == 0)) header(i) = true
+      res ++= row
+    }
+
+    val totalNumberOfRows = table.size
+    assert(totalNumberOfRows < (1 << 16))
+
+    shortToByteArray(totalNumberOfRows.toShort) ++ bitSetToByteArray(header) ++ res
+  }
 }

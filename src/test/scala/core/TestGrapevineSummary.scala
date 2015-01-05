@@ -10,6 +10,10 @@ class TestClass extends GrapevineSummary {
   override def check(key: String): BottomType = {
     NoError
   }
+
+  // def zip(): Array[Byte];
+  // This is just quick and dirty way of removing errors
+  override def serialize(): Array[Byte] = Array[Byte]()
 }
 
 /**

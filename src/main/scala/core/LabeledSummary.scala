@@ -36,4 +36,13 @@ class LabeledSummary extends GrapevineSummary {
     if (getValue(key).isEmpty) Bottom // this is structural check to return Buttom
     else NoError
   }
+
+  override def serialize(): Array[Byte] = {
+    var ab = Array[Byte]()
+    // get the contents
+
+    dataStructure.foreach { case (key, value) =>
+    }
+    return ab
+  }
 }

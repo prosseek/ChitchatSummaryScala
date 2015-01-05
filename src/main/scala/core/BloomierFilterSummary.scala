@@ -104,4 +104,14 @@ class BloomierFilterSummary extends GrapevineSummary {
     val baMap = grapevineToByteArrayMap(super.getMap, Util.getByteSize(q))
     byteArrayBloomierFilter = new ByteArrayBloomierFilter(map = baMap, initialM = this.initM, k = k, q = q, initialSeed = 0, maxTry = maxTry, complete = complete)
   }
+
+  /* NOT FINISHED */
+  override def serialize(): Array[Byte] = {
+    var ab = Array[Byte]()
+    // get the contents
+
+    dataStructure.foreach { case (key, value) =>
+    }
+    return ab
+  }
 }

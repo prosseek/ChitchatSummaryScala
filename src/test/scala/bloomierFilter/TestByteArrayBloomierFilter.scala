@@ -14,6 +14,7 @@ import util.print.Util._
 class TestByteArrayBloomierFilter extends FunSuite with BeforeAndAfter  {
   var map1 : Map[String, Array[Byte]] = _
   var map2 : Map[String, Array[Byte]] = _
+  var map3 : Map[String, Array[Byte]] = _
   before {
     map1 = Map("a" -> ByteArrayTool.floatToByteArray(10.0F, size = 4),
                "b" -> ByteArrayTool.byteToByteArray(10,  size = 4),
@@ -27,6 +28,7 @@ class TestByteArrayBloomierFilter extends FunSuite with BeforeAndAfter  {
                  "f" -> ByteArrayTool.byteToByteArray(10,  size = 4),
                  "g" -> ByteArrayTool.byteToByteArray(20,  size = 4),
                  "h" -> null)
+    map3 = Map("a" -> ByteArrayTool.byteToByteArray(0, size = 4))
   }
   test ("map1 find test - allow order = true") {
 //    Found solution? true
@@ -82,5 +84,12 @@ val t = new ByteArrayBloomierFilter(map1, initialM = 4, k = 3, q = 4*8, initialS
     res = t.get("b").get
     println(s"ByteArray - ${res.mkString(":")}, = ${ByteArrayTool.byteArrayToByte(res)}")
     println(s"Empty for h? - ${t.get("h").isEmpty}")
+  }
+
+  test("Serialize") {
+    var t = new ByteArrayBloomierFilter(map3, initialM = 1, k = 3, q = 4*8, initialSeed = 0, maxTry = 5, complete = false)
+    val res = t.serialize()
+    println(res)
+    assert(res.size == (2 + 1 + 4)) // 2 for the count, 1 for header, 4 for data
   }
 }

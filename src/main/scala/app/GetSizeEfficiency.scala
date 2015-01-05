@@ -80,7 +80,7 @@ object GetSizeEfficiency extends App{
   //val files = Array[String]("s1_1", "s1_2", "s2_1", "s2_2", "s3_1", "s3_2")
   var count = 1
   files.foreach { f =>
-    getSizeEfficiency(s"/Users/smcho/code/contextSummary/experiment/size/${f}.data", count)
+    getSizeEfficiency(s"/Users/smcho/research/contextSummary/experiment/size/${f}.data", count)
     count += 1
   }
   // sort the keys

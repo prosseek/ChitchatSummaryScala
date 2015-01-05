@@ -47,7 +47,6 @@ object Summary {
     getSizeAverage(summary = summary, byteWidth = byteWidth, complete = true, count = count)
   }
 
-
   def getSizes(summaryPath:String, start:Int = 1, stop:Int = 10) :Array[Array[AnyVal]] = {
     val summaries = File.fileToSummary(summaryPath)
     val summary = summaries(0)

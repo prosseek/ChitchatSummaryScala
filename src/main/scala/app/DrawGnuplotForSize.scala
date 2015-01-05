@@ -23,6 +23,7 @@ object DrawGnuplotForSize extends App with GnuplotMaps {
       val file = s"experiment/scenario/${f}.txt"
       println("Working on %s".format(file))
       val arrays = Summary.getSizes(summaryPath=file, start = 1, stop = 11)
+      //val array2 = Summary.getZippedSizes(summaryPath=file, start = 1, stop = 11)
       Gnuplotter.plot(getMapForSize(s"${f}"), arrays)
     }
   }

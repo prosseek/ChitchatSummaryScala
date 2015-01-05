@@ -16,13 +16,14 @@ abstract class GrapevineSummary extends ContextSummary {
     val splitter = new Splitter
     val tableWidth = goalByteSize
     assert(inputMap.size > 0, "Null input map")
-    inputMap.map { case (key, value) => {
-      var ba = value.toByteArray()
-      if (ba.size < tableWidth) {
-        ba = ByteArrayTool.adjust(value = ba, originalSize = ba.size, goalSize = tableWidth)
+    inputMap.map { case (key, value) =>
+      {
+        var ba = value.toByteArray()
+        if (ba.size < tableWidth) {
+          ba = ByteArrayTool.adjust(value = ba, originalSize = ba.size, goalSize = tableWidth)
+        }
+        splitter.split(key, ba, goalByteSize)
       }
-      splitter.split(key, ba, goalByteSize)
-    }
     }.reduce { _ ++ _}
   }
 

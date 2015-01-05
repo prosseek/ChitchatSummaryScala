@@ -21,7 +21,7 @@ object ScenarioQueryTest1_2 extends App {
   var mapMap = Map[String, Any](
     "hop count" -> 20,
     "date" -> (2014, 6, 23),
-    "time" -> (10, 00),
+    "time" -> (10, 0),
     "message" -> "I'll be waiting at my location.",
     "latitude" -> (30, 25, 48, 2),
     "longitude" -> (-13, 41, 11, 30),
