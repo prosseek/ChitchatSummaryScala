@@ -3,7 +3,7 @@ package core
 import grapevineType.BottomType._
 import util.conversion.Util
 import util.conversion.ByteArrayTool._
-
+import util.compression.CompressorHelper._
 /**
  * Created by smcho on 8/10/14.
  */
@@ -13,19 +13,28 @@ class LabeledSummary extends GrapevineSummary {
     getMap().keySet.toList
   }
 
-  override def getSize(): Int = {
+  // this is the size in bytes
+  def getTheorySize(): Int = {
     (0 /: dataStructure) { (acc, value) => acc + value._2.getSize } + // sum value size
     (0 /: dataStructure.keys) {(acc, value) => acc + value.size}     // sum of keys
     // dataStructure.size     // 1 byte is used for identifying the type
   }
-  def getCompleteSize(): Int = {
-    def log2(x : Double) = {
-      math.log10(x)/math.log10(2.0)
-    }
-    val size1 = (0 /: dataStructure) { (acc, value) => acc + value._2.getSize }
-    val size2 = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
-    size1 + size2
+
+  override def getSize() = {
+    val serial = serialize()
+    val compressed = compress(serial)
+
+    (getTheorySize(), serial.size, compressed.size)
   }
+
+//  def getCompleteSize(): Int = {
+//    def log2(x : Double) = {
+//      math.log10(x)/math.log10(2.0)
+//    }
+//    val size1 = (0 /: dataStructure) { (acc, value) => acc + value._2.getSize }
+//    val size2 = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
+//    size1 + size2
+//  }
 
   override def get(key: String): Any = {
     val r = getValue(key)

@@ -27,7 +27,7 @@ class TestBloomierFilterSummary extends FunSuite with BeforeAndAfter {
     // map1 size
     t.create(map = map1, m = 8, k = 3, q = 8*4)
     val expectedSize = t.getM()/8 + 4 * 4
-    assert(t.getSize() == expectedSize)
+    assert(t.getSize()._1 == expectedSize)
   }
   test ("Simple") {
     t.create(map = map1, m = 6, k = 3, q = 8*4)

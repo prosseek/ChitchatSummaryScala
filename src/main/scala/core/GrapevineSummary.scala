@@ -10,7 +10,7 @@ import scala.collection.mutable.{Map => MMap}
  * Created by smcho on 8/10/14.
  */
 abstract class GrapevineSummary extends ContextSummary {
-  protected val dataStructure = MMap[String, GrapevineType]()
+  val dataStructure = MMap[String, GrapevineType]()
 
   def grapevineToByteArrayMap(inputMap:Map[String, GrapevineType], goalByteSize:Int)  = {
     val splitter = new Splitter

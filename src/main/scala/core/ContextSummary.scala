@@ -12,7 +12,7 @@ abstract class ContextSummary {
    *
    * @return
    */
-  def getSize() : Int;
+  def getSize() : (Int, Int, Int);
 
   /**
    * Returns the value from the input key

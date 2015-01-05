@@ -81,7 +81,7 @@ class BloomFilterCascadeSummary extends GrapevineSummary {
    *
    * @return
    */
-  override def getSize(): Int = getSize(false)
+  override def getSize() = (getSize(false), getSize(false), getSize(false))
   override def serialize() = {
     Array[Byte]()
   }

@@ -5,7 +5,7 @@ import org.scalatest._
 
 // Grapevine is an abstract class, so we need to make a concrete class just to test GrapevineSummary
 class TestClass extends GrapevineSummary {
-  override def getSize(): Int = 0
+  override def getSize(): (Int, Int, Int) = (0,0,0)
   override def get(key: String): Option[Any] = None
   override def check(key: String): BottomType = {
     NoError

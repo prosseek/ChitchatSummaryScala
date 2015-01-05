@@ -1,6 +1,7 @@
 package core
 
 import grapevineType.BottomType._
+import util.compression.CompressorHelper._
 import util.conversion.ByteArrayTool._
 import util.conversion.BitSetTool._
 import util.conversion.Util
@@ -12,6 +13,11 @@ import scala.collection.mutable
  */
 class CompleteSummary  extends GrapevineSummary {
 
+  def setDataStructure(l:LabeledSummary) = {
+    this.dataStructure.empty
+    this.dataStructure ++= l.dataStructure
+  }
+
   def maxBits(size:Int) = {
     math.ceil(log2(size)).toInt
   }
@@ -20,10 +26,19 @@ class CompleteSummary  extends GrapevineSummary {
     math.log10(x)/math.log10(2.0)
   }
 
-  def getSize(): Int = {
+  // This should be the bit size, not byte
+  def getTheorySize(): Int = {
     val size1 = (0 /: dataStructure) { (acc, value) => acc + value._2.getSize }
     val size2 = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
+    //val size2 = math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt
     size1 + size2
+  }
+
+  override def getSize() = {
+    val serial = serialize()
+    val compressed = compress(serial)
+
+    (getTheorySize(), serial.size, compressed.size)
   }
 
   /* It should not be accessed from the key, but the index */
@@ -54,6 +69,7 @@ class CompleteSummary  extends GrapevineSummary {
       val byteArrayValue = value.toByteArray()
       ab ++= byteArrayValue
     }
-    return sizeByteArray ++ bitSetToByteArray(bitSet) ++ ab
+    val goalBitSetSize = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
+    return sizeByteArray ++ bitSetToByteArray(bitSet, goalBitSetSize) ++ ab
   }
 }

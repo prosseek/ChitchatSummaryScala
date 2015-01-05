@@ -43,8 +43,10 @@ class BloomierFilterSummary extends GrapevineSummary {
    *
    * @return
    */
-  override def getSize(): Int = {
-    byteArrayBloomierFilter.getSize()
+  override def getSize(): (Int, Int, Int) = {
+    val s = byteArrayBloomierFilter.serialize()
+    val z = util.compression.CompressorHelper.compress(s)
+    (byteArrayBloomierFilter.getSize(), s.size, z.size)
   }
 
   def getDetailedSize() = {

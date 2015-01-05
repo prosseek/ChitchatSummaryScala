@@ -37,7 +37,7 @@ class TestBloomFilterCascadeSummary extends FunSuite with BeforeAndAfter {
 
   test("Size test") {
     t.create(map = map1, r = 11*8, m = List[Int](3,3,3), k = List[Int](2,2,2))
-    println(t.getSize() / 8 + 1)
+    println(t.getSize()._1 / 8 + 1)
 
     assert(t.check("available time") == BottomType.NoError)
     assert(t.get("available time") == map1("available time"))
@@ -48,21 +48,21 @@ class TestBloomFilterCascadeSummary extends FunSuite with BeforeAndAfter {
       //assert(t.getSize() == 102)
 
     t.create(map = map1, r = 11*8, m = List[Int](4,3,2), k = List[Int](2,2,2))
-    println(t.getSize() / 8 + 1)
+    println(t.getSize()) //_1 / 8 + 1)
 
     t.create(map = map1, r = 11*8, m = List[Int](4,3,2), k = List[Int](3,3,3))
-    println(t.getSize() / 8 + 1)
+    println(t.getSize()) // ._1 / 8 + 1)
   }
 
   test("Size test 2") {
     t.create(map = map2, r = 4*8, m = List[Int](3,3,3), k = List[Int](2,2,2))
-    println(t.getSize() / 8 + 1)
+    println(t.getSize()) //  / 8 + 1)
 
     t.create(map = map2, r = 11*8, m = List[Int](4,3,2), k = List[Int](2,2,2))
-    println(t.getSize() / 8 + 1)
+    println(t.getSize()) // / 8 + 1)
 
     t.create(map = map2, r = 11*8, m = List[Int](4,3,2), k = List[Int](3,3,3))
-    println(t.getSize() / 8 + 1)
+    println(t.getSize()) // / 8 + 1)
   }
 
 //  test("Simple") {

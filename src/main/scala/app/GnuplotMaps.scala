@@ -13,10 +13,10 @@ trait GnuplotMaps {
       "TITLE" -> "Size comparison",
       "XLABEL" -> "Data width in bytes",
       "YLABEL" -> "Summary size",
-      "C2" -> "BF",
-      "C3" -> "Labeled",
-      "C4" -> "CBF",
-      "C5" -> "Complete",
+      "C2" -> "Labeled",
+      "C5" -> "BF",
+      "C8" -> "CBF",
+      "C11" -> "Complete",
       "DATAFILEPATH" -> s"${Gnuplotter.getCurrentPath}/experiment/size/${summaryName}.data"
     )
   }

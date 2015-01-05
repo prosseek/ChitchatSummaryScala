@@ -203,8 +203,10 @@ class ByteArrayBloomierFilter (map:Map[String, Array[Byte]], initialM:Int, k:Int
     var header = BitSet()
 
     for ((row, i) <- this.table.zipWithIndex) {
-      if (row.forall(_ == 0)) header(i) = true
-      res ++= row
+      if (row.forall(_ == 0))
+        header(i) = true
+      else
+        res ++= row
     }
 
     val totalNumberOfRows = table.size
