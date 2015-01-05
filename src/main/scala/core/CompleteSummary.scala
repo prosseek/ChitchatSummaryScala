@@ -18,10 +18,10 @@ class CompleteSummary  extends GrapevineSummary {
     this.dataStructure ++= l.dataStructure
   }
 
-  def maxBits(size:Int) = {
-    math.ceil(log2(size)).toInt
-  }
-
+//  def maxBits(size:Int) = {
+//    math.ceil(log2(size)).toInt
+//  }
+//
   def log2(x : Double) = {
     math.log10(x)/math.log10(2.0)
   }
@@ -29,7 +29,8 @@ class CompleteSummary  extends GrapevineSummary {
   // This should be the bit size, not byte
   def getTheorySize(): Int = {
     val size1 = (0 /: dataStructure) { (acc, value) => acc + value._2.getSize }
-    val size2 = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
+    //val size2 = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
+    val size2 = Util.getByteSizeFromSize(dataStructure.size)
     //val size2 = math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt
     size1 + size2
   }
@@ -69,7 +70,7 @@ class CompleteSummary  extends GrapevineSummary {
       val byteArrayValue = value.toByteArray()
       ab ++= byteArrayValue
     }
-    val goalBitSetSize = Util.getByteSizeFromSize(math.ceil(dataStructure.size * log2(dataStructure.size.toDouble)).toInt)
+    val goalBitSetSize = Util.getByteSizeFromSize(dataStructure.size)
     return sizeByteArray ++ bitSetToByteArray(bitSet, goalBitSetSize) ++ ab
   }
 }

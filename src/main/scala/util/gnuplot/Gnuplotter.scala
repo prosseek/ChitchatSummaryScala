@@ -15,6 +15,7 @@ object Gnuplotter {
   val template = s"""set terminal pngcairo font 'DroidSerif'
                    |set output "#{PNGFILEPATH}"
                    |
+                   |set yrange [0:190]
                    |set xtics font ", 15"
                    |set ytics font ", 15"
                    |set key font ",12"
@@ -44,7 +45,7 @@ object Gnuplotter {
   def getPlotCommand(filePath:String, smap:Map[Int, String]) : String = {
     // http://stackoverflow.com/questions/4636610/regular-expression-and-pattern-matching-in-scala
     val params = (ArrayBuffer[String]() /: smap) { (acc, elem) =>
-      acc += s""" "${filePath}" using 1:${elem._1} title "${elem._2}" w lp"""
+      acc += s""" "${filePath}" using 1:${elem._1} title "${elem._2}" w lp lw 3"""
     }.toArray
     s"plot ${params.mkString(", ")}"
   }
