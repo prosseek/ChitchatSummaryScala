@@ -7,7 +7,7 @@ BF_COMPLETE = 3
 COMPLETE = 4
 
 class Analyzer(object):
-    def __init__(self, inputMap, mapFilePath, sizes, sizeFilePaths):
+    def __init__(self, inputMap, mapFilePath, sizes, sizeFilePaths, analysisdata = None):
         assert inputMap is not None
         assert len(inputMap) > 0
         self.map = inputMap
@@ -15,7 +15,19 @@ class Analyzer(object):
         self.sizes = sizes
         self.sizeFilePaths = sizeFilePaths
         self.packetSize = 32
+        self.analysisdata = analysisdata
+        self.f = None
+        
+        if analysisdata is not None:
+            self.f = open(analysisdata, 'w')
+            
+        self.log(str(self.map) + "\n\n\n")
 
+    def log(self, string):
+        if not isinstance(string, str):
+            string = str(string)
+        if self.f is not None:
+            self.f.write(string)
         
     def run(self, number_of_contexts = 10, maps = None):
         """
@@ -28,6 +40,8 @@ class Analyzer(object):
         bf_folded = self.generate_drop_rate(BF_FOLDED, number_of_contexts, maps)
         bf_complete = self.generate_drop_rate(BF_COMPLETE, number_of_contexts, maps)
         complete = self.generate_drop_rate(COMPLETE, number_of_contexts, maps)
+        
+        if self.f is not None: self.f.close()
         
         return (label, bf_folded, bf_complete, complete)
         
@@ -46,6 +60,7 @@ class Analyzer(object):
         if maps is None: maps = self.map
         sizes = self.generate_sizes(column, number_of_contexts, maps)
         result = self.simulate_contexts(sizes, maps)
+        # we only need the first part - (50.0, [1, 1])
         return result[0]
         
     def generate_sizes(self, column, number_of_contexts = 10, maps = None):
@@ -90,6 +105,8 @@ class Analyzer(object):
             result.append(r)
             
             #r = self.simulate_context(size, maps)
+            
+        self.log(str(result) + "\n\n")
         success = len(filter(lambda x: x == 1, result))
         rate = int((success/len(result)) * 1000.0)/10.0
             #result.append(rate)
@@ -119,9 +136,10 @@ class Analyzer(object):
         if maps is None: maps = self.map
         
         assert(len(maps) > 0)
-        assert(len(maps) > index)
+        assert len(maps) > index, "len(maps)/maps -> %d%s vs index -> %d" % (len(maps), maps, index)
         
         number_of_packets = int(math.ceil(size / self.packetSize))
+        #self.log(str(number_of_packets))
 
         partial_map = maps[index:index + number_of_packets]
         if len(partial_map) < number_of_packets:
@@ -133,10 +151,13 @@ class Analyzer(object):
         
         
 if __name__ == "__main__":
-    
-    maps = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    maps = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    #maps = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     # width, label, folded, bf_complete, complete
-    sizes = [(1, 123, 51, 81, 47), (1, 113, 51, 81, 47)]
+    
+    sizes = [(1, 123, 51, 81, 47), (1, 143, 46, 91, 47), (2, 137, 80, 101, 77), (2, 120, 68, 92, 65), (2, 145, 87, 115, 83), (2, 147, 92, 132, 87), (1, 81, 20, 34, 21), (2, 121, 94, 134, 89)]
+    # sizes = [(1, 123, 51, 81, 47), (1, 113, 51, 81, 47)]
     import doctest
-    doctest.testmod(extraglobs={'t': Analyzer(maps, None, sizes = sizes, sizeFilePaths = None)})        
-        
+    t = Analyzer(maps, None, sizes = sizes, sizeFilePaths = None)
+    #doctest.testmod(extraglobs={'t': Analyzer(maps, None, sizes = sizes, sizeFilePaths = None)})
+    doctest.testmod()

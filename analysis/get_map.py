@@ -4,9 +4,6 @@ from __future__ import division
 
 MAX = 255
 
-def count(inputs, the_value):
-    return len(filter(lambda x: x == the_value, inputs))
-
 def generate_arrays(lines):
     """Returns an array of 1 and 0
     
@@ -68,20 +65,14 @@ def get_map(filePath):
     with open(filePath) as f:
         lines = f.readlines()
         f.close()
+        
     lines = [int(line.strip()) for line in lines if not line.startswith("#")]
-    #print lines
     res = generate_arrays(lines)
     return res
     
 if __name__ == "__main__":
-    # import doctest
-    # doctest.testmod()
+    import doctest
+    doctest.testmod()
     
     # step1 read the packets
 
-    res = get_map('test/data1.txt')
-    print res
-    total = len(res)
-    error = count(res, 0)
-    
-    print error/total
