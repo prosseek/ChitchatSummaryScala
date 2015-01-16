@@ -61,6 +61,9 @@ def generate_arrays(lines):
             break
     return result
     
+def get_map_file_name(filePath):
+    return filePath + ".map"
+    
 def get_map(filePath):
     with open(filePath) as f:
         lines = f.readlines()
@@ -68,6 +71,11 @@ def get_map(filePath):
         
     lines = [int(line.strip()) for line in lines if not line.startswith("#")]
     res = generate_arrays(lines)
+    
+    with open(get_map_file_name(filePath), "w") as f:
+        f.write(str(res))
+        f.close()
+    
     return res
     
 if __name__ == "__main__":

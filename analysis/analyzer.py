@@ -14,7 +14,7 @@ class Analyzer(object):
         self.mapFilePath = mapFilePath
         self.sizes = sizes
         self.sizeFilePaths = sizeFilePaths
-        self.packetSize = 32
+        self.packetSize = 16 # 32
         self.analysisdata = analysisdata
         self.f = None
         
