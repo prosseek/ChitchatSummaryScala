@@ -1,3 +1,12 @@
+# ContextSummary
+
+This is an implementation of how contexts are represented.
+Used in papers:
+
+* [CHITCHAT: Navigating Tradeoffs in Device-to-Device Context Sharing](https://www.researchgate.net/publication/287249098_CHITCHAT_Navigating_Tradeoffs_in_Device-to-Device_Context_Sharing)
+* [The Grapevine Context Processor: Application Support for Efficient Context Sharing](https://www.researchgate.net/publication/282441702_The_Grapevine_Context_Processor_Application_Support_for_Efficient_Context_Sharing)
+
+
 contextSummary
 ==============
 
