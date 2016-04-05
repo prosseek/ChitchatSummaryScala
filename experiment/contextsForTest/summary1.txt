@@ -1,9 +1,0 @@
-latitude -> (30, 25, 38, 2)
-longitude -> (-17, 47, 11, 0)
-message -> Hello, world
-time -> (11, 11)
-date -> (2014, 10, 01)
-age -> 12
-level of athelete -> 9
-athelete -> soccer
-value_f -> 11.2

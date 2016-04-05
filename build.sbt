@@ -1,9 +1,11 @@
-name := "contextSummary"
+name := "chitchatsummary"
 
-version := "1.0"
+version := "0.1"
 
-libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+scalaVersion := "2.11.8"
 
-libraryDependencies += "org.scala-lang" % "scala-actors" % "2.10.0"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+target in Compile in doc := baseDirectory.value / "doc/api"
 
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.6"
+libraryDependencies += "chitchattype" %% "chitchattype" % "0.1"
+libraryDependencies += "bloomierfilter" %% "bloomierfilter" % "0.1"

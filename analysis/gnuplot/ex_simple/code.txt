@@ -1,3 +1,0 @@
-set terminal pngcairo size 350,262 enhanced font 'Verdana,10'
-set output 'res.png'
-plot 'data.txt' matrix with image
