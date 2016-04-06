@@ -32,4 +32,5 @@ class JSonSummary extends ChitchatSummary {
   // I/O
   override def load(filePath: String): Array[Byte] = ???
   override def save(filePath: String, content: Array[Byte]): Unit = ???
+
 }
