@@ -1,3 +1,8 @@
+### [2016/04/06]10:55AM
+
+![p](json.png)
+![p](hierarchy.png)
+
 ### [2016/04/05]06:39PM
 
 The JSON parser we use is very simple, so the JSON source should follow the rules.

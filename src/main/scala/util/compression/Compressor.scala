@@ -10,7 +10,7 @@ import java.util.zip.{InflaterInputStream, DeflaterOutputStream}
 /**
  * Created by smcho on 1/4/15.
  */
-object CompressorHelper {
+object Compressor {
 
   def compress(str: String): Array[Byte] = {
     val bytes = str.getBytes()
@@ -41,7 +41,7 @@ object CompressorHelper {
     else return ba
   }
 
-  def decompress(bytes: Array[Byte]): String /*Array[Byte]*/ = {
+  def decompress(bytes: Array[Byte]): Array[Byte] = {
     val deflater = new java.util.zip.Inflater()
     val baos = new ByteArrayOutputStream(512)
     val bytesIn = new ByteArrayInputStream(bytes)
@@ -57,6 +57,7 @@ object CompressorHelper {
     baos.close
     in.close
     // String(byte[] bytes, Charset charset)
-    new String(baos.toByteArray, "ASCII")
+    //new String(baos.toByteArray, "ASCII")
+    baos.toByteArray
   }
 }

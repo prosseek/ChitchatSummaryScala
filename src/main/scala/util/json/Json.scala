@@ -203,15 +203,7 @@ object Json {
         case _ => throw new RuntimeException(s"Not supported type ${value}")
       }
     }
-    val string:StringBuilder = new StringBuilder("{\n")
-    map.toList.zipWithIndex foreach {
-      case ((key, value), index) => {
-        string.append(s"""  "${key}": ${interpret(value)}""")
-        if (index != map.size - 1) string.append(",\n") else string.append("\n")
-      }
-    }
-    string.append("}\n")
-    string.toString
+    map.toList.map { case (k, v) => s"""  "$k": ${interpret(v)}""" }.mkString("{\n", ",\n", "\n}\n")
   }
 
   def save(filePath:String, map:Map[String, Any]) = {
@@ -221,7 +213,6 @@ object Json {
     file.close()
   }
 }
-
 
 /**
   * Wrapper for the JSON string representation of a data structure. This class exists to

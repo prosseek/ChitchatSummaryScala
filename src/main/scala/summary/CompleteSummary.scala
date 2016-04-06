@@ -1,6 +1,6 @@
 package summary
 
-import util.compression.CompressorHelper._
+import util.compression.Compressor._
 import util.conversion.ByteArrayTool._
 import util.conversion.BitSetTool._
 import util.conversion.Util
