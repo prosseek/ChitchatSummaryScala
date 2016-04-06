@@ -196,10 +196,10 @@ object Json {
   def mapToString(map:Map[String, Any]) : String = {
     def interpret(value:Any)  = {
       value match {
-        case value if (value.isInstanceOf[String]) => "\"" + value.asInstanceOf[String] + "\""
-        case value if (value.isInstanceOf[Double]) => value.asInstanceOf[Double]
-        case value if (value.isInstanceOf[Int]) => value.asInstanceOf[Int]
-        case value if (value.isInstanceOf[Seq[_]]) => value.asInstanceOf[Seq[Int]].toString.replace("List(", "[").replace(")","]")
+        case value:String => "\"" + value + "\""
+        case value:Double => value
+        case value:Int => value
+        case value:Seq[_] => value.mkString("[",",","]")
         case _ => throw new RuntimeException(s"Not supported type ${value}")
       }
     }
