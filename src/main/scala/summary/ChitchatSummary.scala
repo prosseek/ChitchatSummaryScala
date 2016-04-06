@@ -6,8 +6,8 @@ abstract class ChitchatSummary {
   def create(string:String) : Unit
 
   // get/set
-  def get(label:String) : Any
-  def set(label:String, value:Any) : Unit
+  def get(label:String) : Option[Any]
+  // def set(label:String, value:Any) : Unit
 
   // get information
   def getSchema: Set[String]
@@ -17,6 +17,6 @@ abstract class ChitchatSummary {
   def serialize : Array[Byte]
 
   // I/O
-  def save(filePath:String, content:Array[Byte]) : Unit
-  def load(filePath:String) : Unit
+  def save(filePath:String, content:Any = null) : Unit
+  def load(filePath:String) : Any
 }

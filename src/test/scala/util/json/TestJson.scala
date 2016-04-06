@@ -32,5 +32,11 @@ class TestJson extends FunSuite {
     assert(m("lattitude") == Seq(1,2,3,4))
     assert(m("longitude") == Seq(11,12,13,14))
   }
+
+  test ("save test") {
+    val savePath = "./src/test/resources/jsonFiles/simple_result.json"
+    val m = Json.parse(jsonString)
+    Json.save(savePath, m)
+  }
 }
 

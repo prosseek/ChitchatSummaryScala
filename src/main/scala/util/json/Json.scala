@@ -16,9 +16,10 @@
 // https://raw.githubusercontent.com/stevej/scala-json/master/src/main/scala/com/twitter/json/Json.scala
 package util.json
 
-import java.nio.file.{Paths, Files}
-import scala.io.Source
+import java.io.PrintWriter
+import java.nio.file.{Files, Paths}
 
+import scala.io.Source
 import scala.util.Sorting
 import scala.util.parsing.combinator._
 
@@ -178,15 +179,46 @@ object Json {
     * @return
     */
   def loadJson(filePath: String) = {
+    Json.parse(loadJsonContents(filePath))
+  }
+
+  def loadJsonContents(filePath: String) = {
     val fileExists = Files.exists(Paths.get(filePath))
 
     if (fileExists) {
-      val contents = Source.fromFile(filePath).mkString("")
-      Json.parse(contents).asInstanceOf[Map[String, Any]]
+      Source.fromFile(filePath).mkString("")
     }
     else {
       throw new RuntimeException(s"No Json file exists ${filePath}")
     }
+  }
+
+  def mapToString(map:Map[String, Any]) : String = {
+    def interpret(value:Any)  = {
+      value match {
+        case value if (value.isInstanceOf[String]) => "\"" + value.asInstanceOf[String] + "\""
+        case value if (value.isInstanceOf[Double]) => value.asInstanceOf[Double]
+        case value if (value.isInstanceOf[Int]) => value.asInstanceOf[Int]
+        case value if (value.isInstanceOf[Seq[_]]) => value.asInstanceOf[Seq[Int]].toString.replace("List(", "[").replace(")","]")
+        case _ => throw new RuntimeException(s"Not supported type ${value}")
+      }
+    }
+    val string:StringBuilder = new StringBuilder("{\n")
+    map.toList.zipWithIndex foreach {
+      case ((key, value), index) => {
+        string.append(s"""  "${key}": ${interpret(value)}""")
+        if (index != map.size - 1) string.append(",\n") else string.append("\n")
+      }
+    }
+    string.append("}\n")
+    string.toString
+  }
+
+  def save(filePath:String, map:Map[String, Any]) = {
+    val result = mapToString(map)
+    val file = new PrintWriter(new java.io.File(filePath))
+    file.write(result)
+    file.close()
   }
 }
 
