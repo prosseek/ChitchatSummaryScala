@@ -5,7 +5,7 @@ object Header {
   def serialize(name:String) = {
     name match {
       case name if name == summary.JsonSummary.name => Array[Byte](0)
-      case name if name == summary.CompresseJSonSummary.name => Array[Byte](1)
+      case name if name == summary.CompresseJsonSummary.name => Array[Byte](1)
       case "labeled" => Array[Byte](2)
       case "cbf" => Array[Byte](3)
       case "fbf" => Array[Byte](4)
@@ -17,7 +17,7 @@ object Header {
     val v = value(0)
     v match {
       case 0 => summary.JsonSummary.name
-      case 1 => summary.CompresseJSonSummary.name
+      case 1 => summary.CompresseJsonSummary.name
       case 2 => "labeled"
       case 3 => "cbf"
       case 4 => "fbf"
