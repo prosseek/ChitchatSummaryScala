@@ -166,6 +166,7 @@ object Json {
 
   /**
     * Parses a JSON String representation into its native Scala reprsentation.
+    * It returns Map (before it returned Any)
     */
   def parse(s: String) = (new JsonParser).parse(s).asInstanceOf[Map[String, Any]]
 
