@@ -91,7 +91,6 @@ class JSonSummary extends ChitchatSummary {
         outContent = Json.mapToString(content.asInstanceOf[Map[String, Any]])
       else
         throw new RuntimeException(s"Can't print out the value ${content}")
-
     }
 
     val file = new PrintWriter(new java.io.File(filePath))
