@@ -18,5 +18,5 @@ abstract class ChitchatSummary {
 
   // I/O
   def save(filePath:String, content:Array[Byte]) : Unit
-  def load(filePath:String) : Array[Byte]
+  def load(filePath:String) : Unit
 }

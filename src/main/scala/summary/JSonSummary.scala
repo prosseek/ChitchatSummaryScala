@@ -1,5 +1,9 @@
 package summary
 
+import util.json.Json
+
+import scala.io.Source
+
 object JSonSummary {
   def apply(map: Map[String, Any]) = {
     val summary = new JSonSummary
@@ -30,6 +34,9 @@ class JSonSummary extends ChitchatSummary {
   override def serialize: Array[Byte] = ???
 
   // I/O
-  override def load(filePath: String): Array[Byte] = ???
+  override def load(filePath: String): Unit = {
+    val r = Json.loadJson(filePath)
+  }
   override def save(filePath: String, content: Array[Byte]): Unit = ???
+
 }
