@@ -51,15 +51,15 @@ abstract class Summary {
       throw new RuntimeException(s"No file ${filePath} exists")
   }
 
-  protected def _saveJson(filePath: String, map:Map[String, Any]): Unit  = {
+  protected def _saveJsonMap(filePath: String, map:Map[String, Any]): Unit  = {
     val file = new PrintWriter(new java.io.File(filePath))
     file.write(Json.mapToString(map))
     file.close()
   }
 
-  protected def _loadJson(filePath: String): String = {
+  protected def _loadJsonContent(filePath: String): String = {
     if (new File(filePath).exists) {
-      Json.loadJsonContents(filePath)
+      Json.loadJsonContent(filePath)
     }
     else
       throw new RuntimeException(s"No file ${filePath} exists")

@@ -179,10 +179,10 @@ object Json {
     * @return
     */
   def loadJson(filePath: String) = {
-    Json.parse(loadJsonContents(filePath))
+    Json.parse(loadJsonContent(filePath))
   }
 
-  def loadJsonContents(filePath: String) = {
+  def loadJsonContent(filePath: String) = {
     val fileExists = Files.exists(Paths.get(filePath))
 
     if (fileExists) {
@@ -211,6 +211,32 @@ object Json {
     val file = new PrintWriter(new java.io.File(filePath))
     file.write(result)
     file.close()
+  }
+
+  def isSimpleJson(jsonContent:Map[String, Any]) : Boolean = {
+    def supportedType(v:Any) : Boolean = {
+      v match {
+        case v:Int => true
+        case v:Double => true
+        case v:String => true
+        case v:Seq[_] => {
+          v foreach { i =>
+            i match {
+              case i:Int => true
+              case _ => return false
+            }
+          }
+          true
+        }
+        case _ => return false
+      }
+    }
+    jsonContent foreach {
+      case (k, v) => {
+        if (!supportedType(v)) return false
+      }
+    }
+    true
   }
 }
 

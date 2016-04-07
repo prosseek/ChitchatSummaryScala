@@ -18,6 +18,10 @@ object JsonSummary {
   def name = "json"
 }
 
+/**
+  * JsonSummary builds its map from other map, or parsing
+  * Json file.
+  */
 class JsonSummary extends Summary {
   // JSon summary is an internal map
   var map : MMap[String, Any] = _
@@ -26,23 +30,16 @@ class JsonSummary extends Summary {
   private var filePath:String = ""
   private var contents:String = ""
 
-  private def reset = {
-    filePath = ""
-    contents = ""
-  }
-
   /**
     * create a summary from the given map
-    *
-    * ==== Why reset? ====
-    *  Once the internal map is reset from the given map, there is no link between the filepath and content
     *
     * @param map
     */
   override def create(map: Map[String, Any]): Unit = {
+    if (!Json.isSimpleJson(map))
+      throw new RuntimeException(s"Error the input map is not in supported format: ${map.mkString(":")}")
     this.map = MMap(map.toSeq:_*)
-    this.contents = Json.mapToString(map)
-    reset
+    this.contents = Json.build(this.map).toString
   }
 
   // get
@@ -57,11 +54,7 @@ class JsonSummary extends Summary {
   }
 
   override def size: Int = {
-    if (contents == "")
-      throw new RuntimeException("No contents to get the size of the Json file")
-    else {
       contents.length
-    }
   }
 
   // transform
@@ -88,20 +81,21 @@ class JsonSummary extends Summary {
 
   // I/O
   override def loadJson(filePath: String): Any = {
-    this.contents = _loadJson(filePath)
-    this.map = _toMMap(Json.parse(this.contents))
+    val loadedContents = _loadJsonContent(filePath)
+    this.map = _toMMap(Json.parse(loadedContents))
+    this.contents = Json.build(this.map).toString
     this.filePath = filePath
     this.map
   }
 
   override def saveJson(filePath: String): Unit  = {
-    _saveJson(filePath, this.map.toMap)
+    _saveJsonMap(filePath, this.map.toMap)
   }
 
   override def load(filePath: String): Any = {
     val byteArray = _load(filePath)
     this.map = _toMMap(deserialize(byteArray))
-    this.contents = Json.mapToString(this.map.toMap)
+    this.contents = Json.build(this.map).toString
     this.filePath = filePath
     this.map
   }

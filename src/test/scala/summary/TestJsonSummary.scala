@@ -3,9 +3,9 @@ package summary
 import org.scalatest.FunSuite
 
 class TestJsonSummary extends FunSuite {
-  val baFilePath = "./src/test/resources/jsonFiles/simple.bin"
-  val filePath = "./src/test/resources/jsonFiles/simple.json"
-  val saveFilePath = "./src/test/resources/jsonFiles/simple_result.json"
+  val baFilePath = "./src/test/resources/jsonFiles/simple_example/simple.bin"
+  val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
+  val saveFilePath = "./src/test/resources/jsonFiles/simple_example/simple_result.json"
   test ("simple access test") {
     val json = JsonSummary(filePath)
     assert(json.get("string").get == "James")
@@ -68,5 +68,27 @@ class TestJsonSummary extends FunSuite {
     val json = JsonSummary(filePath)
     assert(json.delete("age"))
     assert(!json.schema.contains("age"))
+  }
+
+  test ("complex json load") {
+    val complexSample = "./src/test/resources/jsonFiles/complex_example/color.json"
+    val json = JsonSummary(complexSample)
+    assert(json.map.mkString(":").startsWith("colorsArray -> List"))
+    assert(json.serialize.size == 297)
+    val complexSampleBin = "./src/test/resources/jsonFiles/complex_example/color.bin"
+    val complexSampleSave = "./src/test/resources/jsonFiles/complex_example/color2.json"
+
+    json.save(complexSampleBin)
+    json.saveJson(complexSampleSave)
+
+    val json2 = new JsonSummary
+    json2.load(complexSampleBin)
+
+    json2.map foreach {
+      case (k,v) => {
+        assert(v == json.get(k).get)
+      }
+    }
+
   }
 }

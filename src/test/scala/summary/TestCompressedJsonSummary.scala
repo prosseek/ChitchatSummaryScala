@@ -4,9 +4,9 @@ import org.scalatest.FunSuite
 
 class TestCompressedJsonSummary extends FunSuite {
 
-  val filePath = "./src/test/resources/jsonFiles/simple.json"
-  val saveFilePath = "./src/test/resources/jsonFiles/simple_result.json"
-  val compressedBinaryFilePath = "./src/test/resources/jsonFiles/simple_compressed.bin"
+  val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
+  val saveFilePath = "./src/test/resources/jsonFiles/simple_example/simple_result.json"
+  val compressedBinaryFilePath = "./src/test/resources/jsonFiles/simple_example/simple_compressed.bin"
   test ("simple") {
     val js = CompresseJsonSummary(filePath)
 
