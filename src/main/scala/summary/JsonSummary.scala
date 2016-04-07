@@ -70,7 +70,10 @@ class JsonSummary extends Summary {
   }
 
   override def deserialize(ba: Array[Byte]): Map[String, Any] = {
-    val (name, content) = _deserialize(ba)
+    val deserialized = _deserialize(ba)
+    val name = deserialized.get("name").get.asInstanceOf[String]
+    val content = deserialized.get("content").get.asInstanceOf[Array[Byte]]
+
     if (name == JsonSummary.name) {
       val str = new String(content)
       Json.parse(str)

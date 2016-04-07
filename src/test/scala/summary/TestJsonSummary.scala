@@ -17,7 +17,7 @@ class TestJsonSummary extends FunSuite {
 
     assert(json.size == 107)
     assert(json.serialize.size == 108)
-    assert(json.serialize.slice(0,5).mkString(":") == "0:123:34:97:103")
+    assert(json.serialize.slice(0,5).mkString(":") == "1:123:34:97:103") // first 1 means version
 
     assert(json.schema.get == Set("string", "age", "longitude", "lattitude", "date", "time"))
   }

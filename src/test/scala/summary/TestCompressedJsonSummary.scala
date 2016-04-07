@@ -23,7 +23,7 @@ class TestCompressedJsonSummary extends FunSuite {
 
     assert(json.size == 107)
     assert(json.serialize.size == 91)
-    assert(json.serialize.slice(0,5).mkString(":") == "1:120:-100:-85:86")
+    assert(json.serialize.slice(0,5).mkString(":") == "17:120:-100:-85:86")
 
     assert(json.schema.get == Set("string", "age", "longitude", "lattitude", "date", "time"))
   }

@@ -20,9 +20,9 @@ class CompresseJsonSummary extends JsonSummary {
     _serialize(CompresseJsonSummary.name, compressed)
   }
   override def deserialize(ba: Array[Byte]) : Map[String, Any] = {
-    val (name, content) = _deserialize(ba)
-    if (name == CompresseJsonSummary.name) {
-      val decompressed = Compressor.decompress(content)
+    val deserialized = _deserialize(ba)
+    if (deserialized.get("name").get == CompresseJsonSummary.name) {
+      val decompressed = Compressor.decompress(deserialized.get("content").get.asInstanceOf[Array[Byte]])
       val str = new String(decompressed)
       Json.parse(str)
     }

@@ -66,14 +66,16 @@ abstract class Summary {
   }
 
   protected def _serialize(name:String, byteArray:Array[Byte]) : Array[Byte] = {
-    Header.serialize(name) ++ byteArray
+    Header.encode(name) ++ byteArray
   }
 
-  protected def _deserialize(byteArray:Array[Byte]) : (String, Array[Byte]) = {
-    val header = byteArray.slice(0, Header.size)
-    val name = Header.deserialize(header)
-    val content = byteArray.slice(Header.size, byteArray.size)
-    (name, content)
+  protected def _deserialize(byteArray:Array[Byte], version:Int = 1) : Map[String, Any] = {
+    val header = Header.decode(byteArray)
+    val size = header.get("size").get.asInstanceOf[Int]
+
+    val res = _toMMap(header)
+    res("content") = byteArray.slice(size, byteArray.size)
+    res.toMap
   }
 
   protected def _toMMap(map:scala.collection.immutable.Map[String,Any]) = {
