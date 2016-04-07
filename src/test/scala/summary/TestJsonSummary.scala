@@ -15,9 +15,9 @@ class TestJsonSummary extends FunSuite {
     assert(json.get("lattitude").get == Seq(1,2,3,4))
     assert(json.get("longitude").get == Seq(11,12,13,14))
 
-    assert(json.size == 141)
-    assert(json.serialize.size == 142)
-    assert(json.serialize.slice(0,5).mkString(":") == "0:123:10:32:32")
+    assert(json.size == 107)
+    assert(json.serialize.size == 108)
+    assert(json.serialize.slice(0,5).mkString(":") == "0:123:34:97:103")
 
     assert(json.schema.get == Set("string", "age", "longitude", "lattitude", "date", "time"))
   }

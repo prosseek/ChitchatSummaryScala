@@ -53,7 +53,7 @@ abstract class Summary {
 
   protected def _saveJsonMap(filePath: String, map:Map[String, Any]): Unit  = {
     val file = new PrintWriter(new java.io.File(filePath))
-    file.write(Json.mapToString(map))
+    file.write(Json.build(map).toString)
     file.close()
   }
 
