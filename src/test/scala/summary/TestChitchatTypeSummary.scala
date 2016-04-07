@@ -27,9 +27,9 @@ class TestChitchatTypeSummary extends FunSuite {
   test("simple") {
     val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
     val cts = new CTS
-    val typeInference = TypeInference("")
-    val map = Json.loadJson(filePath)
-    val res = cts.anyToByteArray(inputMap = map, typeInference)
+//    val typeInference = TypeInference("")
+//    val map = Json.loadJson(filePath)
+//    val res = cts.anyToByteArray(inputMap = map, typeInference)
     //println(res.mkString(":"))
   }
 }
