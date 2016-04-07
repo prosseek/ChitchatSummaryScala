@@ -193,21 +193,8 @@ object Json {
     }
   }
 
-  def mapToString(map:Map[String, Any]) : String = {
-    def interpret(value:Any)  = {
-      value match {
-        case value:String => "\"" + value + "\""
-        case value:Double => value
-        case value:Int => value
-        case value:Seq[_] => value.mkString("[",",","]")
-        case _ => throw new RuntimeException(s"Not supported type ${value}")
-      }
-    }
-    map.toList.map { case (k, v) => s"""  "$k": ${interpret(v)}""" }.mkString("{\n", ",\n", "\n}\n")
-  }
-
   def save(filePath:String, map:Map[String, Any]) = {
-    val result = mapToString(map)
+    val result = build(map).toString
     val file = new PrintWriter(new java.io.File(filePath))
     file.write(result)
     file.close()

@@ -68,7 +68,7 @@ class TestJson extends FunSuite {
       val gmapPath = "./src/test/resources/jsonFiles/complex_example/color.json"
       val mp = Json.loadJson(gmapPath)
       // val content = Json.loadJsonContent(gmapPath)
-      println(Json.build(mp))
+      assert(Json.build(mp).toString.startsWith("{\"colorsArray\":"))
     }
   }
 }

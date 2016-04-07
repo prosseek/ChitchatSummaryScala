@@ -30,6 +30,6 @@ class TestChitchatTypeSummary extends FunSuite {
     val typeInference = TypeInference("")
     val map = Json.loadJson(filePath)
     val res = cts.anyToByteArray(inputMap = map, typeInference)
-    println(res.mkString(":"))
+    //println(res.mkString(":"))
   }
 }
