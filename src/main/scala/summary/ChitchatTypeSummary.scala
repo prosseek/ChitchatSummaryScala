@@ -3,10 +3,11 @@ package summary
 import scala.collection.mutable.{Map => MMap}
 import chitchat.types._
 import java.lang.{String => JString}
-
 import util.types.TypeInference
 
 import scala.{Byte => SByte, Int => SInt}
+
+import value.Value
 
 //object ChitchatTypeSummary {
 //  def apply(map: Map[JString, Any]) = {
@@ -22,13 +23,15 @@ import scala.{Byte => SByte, Int => SInt}
 //  def name = "chitchattype"
 //}
 
-abstract class ChitchatTypeSummary extends Summary {
-  var map:MMap[JString, Any] = _
-  var mapChitchatype: MMap[JString, Base[_]] = _
-
+abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Summary {
+  var map:Map[JString, Any] = null
+  var mapChitchatype: Map[JString, Value] = null
 
   // create
-  override def create(map: Map[JString, Any]): Unit = ???
+  override def create(map: Map[JString, Any]): Unit = {
+    this.map = map
+    this.mapChitchatype = anyToChitchatValue(this.map, typeInference)
+  }
 
   def saveJson(filePath:String) : Unit = {
 
@@ -46,21 +49,10 @@ abstract class ChitchatTypeSummary extends Summary {
 
   }
 
-  override def schema: Option[Set[JString]] = {
-    null
-  }
+  override def schema: Option[Set[JString]]
 
   // helper API
-  def anyToByteArray(inputMap: Map[JString, Any], typeInference: TypeInference): Map[JString, Array[SByte]] = {
-    def convert(key:JString, value:Any) : Array[Byte] = {
-      value match {
-        case value:JString => null
-        case value:Double => null
-        case value:SInt => null
-        case value:Seq[_] => null
-        case _ => throw new RuntimeException(s"value ${value} cannot be transformed into byte array")
-      }
-    }
-    inputMap map {case (key, value) => key -> convert(key, value)}
+  def anyToChitchatValue(inputMap: Map[JString, Any], typeInference: TypeInference): Map[JString, Value] = {
+    inputMap map {case (label, value) => label -> Value(label = label, value = value, typeInference = typeInference)}
   }
 }
