@@ -15,7 +15,7 @@ object Header {
   private val map = Map(
     summary.JsonSummary.name -> 0,
     summary.CompresseJsonSummary.name -> 1,
-    "labeled" -> 2,
+    summary.LabeledSummary.name -> 2,
     "cbf" -> 3,
     "fbf" -> 4,
     "complete" -> 5
@@ -31,7 +31,7 @@ object Header {
   private def numberToName(value: Int) : String = {
     val res = map.find(_._2 == value).getOrElse(("",-1))._1
     if (res == "")
-      throw new RuntimeException(s"value ${value} does not have corresponding key")
+      throw new RuntimeException(s"chitchat.value ${value} does not have corresponding key")
     res
   }
 

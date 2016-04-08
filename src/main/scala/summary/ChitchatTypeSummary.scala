@@ -1,27 +1,11 @@
 package summary
 
-import scala.collection.mutable.{Map => MMap}
-import chitchat.types._
 import java.lang.{String => JString}
+
+import util.json.Json
 import util.types.TypeInference
 
-import scala.{Byte => SByte, Int => SInt}
-
-import value.Value
-
-//object ChitchatTypeSummary {
-//  def apply(map: Map[JString, Any]) = {
-//    val summary = new ChitchatTypeSummary
-//    summary.create(map)
-//    summary
-//  }
-//  def apply(filePath: JString) = {
-//    val summary = new ChitchatTypeSummary
-//    summary.loadJson(filePath)
-//    summary
-//  }
-//  def name = "chitchattype"
-//}
+import chitchat.value.Value
 
 abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Summary {
   var map:Map[JString, Any] = null
@@ -33,23 +17,19 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
     this.mapChitchatype = anyToChitchatValue(this.map, typeInference)
   }
 
-  def saveJson(filePath:String) : Unit = {
-
+  def saveJson(filePath:JString) : Unit = {
+    _saveJsonMap(filePath, this.map)
   }
 
-  def loadJson(filePath:String) : Any = {
-
+  def loadJson(filePath:JString) : Any = {
+    val content = _loadJsonContent(filePath)
+    val jsonMap = Json.parse(content)
+    if (Json.isSimpleJson((jsonMap))) {
+      create(jsonMap)
+    } else {
+      throw new RuntimeException(s"This JSON ${filePath}/(${content}) is not converted into chitchat type summary")
+    }
   }
-
-  override def load(filePath: JString): Any = {
-    null
-  }
-
-  override def save(filePath: JString): Unit = {
-
-  }
-
-  override def schema: Option[Set[JString]]
 
   // helper API
   def anyToChitchatValue(inputMap: Map[JString, Any], typeInference: TypeInference): Map[JString, Value] = {

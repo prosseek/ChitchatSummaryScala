@@ -13,12 +13,12 @@ def toJson(fromFile, toFile):
             return input.replace("(", "[").replace(")","]")
         else:
             try:
-                value = int(input)
-                return value
+                chitchat.value = int(input)
+                return chitchat.value
             except ValueError:
                 try:
-                    value = float(input)
-                    return value
+                    chitchat.value = float(input)
+                    return chitchat.value
                 except ValueError:
                     return '"{}"'.format(input) 
     

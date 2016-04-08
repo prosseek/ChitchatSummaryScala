@@ -4,8 +4,7 @@ import org.scalatest.FunSuite
 import util.json.Json
 import util.types.TypeInference
 
-class CTS(override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference = typeInference) {// query
-  override def schema: Option[Set[String]] = ???
+class CTS(override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference = typeInference) {override def schema: Option[Set[String]] = ???
 
   // protected APIs
   override protected def serializedContent: Array[Byte] = ???
@@ -13,34 +12,45 @@ class CTS(override val typeInference: TypeInference) extends ChitchatTypeSummary
   // modify
   override def update(label: String, value: Any): Boolean = ???
 
-  // I/O
-  override def saveJson(filePath: String): Unit = ???
-
   // query
   override def get(label: String): Option[Any] = ???
 
   override def size: Int = ???
 
-  override def loadJson(filePath: String): Any = ???
-
   // ID
   override def name: String = ???
-
-  override def delete(label: String): Boolean = ???
 
   // transform
   override def serialize: Array[Byte] = ???
 
+  override def delete(label: String): Boolean = ???
+
   override def add(label: String, value: Any): Boolean = ???
 
   override def deserialize(ba: Array[Byte]): Map[String, Any] = ???
+
+  override def save(filePath: String): Unit = ???
+
+  override def load(filePath: String): Any = ???
 }
 
 class TestChitchatTypeSummary extends FunSuite {
-  test("simple") {
-    val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
+  test("create from map") {
     val ti = TypeInference()
     val cts = new CTS(ti)
 
+    val m = Map[String, Any]("string" -> "hello", "float" -> 32.55f, "age"-> 10)
+
+    cts.create(m)
+    assert(cts.map.mkString(":") == "string -> hello:float -> 32.55:age -> 10")
+    assert(cts.mapChitchatype.size == 3)
+  }
+
+  test ("create from JSON") {
+    val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
+    val ti = TypeInference()
+    val cts = new CTS(ti)
+    cts.loadJson(filePath)
+    assert(cts.map.toList.mkString("[",":","]") == "[(string,James):(age,10):(longitude,List(11, 12, 13, 14)):(lattitude,List(1, 2, 3, 4)):(date,List(10, 3, 17)):(time,List(12, 14))]")
   }
 }
