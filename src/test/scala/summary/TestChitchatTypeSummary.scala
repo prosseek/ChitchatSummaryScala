@@ -43,7 +43,6 @@ class TestChitchatTypeSummary extends FunSuite {
 
     cts.create(m)
     assert(cts.map.mkString(":") == "string -> hello:float -> 32.55:age -> 10")
-    assert(cts.mapChitchatype.size == 3)
   }
 
   test ("create from JSON") {

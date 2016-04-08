@@ -66,7 +66,7 @@ abstract class Summary {
   }
 
   protected def _serialize(name:String, byteArray:Array[Byte], version:Int=1) : Array[Byte] = {
-    Header(version).encode(name) ++ byteArray
+    Header(version).encode(name).get ++ byteArray
   }
 
   protected def _deserialize(byteArray:Array[Byte], version:Int = 1) : Map[String, Any] = {
