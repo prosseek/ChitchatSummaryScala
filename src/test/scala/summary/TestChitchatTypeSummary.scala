@@ -1,8 +1,8 @@
 package summary
 
+import chitchat.typetool.TypeInference
 import org.scalatest.FunSuite
 import util.json.Json
-import util.types.TypeInference
 
 class CTS(override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference = typeInference) {override def schema: Option[Set[String]] = ???
 

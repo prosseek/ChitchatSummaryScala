@@ -65,12 +65,12 @@ abstract class Summary {
       throw new RuntimeException(s"No file ${filePath} exists")
   }
 
-  protected def _serialize(name:String, byteArray:Array[Byte]) : Array[Byte] = {
-    Header.encode(name) ++ byteArray
+  protected def _serialize(name:String, byteArray:Array[Byte], version:Int=1) : Array[Byte] = {
+    Header(version).encode(name) ++ byteArray
   }
 
   protected def _deserialize(byteArray:Array[Byte], version:Int = 1) : Map[String, Any] = {
-    val header = Header.decode(byteArray)
+    val header = Header(version).decode(byteArray)
     val size = header.get("size").get.asInstanceOf[Int]
 
     val res = _toMMap(header)

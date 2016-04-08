@@ -3,9 +3,9 @@ package summary
 import java.lang.{String => JString}
 
 import util.json.Json
-import util.types.TypeInference
+import chitchat.typetool.TypeInference
 
-import chitchat.value.Value
+import chitchat.Value
 
 abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Summary {
   var map:Map[JString, Any] = null

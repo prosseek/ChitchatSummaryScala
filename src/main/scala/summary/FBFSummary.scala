@@ -7,7 +7,7 @@ package summary
 //import util.conversion.{Joiner, Util}
 
 import bloomierfilter.main.BloomierFilter
-import util.types.TypeInference
+import chitchat.typetool.TypeInference
 
 import scala.collection.mutable.{Map => MMap}
 

@@ -1,7 +1,7 @@
 package summary
 
+import chitchat.typetool.TypeInference
 import org.scalatest.FunSuite
-import util.types.TypeInference
 
 class TestLabeledSummary extends FunSuite {
 

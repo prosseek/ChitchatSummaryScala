@@ -1,12 +1,17 @@
 package summary
 
+import chitchat.typetool.TypeInference
 import util.compression.Compressor._
 import util.conversion.ByteArrayTool._
 import util.conversion.BitSetTool._
 import util.conversion.Util
-import util.types.TypeInference
+import chitchat.typetool.TypeInference
 
 import scala.collection.mutable
+
+object CompleteSummary {
+  def name = "complete"
+}
 
 class CompleteSummary (override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference){
   // create

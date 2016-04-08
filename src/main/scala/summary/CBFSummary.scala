@@ -1,6 +1,6 @@
 package summary
 
-import util.types.TypeInference
+import chitchat.typetool.TypeInference
 
 /**
   * Created by smcho on 4/5/16.

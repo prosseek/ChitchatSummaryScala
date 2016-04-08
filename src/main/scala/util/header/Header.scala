@@ -1,43 +1,53 @@
 package util.header
 
+import collection.mutable.{Map => MMap}
 import chitchat.types.{Encoding, Range}
 
 object Header {
-
-  def size (version:Int = 1) = {
-    val sizeMap = Map(
-      1 -> 1,
-      2 -> 2
-    )
-    sizeMap.getOrElse(version, -1)
+  def apply(version:Int) = {
+    new Header(version)
   }
+}
 
-  private val map = Map(
+/**
+  * The default header is one byte, but you can add more bytes depending on
+  * the version
+  */
+class Header(version:Int) {
+  val instance = create
+
+  private val nameToNumberMap = Map(
     summary.JsonSummary.name -> 0,
     summary.CompresseJsonSummary.name -> 1,
     summary.LabeledSummary.name -> 2,
     "cbf" -> 3,
     "fbf" -> 4,
-    "complete" -> 5
+    summary.CompleteSummary.name -> 5
   )
 
   private def nameToNumber(name:String) = {
-    val res = map.getOrElse(name, -1)
+    val res = nameToNumberMap.getOrElse(name, -1)
     if (res == -1)
       throw new RuntimeException(s"name ${name} is not supported summary type")
     res
   }
 
   private def numberToName(value: Int) : String = {
-    val res = map.find(_._2 == value).getOrElse(("",-1))._1
+    val res = nameToNumberMap.find(_._2 == value).getOrElse(("",-1))._1
     if (res == "")
       throw new RuntimeException(s"chitchat.value ${value} does not have corresponding key")
     res
   }
 
-  def encode(summary_type_name:String, version:Int = 1) = {
-    val summary_type = Header.nameToNumber(summary_type_name)
-    (new Header).encode(Seq[Int](version, summary_type))
+  def size (version:Int = 1) : Int = {
+    instance.sizeInBytes
+  }
+
+  def encode(summary_type_name:String) = {
+    val summary_type = nameToNumber(summary_type_name)
+    version match {
+      case 1 => instance.encode(Seq[Int](version, summary_type))
+    }
   }
 
   /**
@@ -50,22 +60,27 @@ object Header {
     * @param byteArray
     */
   def decode(byteArray:Array[Byte]) = {
-    val decoded = (new Header).decode(byteArray.slice(0, 1)).get
+    val decoded = instance.decode(byteArray.slice(0, 1)).get
     val version = decoded(0)
     val name = numberToName(decoded(1))
     val sz = size(version)
 
-    val hint = if (version == 2) {byteArray.slice(1,2)(0).toInt} else -1
+    version match {
+      case 1 => Map[String, Any]("version" -> version, "name" -> name, "size" -> sz)
+      case 2 => {
+        val hint = byteArray.slice(1,2)(0).toInt
+        Map[String, Any]("version" -> version, "name" -> name, "hint" -> hint, "size" -> sz)
+      }
+    }
+  }
 
-    Map[String, Any]("version" -> version, "name" -> name, "hint" -> hint, "size" -> sz)
+  def create  = {
+    if (version == 1) {
+      new Encoding(name="header", Seq[Range](
+        new Range(name="version", size = 4, signed = false, min = 1, max = 15),
+        new Range(name="name", size = 4, signed = false, min = 0, max = 15)))
+    }
+    else
+      throw new RuntimeException(s"version ${version} not supported")
   }
 }
-
-/**
-  * The default header is one byte, but you can add more bytes depending on
-  * the version
-  */
-class Header extends Encoding(name="header", Seq[Range](
-  new Range(name="version", size = 4, signed = false, min = 1, max = 15),
-  new Range(name="name", size = 4, signed = false, min = 0, max = 15)
-))

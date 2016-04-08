@@ -1,6 +1,6 @@
 package summary
 
-import util.types.TypeInference
+import chitchat.typetool.TypeInference
 
 object LabeledSummary {
   def name = "labeled"
