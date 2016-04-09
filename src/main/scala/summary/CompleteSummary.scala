@@ -64,29 +64,45 @@ class CompleteSummary (override val typeInference: TypeInference) extends Chitch
         // todo: too many duplications
         // http://stackoverflow.com/questions/36511206/merging-multiple-case-in-match-case-in-scala
         if (instance.isEmpty) throw new RuntimeException(s"No instance for label ${key}")
-        instance match {
-          case Some(v:Range)  => {
-            sizeInBytes = util.conversion.Util.getBytesForBits(v.size)
-            value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
-          }
-          case Some(v:Encoding) => {
-            sizeInBytes = util.conversion.Util.getBytesForBits(v.size)
-            value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
-          }
-          case Some(v:Float) => {
-            sizeInBytes = util.conversion.Util.getBytesForBits(v.size)
-            value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
-          }
-          // Only differs here
-          case Some(v:String) => {
-            val size = contentByteArray(index)
-            value = new JString(contentByteArray.slice(index+1, index + 1 + size))
-            sizeInBytes = (1 + size)
-          }
-          case Some(_) | None => throw new RuntimeException(s"Error in deserialize function ${instance.get.name}")
+
+        val v = instance.get
+        var sizeInBytes = v.sizeInBytes
+        var value:Any = null
+
+        if (sizeInBytes == 0) { // string
+          val size = contentByteArray(index)
+          value = new JString(contentByteArray.slice(index+1, index + 1 + size))
+          sizeInBytes = (1 + size)
         }
+        else
+          value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
+
         index += sizeInBytes
         res(key) = value
+
+//        instance match {
+//          case Some(v:Range)  => {
+//            sizeInBytes = util.conversion.Util.getBytesForBits(v.size)
+//            value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
+//          }
+//          case Some(v:Encoding) => {
+//            sizeInBytes = util.conversion.Util.getBytesForBits(v.size)
+//            value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
+//          }
+//          case Some(v:Float) => {
+//            sizeInBytes = util.conversion.Util.getBytesForBits(v.size)
+//            value = v.decode(contentByteArray.slice(index, index + sizeInBytes)).get
+//          }
+//          // Only differs here
+//          case Some(v:String) => {
+//            val size = contentByteArray(index)
+//            value = new JString(contentByteArray.slice(index+1, index + 1 + size))
+//            sizeInBytes = (1 + size)
+//          }
+//          case Some(_) | None => throw new RuntimeException(s"Error in deserialize function ${instance.get.name}")
+//        }
+//        index += sizeInBytes
+//        res(key) = value
       }
     }
     res.toMap

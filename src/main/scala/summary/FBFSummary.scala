@@ -1,11 +1,5 @@
 package summary
 
-//import bloomierFilter.ByteArrayBloomierFilter
-//import grapevineType.BottomType._
-//import grapevineType._
-//import ontology.Relation
-//import util.conversion.{Joiner, Util}
-
 import bloomierfilter.main.BloomierFilter
 import chitchat.typetool.TypeInference
 
