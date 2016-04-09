@@ -18,13 +18,13 @@ class TestCompressedJsonSummary extends FunSuite {
     assert(json.get("age").get == 10)
     assert(json.get("date").get == Seq(10,3,17))
     assert(json.get("time").get == Seq(12, 14))
-    assert(json.get("lattitude").get == Seq(1,2,3,4))
+    assert(json.get("latitude").get == Seq(1,2,3,4))
     assert(json.get("longitude").get == Seq(11,12,13,14))
 
-    assert(json.size == 107)
-    assert(json.serialize.size == 91)
+    assert(json.size == 106)
+    assert(json.serialize.size == 90)
     assert(json.serialize.slice(0,5).mkString(":") == "17:120:-100:-85:86")
 
-    assert(json.schema.get == Set("string", "age", "longitude", "lattitude", "date", "time"))
+    assert(json.schema.get == Set("string", "age", "longitude", "latitude", "date", "time"))
   }
 }

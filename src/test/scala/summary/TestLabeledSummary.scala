@@ -18,9 +18,9 @@ class TestLabeledSummary extends FunSuite {
     labeled.save("./src/test/resources/jsonFiles/simple_example/simple_labeled.bin")
     val deserialized = labeled.deserialize(serialized)
 
-    assert(deserialized == loadedJson)
-//    loadedJson foreach {
-//      case (key, value) => assert(value == deserialized(key))
-//    }
+//    assert(deserialized == loadedJson)
+    loadedJson foreach {
+      case (key, value) => assert(value == deserialized(key))
+    }
   }
 }

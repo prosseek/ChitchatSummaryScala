@@ -12,14 +12,14 @@ class TestJsonSummary extends FunSuite {
     assert(json.get("age").get == 10)
     assert(json.get("date").get == Seq(10,3,17))
     assert(json.get("time").get == Seq(12, 14))
-    assert(json.get("lattitude").get == Seq(1,2,3,4))
+    assert(json.get("latitude").get == Seq(1,2,3,4))
     assert(json.get("longitude").get == Seq(11,12,13,14))
 
-    assert(json.size == 107)
-    assert(json.serialize.size == 108)
+    assert(json.size == 106)
+    assert(json.serialize.size == 107)
     assert(json.serialize.slice(0,5).mkString(":") == "1:123:34:97:103") // first 1 means version
 
-    assert(json.schema.get == Set("string", "age", "longitude", "lattitude", "date", "time"))
+    assert(json.schema.get == Set("string", "age", "longitude", "latitude", "date", "time"))
   }
 
   test ("simple load") {
@@ -34,7 +34,7 @@ class TestJsonSummary extends FunSuite {
     assert(json.get("age").get == 10)
     assert(json.get("date").get == Seq(10,3,17))
     assert(json.get("time").get == Seq(12, 14))
-    assert(json.get("lattitude").get == Seq(1,2,3,4))
+    assert(json.get("latitude").get == Seq(1,2,3,4))
     assert(json.get("longitude").get == Seq(11,12,13,14))
   }
 
@@ -48,7 +48,7 @@ class TestJsonSummary extends FunSuite {
     assert(json2.get("age").get == 10)
     assert(json2.get("date").get == Seq(10,3,17))
     assert(json2.get("time").get == Seq(12, 14))
-    assert(json2.get("lattitude").get == Seq(1,2,3,4))
+    assert(json2.get("latitude").get == Seq(1,2,3,4))
     assert(json2.get("longitude").get == Seq(11,12,13,14))
   }
 
