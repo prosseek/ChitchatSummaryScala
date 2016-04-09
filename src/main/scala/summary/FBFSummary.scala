@@ -12,12 +12,12 @@ import chitchat.typetool.TypeInference
 import scala.collection.mutable.{Map => MMap}
 
 class FBFSummary(val q:Int, override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference){
-  val bloomierFilter:BloomierFilter = null
+  var bloomierFilter:BloomierFilter = null
 
   // create
   override def create(map: Map[String, Any]) : Unit = {
     super.create(map)
-    //bloomierFilter = new BloomierFilter()
+    bloomierFilter = new BloomierFilter(inputAny = null, q = q, typeInference = typeInference)
   }
 
   // query

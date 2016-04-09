@@ -1,11 +1,6 @@
 package summary
 
 import chitchat.typetool.TypeInference
-import util.compression.Compressor._
-import util.conversion.ByteArrayTool._
-import util.conversion.BitSetTool._
-import util.conversion.Util
-import chitchat.typetool.TypeInference
 import java.lang.{String => JString}
 
 import scala.{Byte => SByte, Int => SInt}
