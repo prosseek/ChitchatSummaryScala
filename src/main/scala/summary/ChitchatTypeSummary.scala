@@ -54,4 +54,8 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
       throw new RuntimeException(s"This JSON ${filePath}/(${content}) is not converted into chitchat type summary")
     }
   }
+
+  // added API
+  // todo : Add theoretical size
+  // def theoreticalSize
 }
