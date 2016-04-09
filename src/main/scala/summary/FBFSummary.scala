@@ -32,13 +32,13 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
   }
 
   // modify
-  def update(label:String, value:Any) : Boolean = {
+  override def update(label:String, value:Any) : Boolean = {
     true
   }
-  def add(label:String, value:Any) : Boolean = {
+  override def add(label:String, value:Any) : Boolean = {
     true
   }
-  def delete(label:String) : Boolean = {
+  override def delete(label:String) : Boolean = {
     true
   }
 

@@ -72,10 +72,23 @@ abstract class Summary {
   protected def _deserialize(byteArray:Array[Byte], version:Int = 1) : Map[String, Any] = {
     val header = Header(version).decode(byteArray)
     val size = header.get("size").get.asInstanceOf[Int]
+    val name = header.get("name").get.asInstanceOf[String]
 
     val res = _toMMap(header)
     res("content") = byteArray.slice(size, byteArray.size)
     res.toMap
+  }
+
+  protected def _getContent(byteArray:Array[Byte]) : Array[Byte] = {
+    _deserialize(byteArray).get("content").get.asInstanceOf[Array[Byte]]
+  }
+
+  protected def _getVersion(byteArray:Array[Byte]) = {
+    _deserialize(byteArray).get("version").get
+  }
+
+  protected def _getName(byteArray:Array[Byte]) = {
+    _deserialize(byteArray).get("name").get
   }
 
   protected def _toMMap(map:scala.collection.immutable.Map[String,Any]) = {

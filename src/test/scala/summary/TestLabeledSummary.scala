@@ -11,8 +11,16 @@ class TestLabeledSummary extends FunSuite {
     val typeInference = TypeInference()
     val labeled = new LabeledSummary(typeInference = typeInference)
     labeled.loadJson(filePath)
-   // val serialized = labeled.serialize
-   // println(serialized.mkString(":"))
-  }
+    val loadedJson = labeled.map
 
+    val serialized = labeled.serialize
+    assert(serialized.slice(0,4).mkString(":") == "33:4:100:97")
+    labeled.save("./src/test/resources/jsonFiles/simple_example/simple_labeled.bin")
+    val deserialized = labeled.deserialize(serialized)
+
+    assert(deserialized == loadedJson)
+//    loadedJson foreach {
+//      case (key, value) => assert(value == deserialized(key))
+//    }
+  }
 }

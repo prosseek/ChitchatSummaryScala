@@ -25,14 +25,14 @@ class Header(version:Int) {
     summary.CompleteSummary.name -> 5
   )
 
-  private def nameToNumber(name:String) = {
+  def nameToNumber(name:String) = {
     val res = nameToNumberMap.getOrElse(name, -1)
     if (res == -1)
       throw new RuntimeException(s"name ${name} is not supported summary type")
     res
   }
 
-  private def numberToName(value: Int) : String = {
+  def numberToName(value: Int) : String = {
     val res = nameToNumberMap.find(_._2 == value).getOrElse(("",-1))._1
     if (res == "")
       throw new RuntimeException(s"chitchat.value ${value} does not have corresponding key")
@@ -46,7 +46,8 @@ class Header(version:Int) {
   def encode(summary_type_name:String) = {
     val summary_type = nameToNumber(summary_type_name)
     version match {
-      case 1 => instance.encode(Seq[Int](version, summary_type))
+      case 1 => instance.encode(Seq[Int](version, summary_type)) // version 1
+      case _ => throw new RuntimeException(s"Version ${version} not supported")
     }
   }
 
