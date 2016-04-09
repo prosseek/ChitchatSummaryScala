@@ -86,6 +86,7 @@ class LabeledSummary(override val typeInference:TypeInference) extends ChitchatT
           index += (1 + size)
           res(key) = value
        }
+        case Some(_) | None => throw new RuntimeException(s"Error in deserialize function ${instance.get.name}")
 
       }
     }
