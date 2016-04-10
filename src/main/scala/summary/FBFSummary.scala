@@ -51,18 +51,14 @@ object FBFSummary {
   * @param typeInference
   */
 
-class FBFSummary(val q:Int, override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference){
+class FBFSummary(val q:Int, val force_m_multiple_by_four:Boolean = true, override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference){
   var bloomierFilter:BloomierFilter = null
 
   // create
-  override def create(map: Map[JString, Any]) : Unit = {
+  override def create(map: Map[JString, Any] = null) : Unit = {
     super.create(map)
-    bloomierFilter = new BloomierFilter(inputAny = map, q = q, force_m_multiple_by_four=true, typeInference = typeInference)
-  }
-
-  def create : Unit = {
-    this.map.clear()
-    bloomierFilter = new BloomierFilter(inputAny = null, q = q, force_m_multiple_by_four=true, typeInference = typeInference)
+    bloomierFilter = new BloomierFilter(inputAny = map, q = q,
+      force_m_multiple_by_four=force_m_multiple_by_four, typeInference = typeInference)
   }
 
   // query
@@ -148,10 +144,9 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
   def load(filePath:JString) : Any = {
     // the create can be invoked before the instantiation
     if (bloomierFilter == null) {
-      create
+      create()
     }
     val res = deserialize(_load(filePath))
-    // create(res)
   }
 
   // ID

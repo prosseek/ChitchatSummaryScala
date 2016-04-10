@@ -12,7 +12,9 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
   // create
   override def create(map: Map[JString, Any]): Unit = {
     this.map.clear()
-    this.map ++= map
+    // when create the object from serialized data, the map can be null
+    if (map != null)
+      this.map ++= map
   }
 
   // modify
