@@ -18,31 +18,10 @@ import scala.{Byte => SByte}
   *  2. From bin file (stored) or Byte Array
   *    - FBF can recover the schema under some circumstances
   */
-object FBFSummary {
+object FBFSummary extends BFFactory[FBFSummary] {
   val name = "fbf"
 
-  def apply(q:Int, input:Map[JString, Any], typeInference: TypeInference) = {
-    val fbf = new FBFSummary(q = q, typeInference = typeInference)
-    fbf.create(map = input)
-    fbf
-  }
-
-  def apply(q:Int, filePath:JString, typeInference: TypeInference) = {
-    filePath match {
-      case f if f.endsWith(".json") => {
-        val fbf = new FBFSummary(q = q, typeInference = typeInference)
-        fbf.loadJson(filePath)
-        fbf
-      }
-      case f if f.endsWith(".bin") => {
-        // we don't care about the q, as it will be overwritten from the byte array
-        val fbf = new FBFSummary(q = q, typeInference = typeInference)
-        fbf.load(filePath)
-        fbf
-      }
-      case _ => throw new RuntimeException(s"Only json or bin can be used for setup ${filePath}")
-    }
-  }
+  def make(q: Int, typeInference: TypeInference) = new FBFSummary(q = q, typeInference = typeInference)
 }
 
 /**
