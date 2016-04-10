@@ -57,13 +57,12 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
   // create
   override def create(map: Map[JString, Any]) : Unit = {
     super.create(map)
-    bloomierFilter = new BloomierFilter(inputAny = map, q = q, typeInference = typeInference)
+    bloomierFilter = new BloomierFilter(inputAny = map, q = q, force_m_multiple_by_four=true, typeInference = typeInference)
   }
 
   def create : Unit = {
     this.map.clear()
-    // ??? how to setup the bloomier filter?
-    bloomierFilter = new BloomierFilter(inputAny = null, q = q, typeInference = typeInference)
+    bloomierFilter = new BloomierFilter(inputAny = null, q = q, force_m_multiple_by_four=true, typeInference = typeInference)
   }
 
   // query
