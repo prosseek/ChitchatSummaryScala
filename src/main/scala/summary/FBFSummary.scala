@@ -5,6 +5,9 @@ import chitchat.typetool.TypeInference
 
 import scala.collection.mutable.{Map => MMap}
 import java.lang.{String => JString}
+
+import util.header.Header
+
 import scala.{Byte => SByte}
 
 // todo: Check when creating from JSON, the JSON should be simple form, throw exception otherwise.
@@ -16,12 +19,15 @@ import scala.{Byte => SByte}
   *    - FBF can recover the schema under some circumstances
   */
 object FBFSummary {
+  val name = "fbf"
 
-  def apply(byteArray:Array[Byte]) = {
-
+  def apply(q:Int, input:Map[JString, Any], typeInference: TypeInference) = {
+    val fbf = new FBFSummary(q = q, typeInference = typeInference)
+    fbf.create(map = input)
+    fbf
   }
 
-  def apply(q:Int = 0, filePath:JString, typeInference: TypeInference) = {
+  def apply(q:Int, filePath:JString, typeInference: TypeInference) = {
     filePath match {
       case f if f.endsWith(".json") => {
         val fbf = new FBFSummary(q = q, typeInference = typeInference)
@@ -57,7 +63,7 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
   def create : Unit = {
     this.map.clear()
     // ??? how to setup the bloomier filter?
-    bloomierFilter
+    bloomierFilter = new BloomierFilter(inputAny = null, q = q, typeInference = typeInference)
   }
 
   // query
@@ -98,20 +104,37 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
 
   // transform
   def serialize : Array[SByte] = {
-    null
-  }
-
-  def recoverBFTable(ba:Array[SByte]) = {
-
+    val header = Header(version=1).encode(FBFSummary.name).get
+    header ++ serializedContent
   }
 
   def deserialize(ba: Array[SByte]) : Map[JString, Any] = {
-    null
+    // todo: Duplication code
+    // get the content from the byte array
+    val version = _getVersion(ba)
+    val nameId = _getName(ba)
+
+    if (nameId != FBFSummary.name)
+      throw new RuntimeException(s"Wrong summary type ${nameId}, expected ${FBFSummary.name}")
+    val contentByteArray:Array[Byte] = _getContent(ba)
+
+    // todo: This is not good, make a function and use the function to setup the internals
+    bloomierFilter.byteArrayBloomierFilter.loadByteArray(contentByteArray)
+    BloomierFilter.copyParameters(from = bloomierFilter.byteArrayBloomierFilter, to = bloomierFilter)
+
+    // todo: We need to find a way to recover the Map
+    var res =  MMap[JString, Any]()
+    res.toMap
   }
 
   // I/O
-  override def saveJson(filePath:JString) : Unit = {
-    null
+  override def saveJson(filePath:JString, map:Map[JString, Any] = null) : Unit = {
+    if (map.size > 0) {
+      super.saveJson(filePath, map)
+    }
+  }
+  override def loadJson(filePath:JString) = {
+    super.loadJson(filePath)
   }
 
   /**
@@ -120,18 +143,23 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
     * @param filePath
     */
   def save(filePath:JString) : Unit = {
-
+    bloomierFilter.save(filePath, serialize)
   }
+
   def load(filePath:JString) : Any = {
+    // the create can be invoked before the instantiation
+    if (bloomierFilter == null) {
+      create
+    }
     val res = deserialize(_load(filePath))
-    create(res)
+    // create(res)
   }
 
   // ID
-  def name : JString = LabeledSummary.name
+  def name : JString = FBFSummary.name
 
   // Internal
   protected def serializedContent : Array[SByte] = {
-    null
+    bloomierFilter.serialize
   }
 }

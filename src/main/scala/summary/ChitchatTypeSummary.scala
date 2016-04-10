@@ -16,7 +16,7 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
   }
 
   // modify
-  def update(label:String, value:Any) : Boolean = {
+  override def update(label:JString, value:Any) : Boolean = {
     if (schema.contains(label)) {
       map(label) = value
       true
@@ -24,7 +24,7 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
     else
       false
   }
-  def add(label:String, value:Any) : Boolean = {
+  override def add(label:JString, value:Any) : Boolean = {
     if (!schema.contains(label)) {
       map(label) = value
       true
@@ -32,7 +32,7 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
     else
       false
   }
-  def delete(label:String) : Boolean = {
+  override def delete(label:JString) : Boolean = {
     if (schema.contains(label)) {
       map -= label
       true
@@ -41,11 +41,14 @@ abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Sum
       false
   }
 
-  def saveJson(filePath:JString) : Unit = {
-    _saveJsonMap(filePath, this.map.toMap)
+  override def saveJson(filePath:JString, map:Map[JString, Any] = null) : Unit = {
+    var m = map
+    if (m == null)
+      m = this.map.toMap
+    _saveJsonMap(filePath, m)
   }
 
-  def loadJson(filePath:JString) : Any = {
+  override def loadJson(filePath:JString) : Any = {
     val content = _loadJsonContent(filePath)
     val jsonMap = Json.parse(content)
     if (Json.isSimpleJson((jsonMap))) {

@@ -21,7 +21,7 @@ class Header(version:Int) {
     summary.CompresseJsonSummary.name -> 1,
     summary.LabeledSummary.name -> 2,
     "cbf" -> 3,
-    "fbf" -> 4,
+    summary.FBFSummary.name -> 4,
     summary.CompleteSummary.name -> 5
   )
 

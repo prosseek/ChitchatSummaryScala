@@ -24,7 +24,7 @@ abstract class Summary {
   def deserialize(ba: Array[Byte]) : Map[String, Any]
 
   // I/O
-  def saveJson(filePath:String) : Unit
+  def saveJson(filePath:String, map:Map[String, Any] = null) : Unit
   def loadJson(filePath:String) : Any
   def save(filePath:String) : Unit
   def load(filePath:String) : Any

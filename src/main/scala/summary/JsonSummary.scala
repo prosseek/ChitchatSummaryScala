@@ -91,7 +91,7 @@ class JsonSummary extends Summary {
     this.map
   }
 
-  override def saveJson(filePath: String): Unit  = {
+  override def saveJson(filePath:String, map:Map[String, Any] = null): Unit  = {
     _saveJsonMap(filePath, this.map.toMap)
   }
 
