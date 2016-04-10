@@ -20,7 +20,7 @@ class Header(version:Int) {
     summary.JsonSummary.name -> 0,
     summary.CompresseJsonSummary.name -> 1,
     summary.LabeledSummary.name -> 2,
-    "cbf" -> 3,
+    summary.CBFSummary.name -> 3,
     summary.FBFSummary.name -> 4,
     summary.CompleteSummary.name -> 5
   )
