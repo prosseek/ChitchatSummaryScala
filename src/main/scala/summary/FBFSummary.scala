@@ -100,6 +100,11 @@ class FBFSummary(val q:Int, override val typeInference: TypeInference) extends C
   def serialize : Array[SByte] = {
     null
   }
+
+  def recoverBFTable(ba:Array[SByte]) = {
+
+  }
+
   def deserialize(ba: Array[SByte]) : Map[JString, Any] = {
     null
   }
