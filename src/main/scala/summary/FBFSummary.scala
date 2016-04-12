@@ -1,11 +1,11 @@
 package summary
 
 import bloomierfilter.main.BloomierFilter
-import chitchat.typetool.TypeInference
 
 import scala.collection.mutable.{Map => MMap}
 import java.lang.{String => JString}
 
+import filter.Filter
 import util.header.Header
 
 import scala.{Byte => SByte}
@@ -21,17 +21,20 @@ import scala.{Byte => SByte}
 object FBFSummary extends BFFactory[FBFSummary] {
   val name = "fbf"
 
-  def make(q: Int, typeInference: TypeInference) = new FBFSummary(q = q, typeInference = typeInference)
+  def make(q: Int, filter:Filter) =
+    new FBFSummary(q = q, filter = filter)
 }
 
 /**
   *
   * @param q
-  * @param typeInference
+  * @param force_depth_count_1
+  * @param filter
   */
 
-class FBFSummary(val q:Int,
-                 val force_depth_count_1:Boolean = true, override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference){
+class FBFSummary(val q:Int = 4*8,
+                 val force_depth_count_1:Boolean = true,
+                 val filter:Filter = null) extends ChitchatTypeSummary(filter.getTypeDatabase){
   var bloomierFilter:BloomierFilter = null
 
   // create
@@ -40,12 +43,18 @@ class FBFSummary(val q:Int,
     bloomierFilter = new BloomierFilter(inputAny = map, q = q,
       force_depth_count_1 = force_depth_count_1,
       force_m_multiple_by_four=true,
-      typeInference = typeInference)
+      typeDatabase = typeDatabase)
   }
 
   // query
   def get(label:JString) : Option[Any] = {
     this.bloomierFilter.get(label)
+  }
+
+  def getFiltered(label:JString) : Option[Any] = {
+    val res = get(label)
+    if (res.isEmpty) return res
+    if (filter.check(fbf = this, label = label)) res else None
   }
 
   def schema: Option[Set[JString]] = {
@@ -55,9 +64,7 @@ class FBFSummary(val q:Int,
       None
   }
 
-  def size: Int = {
-    this.serialize.size
-  }
+  def size: Int = this.serialize.size
 
   // modify
   override def update(label:JString, value:Any) : Boolean = {
@@ -125,10 +132,8 @@ class FBFSummary(val q:Int,
 
   def load(filePath:JString) : Any = {
     // the create can be invoked before the instantiation
-    if (bloomierFilter == null) {
-      create()
-    }
-    val res = deserialize(_load(filePath))
+    if (bloomierFilter == null) create()
+    deserialize(_load(filePath))
   }
 
   // ID

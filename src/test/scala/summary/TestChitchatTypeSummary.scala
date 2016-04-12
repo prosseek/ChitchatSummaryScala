@@ -1,10 +1,10 @@
 package summary
 
-import chitchat.typetool.TypeInference
+import chitchat.typefactory.TypeDatabase
 import org.scalatest.FunSuite
 import util.json.Json
 
-class CTS(override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference = typeInference) {override def schema: Option[Set[String]] = ???
+class CTS(override val typeDatabase: TypeDatabase) extends ChitchatTypeSummary(typeDatabase = typeDatabase) {override def schema: Option[Set[String]] = ???
 
   // protected APIs
   override protected def serializedContent: Array[Byte] = ???
@@ -36,7 +36,7 @@ class CTS(override val typeInference: TypeInference) extends ChitchatTypeSummary
 
 class TestChitchatTypeSummary extends FunSuite {
   test("create from map") {
-    val ti = TypeInference()
+    val ti = TypeDatabase()
     val cts = new CTS(ti)
 
     val m = Map[String, Any]("string" -> "hello", "float" -> 32.55f, "age"-> 10)
@@ -47,7 +47,7 @@ class TestChitchatTypeSummary extends FunSuite {
 
   test ("create from JSON") {
     val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
-    val ti = TypeInference()
+    val ti = TypeDatabase()
     val cts = new CTS(ti)
     cts.loadJson(filePath)
     assert(cts.map.size == 6)

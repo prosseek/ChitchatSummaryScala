@@ -1,15 +1,19 @@
 package summary
 
-import chitchat.typetool.TypeInference
 import java.lang.{String => JString}
+
+import filter.Filter
 
 object CBFSummary extends BFFactory[CBFSummary] {
   val name = "cbf"
 
-  def make(q:Int, typeInference: TypeInference) = new CBFSummary(q = q, typeInference = typeInference)
+  def make(q:Int, filter:Filter) =
+    new CBFSummary(q = q, filter = filter)
 }
 
-class CBFSummary(override val q:Int, override val typeInference: TypeInference)
-  extends FBFSummary(q=q, typeInference = typeInference, force_depth_count_1 = true) {
+class CBFSummary(override val q:Int = 4*8, override val filter:Filter = null)
+  extends FBFSummary(q=q,
+    filter = filter,
+    force_depth_count_1 = true) {
 
 }

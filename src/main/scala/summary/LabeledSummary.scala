@@ -1,22 +1,22 @@
 package summary
 
-import chitchat.typetool.TypeInference
 import util.header.Header
 import java.lang.{String => JString}
 
-import chitchat.types.{Encoding, Range, Float, String}
+import chitchat.typefactory.TypeDatabase
+import chitchat.types.{Encoding, Float, Range, String}
 
 import scala.collection.mutable.{ArrayBuffer, Map => MMap}
 
 object LabeledSummary {
   def name = "labeled"
 
-  def apply(typeInference: TypeInference) = {
-    new LabeledSummary(typeInference = typeInference)
+  def apply(typeDatabase: TypeDatabase) = {
+    new LabeledSummary(typeDatabase = typeDatabase)
   }
 }
 
-class LabeledSummary(override val typeInference:TypeInference) extends ChitchatTypeSummary(typeInference = typeInference)
+class LabeledSummary(override val typeDatabase:TypeDatabase) extends ChitchatTypeSummary(typeDatabase = typeDatabase)
 {
   // create
   override def create(map: Map[JString, Any]) : Unit = {
@@ -57,7 +57,7 @@ class LabeledSummary(override val typeInference:TypeInference) extends ChitchatT
       val key = new JString(contentByteArray.slice(index+1, index + 1 + size))
 
       index += (1 + size)
-      val instance = typeInference.get(key).get
+      val instance = typeDatabase.get(key).get
 
       var sizeInBytes = instance.sizeInBytes
       var value:Any = null
@@ -94,7 +94,7 @@ class LabeledSummary(override val typeInference:TypeInference) extends ChitchatT
     map foreach {
       case (label, value) => {
         val baLabel = util.conversion.ByteArrayTool.stringToByteArray(label)
-        val baValue = typeInference.encode(label, value).get
+        val baValue = typeDatabase.encode(label, value).get
         buffer ++=  (baLabel ++ baValue)
       }
     }

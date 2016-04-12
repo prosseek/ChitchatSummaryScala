@@ -1,0 +1,8 @@
+{
+  "name": "James",
+  "event": "Let's play games",
+  "date": [10, 3, 17],
+  "time": [12, 14],
+  "latitude": [1, 2, 3, 4],
+  "longitude": [11, 12, 13, 14]
+}

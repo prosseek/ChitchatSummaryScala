@@ -2,11 +2,12 @@ package summary
 
 import java.lang.{String => JString}
 
+import chitchat.typefactory.TypeDatabase
 import util.json.Json
-import chitchat.typetool.TypeInference
+
 import collection.mutable.{Map => MMap}
 
-abstract class ChitchatTypeSummary(val typeInference: TypeInference) extends Summary {
+abstract class ChitchatTypeSummary(val typeDatabase: TypeDatabase) extends Summary {
   var map:MMap[JString, Any] = MMap[JString, Any]()
 
   // create

@@ -1,6 +1,6 @@
 package summary
 
-import chitchat.typetool.TypeInference
+import chitchat.typefactory.TypeDatabase
 import org.scalatest.FunSuite
 
 class TestCompleteSummary extends FunSuite {
@@ -8,8 +8,8 @@ class TestCompleteSummary extends FunSuite {
   test ("simple") {
     val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
 
-    val typeInference = TypeInference()
-    val completeSummary = new CompleteSummary(typeInference = typeInference)
+    val ti = TypeDatabase()
+    val completeSummary = new CompleteSummary(typeDatabase = ti)
     completeSummary.loadJson(filePath)
     val loadedJson = completeSummary.map
 

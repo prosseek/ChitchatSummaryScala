@@ -1,6 +1,6 @@
 package summary
 
-import chitchat.typetool.TypeInference
+import chitchat.typefactory.TypeDatabase
 import org.scalatest.FunSuite
 
 class TestLabeledSummary extends FunSuite {
@@ -8,8 +8,8 @@ class TestLabeledSummary extends FunSuite {
   test ("simple") {
     val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
 
-    val typeInference = TypeInference()
-    val labeled = new LabeledSummary(typeInference = typeInference)
+    val typeInference = TypeDatabase()
+    val labeled = new LabeledSummary(typeDatabase = typeInference)
     labeled.loadJson(filePath)
     val loadedJson = labeled.map
 

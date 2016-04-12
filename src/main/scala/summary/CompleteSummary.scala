@@ -1,7 +1,8 @@
 package summary
 
-import chitchat.typetool.TypeInference
 import java.lang.{String => JString}
+
+import chitchat.typefactory.TypeDatabase
 
 import scala.{Byte => SByte, Int => SInt}
 import chitchat.types._
@@ -12,12 +13,12 @@ import collection.mutable.{ArrayBuffer, Map => MMap}
 object CompleteSummary {
   def name = "complete"
 
-  def apply(typeInference: TypeInference) = {
-    new CompleteSummary(typeInference = typeInference)
+  def apply(typeDatabase: TypeDatabase) = {
+    new CompleteSummary(typeDatabase = typeDatabase)
   }
 }
 
-class CompleteSummary (override val typeInference: TypeInference) extends ChitchatTypeSummary(typeInference){
+class CompleteSummary (override val typeDatabase: TypeDatabase) extends ChitchatTypeSummary(typeDatabase){
   var orderedLabel:Seq[JString] = _
 
   // create
@@ -60,7 +61,7 @@ class CompleteSummary (override val typeInference: TypeInference) extends Chitch
     var value:Any = null
     orderedLabel foreach {
       key => {
-        val instance = typeInference.get(key)
+        val instance = typeDatabase.get(key)
         // todo: too many duplications
         // http://stackoverflow.com/questions/36511206/merging-multiple-case-in-match-case-in-scala
         if (instance.isEmpty) throw new RuntimeException(s"No instance for label ${key}")
@@ -102,7 +103,7 @@ class CompleteSummary (override val typeInference: TypeInference) extends Chitch
     val buffer = ArrayBuffer[Byte]()
     orderedLabel foreach { label => {
         val value = map.get(label).get
-        val baValue = typeInference.encode(label, value).get
+        val baValue = typeDatabase.encode(label, value).get
         buffer ++=  baValue
       }
     }
