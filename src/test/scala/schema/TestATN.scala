@@ -28,7 +28,7 @@ class TestATN extends FunSuite {
     val simpleFile = "./src/test/resources/jsonFiles/schema/simple.json"
     val typeInference = TypeDatabase() // () to use apply
     val filter = ChitchatFilter(typeInference)
-    val fbf = FBFSummary(filePath=simpleFile, q = 1*8, filter = filter)
+    val fbf = FBFSummary(source=simpleFile, q = 1*8, filter = filter)
 
     val atn = new ATN(fbf)
     val result = atn.atn("notification")

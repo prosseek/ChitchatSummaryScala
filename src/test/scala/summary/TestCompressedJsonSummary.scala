@@ -8,11 +8,11 @@ class TestCompressedJsonSummary extends FunSuite {
   val saveFilePath = "./src/test/resources/jsonFiles/simple_example/simple_result.json"
   val compressedBinaryFilePath = "./src/test/resources/jsonFiles/simple_example/simple_compressed.bin"
   test ("simple") {
-    val js = CompresseJsonSummary(filePath)
+    val js = CompressedJsonSummary(source = filePath)
 
     js.save(compressedBinaryFilePath)
 
-    val json = new CompresseJsonSummary
+    val json = new CompressedJsonSummary
     json.load(compressedBinaryFilePath)
     assert(json.get("string").get == "James")
     assert(json.get("age").get == 10)

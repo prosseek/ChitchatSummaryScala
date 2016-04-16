@@ -12,7 +12,7 @@ class TestCBFSummary extends FunSuite {
     val saveFilePath = "./src/test/resources/jsonFiles/simple/simple_cbf_q4.bin"
     val ti = TypeDatabase() // () to use apply
     val filter = ChitchatFilter(ti)
-    val fbf = CBFSummary(filePath=simpleFile, q = 1*8, filter = filter)
+    val fbf = CBFSummary(source=simpleFile, q = 1*8, filter = filter)
     fbf.save(saveFilePath)
   }
 
@@ -20,7 +20,7 @@ class TestCBFSummary extends FunSuite {
     val saveFilePath = "./src/test/resources/jsonFiles/simple/simple_cbf_q4.bin"
     val ti = TypeDatabase() // () to use apply
     val filter = ChitchatFilter(ti)
-    val fbf = CBFSummary(filePath=saveFilePath, q = 0, filter = filter)
+    val fbf = CBFSummary(source=saveFilePath, q = 0, filter = filter)
 
     assert(fbf.get("string").get == "James")
     assert(fbf.get("age").get == 10)

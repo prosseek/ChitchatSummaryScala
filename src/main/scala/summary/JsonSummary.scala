@@ -1,21 +1,16 @@
 package summary
 
+import filter.Filter
 import util.json.Json
+
 import scala.collection.mutable.{Map => MMap}
 import scala.collection.immutable.Set
 
-object JsonSummary {
-  def apply(map: Map[String, Any]) = {
-    val summary = new JsonSummary
-    summary.create(map)
-    summary
-  }
-  def apply(filePath: String) = {
-    val summary = new JsonSummary
-    summary.loadJson(filePath)
-    summary
-  }
+object JsonSummary extends ChitchatSummaryFactory[JsonSummary] {
   def name = "json"
+
+  def make(q: Int, filter:Filter) =
+    new JsonSummary()
 }
 
 /**
@@ -23,9 +18,6 @@ object JsonSummary {
   * Json file.
   */
 class JsonSummary extends Summary {
-  // JSon summary is an internal map
-  var map : MMap[String, Any] = _
-
   // when the map is created from a file, the link and contents are reserved.
   private var filePath:String = ""
   private var contents:String = ""
@@ -36,8 +28,6 @@ class JsonSummary extends Summary {
     * @param map
     */
   override def create(map: Map[String, Any]): Unit = {
-    if (!Json.isSimpleJson(map))
-      throw new RuntimeException(s"Error the input map is not in supported format: ${map.mkString(":")}")
     this.map = MMap(map.toSeq:_*)
     this.contents = Json.build(this.map).toString
   }

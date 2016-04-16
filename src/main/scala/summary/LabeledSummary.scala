@@ -5,15 +5,15 @@ import java.lang.{String => JString}
 
 import chitchat.typefactory.TypeDatabase
 import chitchat.types.{Encoding, Float, Range, String}
+import filter.Filter
 
 import scala.collection.mutable.{ArrayBuffer, Map => MMap}
 
-object LabeledSummary {
+object LabeledSummary extends ChitchatSummaryFactory[LabeledSummary] {
   def name = "labeled"
 
-  def apply(typeDatabase: TypeDatabase) = {
-    new LabeledSummary(typeDatabase = typeDatabase)
-  }
+  def make(q: Int, filter:Filter) =
+    new LabeledSummary(typeDatabase = filter.getTypeDatabase)
 }
 
 class LabeledSummary(override val typeDatabase:TypeDatabase) extends ChitchatTypeSummary(typeDatabase = typeDatabase)

@@ -17,7 +17,7 @@ class SchemaSummary {
     val result = g.atn(grammarName)
     if (result == null) return null
     else {
-      JsonSummary(result)
+      JsonSummary(q = 0, input=result, filter = null)
     }
   }
 }

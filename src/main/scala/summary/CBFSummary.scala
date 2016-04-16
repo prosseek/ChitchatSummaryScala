@@ -4,7 +4,7 @@ import java.lang.{String => JString}
 
 import filter.Filter
 
-object CBFSummary extends BFFactory[CBFSummary] {
+object CBFSummary  extends ChitchatSummaryFactory[FBFSummary] {
   val name = "cbf"
 
   def make(q:Int, filter:Filter) =

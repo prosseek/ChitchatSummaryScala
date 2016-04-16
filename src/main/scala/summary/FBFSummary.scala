@@ -18,7 +18,7 @@ import scala.{Byte => SByte}
   *  2. From bin file (stored) or Byte Array
   *    - FBF can recover the schema under some circumstances
   */
-object FBFSummary extends BFFactory[FBFSummary] {
+object FBFSummary extends ChitchatSummaryFactory[FBFSummary] {
   val name = "fbf"
 
   def make(q: Int, filter:Filter) =

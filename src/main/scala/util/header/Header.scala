@@ -18,7 +18,7 @@ class Header(version:Int) {
 
   private val nameToNumberMap = Map(
     summary.JsonSummary.name -> 0,
-    summary.CompresseJsonSummary.name -> 1,
+    summary.CompressedJsonSummary.name -> 1,
     summary.LabeledSummary.name -> 2,
     summary.CBFSummary.name -> 3,
     summary.FBFSummary.name -> 4,

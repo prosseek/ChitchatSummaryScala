@@ -2,12 +2,22 @@ package summary
 
 import java.io._
 
+
+import collection.mutable.{Map => MMap}
+
 import util.header.Header
 import util.json.Json
 
 abstract class Summary {
+  var map:MMap[String, Any] = MMap[String, Any]()
+
   // create
-  def create(map: Map[String, Any]) : Unit
+  def create(map: Map[String, Any]): Unit = {
+    this.map.clear()
+    // when create the object from serialized data, the map can be null
+    if (map != null)
+      this.map ++= map
+  }
 
   // query
   def get(label:String) : Option[Any]

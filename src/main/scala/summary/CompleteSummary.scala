@@ -6,16 +6,16 @@ import chitchat.typefactory.TypeDatabase
 
 import scala.{Byte => SByte, Int => SInt}
 import chitchat.types._
+import filter.Filter
 import util.header.Header
 
 import collection.mutable.{ArrayBuffer, Map => MMap}
 
-object CompleteSummary {
+object CompleteSummary extends ChitchatSummaryFactory[CompleteSummary] {
   def name = "complete"
 
-  def apply(typeDatabase: TypeDatabase) = {
-    new CompleteSummary(typeDatabase = typeDatabase)
-  }
+  def make(q: Int, filter:Filter) =
+    new CompleteSummary(typeDatabase = filter.getTypeDatabase)
 }
 
 class CompleteSummary (override val typeDatabase: TypeDatabase) extends ChitchatTypeSummary(typeDatabase){

@@ -7,7 +7,7 @@ class TestJsonSummary extends FunSuite {
   val filePath = "./src/test/resources/jsonFiles/simple_example/simple.json"
   val saveFilePath = "./src/test/resources/jsonFiles/simple_example/simple_result.json"
   test ("simple access test") {
-    val json = JsonSummary(filePath)
+    val json = JsonSummary(source=filePath)
     assert(json.get("string").get == "James")
     assert(json.get("age").get == 10)
     assert(json.get("date").get == Seq(10,3,17))
@@ -24,7 +24,7 @@ class TestJsonSummary extends FunSuite {
 
   test ("simple load") {
     // create the json and save it in binary
-    val js = JsonSummary(filePath)
+    val js = JsonSummary(source=filePath)
     js.save(baFilePath)
     // load the binary
     val json = new JsonSummary
@@ -43,7 +43,7 @@ class TestJsonSummary extends FunSuite {
     json.loadJson(filePath)
     json.saveJson(saveFilePath)
 
-    val json2 = JsonSummary(saveFilePath)
+    val json2 = JsonSummary(source=filePath)
     assert(json2.get("string").get == "James")
     assert(json2.get("age").get == 10)
     assert(json2.get("date").get == Seq(10,3,17))
@@ -53,26 +53,26 @@ class TestJsonSummary extends FunSuite {
   }
 
   test ("simple add ") {
-    val json = JsonSummary(filePath)
+    val json = JsonSummary(source=filePath)
     assert(json.add("hello", 1234))
     assert(json.get("hello").get == 1234)
   }
 
   test ("simple updage ") {
-    val json = JsonSummary(filePath)
+    val json = JsonSummary(source=filePath)
     assert(json.update("age", 11))
     assert(json.get("age").get == 11)
   }
 
   test ("simple delete ") {
-    val json = JsonSummary(filePath)
+    val json = JsonSummary(source=filePath)
     assert(json.delete("age"))
     assert(!json.schema.contains("age"))
   }
 
   test ("complex json load") {
     val complexSample = "./src/test/resources/jsonFiles/complex_example/color.json"
-    val json = JsonSummary(complexSample)
+    val json = JsonSummary(q = 0, source=complexSample, filter = null)
     assert(json.map.mkString(":").startsWith("colorsArray -> List"))
     assert(json.serialize.size == 297)
     val complexSampleBin = "./src/test/resources/jsonFiles/complex_example/color.bin"

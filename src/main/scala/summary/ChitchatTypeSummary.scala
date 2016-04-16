@@ -8,16 +8,6 @@ import util.json.Json
 import collection.mutable.{Map => MMap}
 
 abstract class ChitchatTypeSummary(val typeDatabase: TypeDatabase) extends Summary {
-  var map:MMap[JString, Any] = MMap[JString, Any]()
-
-  // create
-  override def create(map: Map[JString, Any]): Unit = {
-    this.map.clear()
-    // when create the object from serialized data, the map can be null
-    if (map != null)
-      this.map ++= map
-  }
-
   // modify
   override def update(label:JString, value:Any) : Boolean = {
     if (schema.contains(label)) {
