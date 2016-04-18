@@ -23,4 +23,4 @@ println(f.get("longitude").get)
 
 val res = API.serialize(f)
 println(res.mkString(":"))
-API.save(f, "./summary.bin")
+API.save(f, "/Users/smcho/github/ChitchatSummaryScala/target/summary.bin")
