@@ -20,11 +20,11 @@ libraryDependencies ++= Seq(
 //libraryDependencies += "bloomierfilter" %% "bloomierfilter" % "0.1"
 
 // META-INF discarding
-mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
-  {
-    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-    case x => MergeStrategy.first
-  }
-}
+//mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
+//  {
+//    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+//    case x => MergeStrategy.first
+//  }
+//}
 
 assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)

@@ -11,12 +11,6 @@ object ChitchatFilter {
 class ChitchatFilter(typeDatabase: TypeDatabase) extends Filter {
   override def check(fbf: FBFSummary, key: String): Boolean = {
     val instance = typeDatabase.get(key)
-    if (instance.isDefined) {
-      val correlatedLabels = instance.get.correlatedLabels
-      correlatedLabels foreach {
-        label => if (fbf.get(label).isEmpty) return false
-      }
-    }
     true
   }
 
