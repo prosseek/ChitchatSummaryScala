@@ -25,15 +25,18 @@ object FBFSummary extends ChitchatSummaryFactory[FBFSummary] {
     new FBFSummary(q = q, filter = filter)
 }
 
-/**
+/** Creates FBF summary
+  *
+  * ==== Bug history ====
+  *  1. [2016/05/05]07:01PM the force_depth_count_1 was set to true, which is a bug as CBF should set this count to 1
   *
   * @param q
-  * @param force_depth_count_1
+  * @param force_depth_count_1 // force there should be no ordering (for CBF)
   * @param filter
   */
 
 class FBFSummary(val q:Int = 4*8,
-                 val force_depth_count_1:Boolean = true,
+                 val force_depth_count_1:Boolean = false,
                  val filter:Filter = null) extends ChitchatTypeSummary(filter.getTypeDatabase){
   var bloomierFilter:BloomierFilter = null
 

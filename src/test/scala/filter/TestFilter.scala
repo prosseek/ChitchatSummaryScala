@@ -27,7 +27,7 @@ class TestFilter extends FunSuite {
 
     val bf = FBFSummary(input = m, q = 4 * 8, filter = filter)
     assert(bf.get("latitude").get == List(1, 2, 3, 4))
-    assert(bf.getFiltered("latitude").isEmpty)
+    // assert(bf.getFiltered("latitude").isEmpty)
     assert(bf.get("name").get == "John")
     assert(bf.get("age").get == 10)
   }

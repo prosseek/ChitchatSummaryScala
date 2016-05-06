@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="SBT: chitchatvm:chitchatvm_2.11:0.1:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/local/chitchatvm/chitchatvm_2.11/0.1/jars/chitchatvm_2.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/local/chitchatvm/chitchatvm_2.11/0.1/srcs/chitchatvm_2.11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
