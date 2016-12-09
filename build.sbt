@@ -12,8 +12,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.6" % "test",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2",
   "chitchattype" %% "chitchattype" % "0.1",
-  "bloomierfilter" %% "bloomierfilter" % "0.1",
-  "chitchatvm" %% "chitchatvm" % "0.1"
+  "bloomierfilter" %% "bloomierfilter" % "0.1"
+  //"chitchatvm" %% "chitchatvm" % "0.1"
 )
 
 //libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2"
